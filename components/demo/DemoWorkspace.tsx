@@ -159,7 +159,7 @@ export function DemoWorkspace() {
   const describedBy = [hintId, error ? errorId : null].filter(Boolean).join(" ");
 
   return (
-    <div className="grid gap-px border border-line-strong bg-line lg:grid-cols-12">
+    <div className="grid gap-px overflow-hidden rounded-3xl border border-line-strong bg-line lg:grid-cols-12">
       {/* Панель запроса */}
       <div className="flex min-w-0 flex-col gap-8 bg-surface p-5 sm:p-7 lg:col-span-4">
         <form noValidate onSubmit={onSubmit} className="flex flex-col gap-6">
@@ -178,10 +178,10 @@ export function DemoWorkspace() {
                   aria-pressed={selectedId === c.id}
                   disabled={running}
                   onClick={() => choose(c)}
-                  className="px-chip w-full justify-between gap-3 py-2"
+                  className="px-chip px-chip--lg w-full justify-between gap-3"
                 >
-                  <span className="font-medium">{c.name}</span>
-                  <span className="font-mono text-[0.75rem] text-muted">{c.industry.toLocaleLowerCase("ru-RU")}</span>
+                  <span className="font-display">{c.name}</span>
+                  <span className="chip-sub font-mono text-[0.75rem] font-normal">{c.industry.toLocaleLowerCase("ru-RU")}</span>
                 </button>
               ))}
             </div>
@@ -229,11 +229,11 @@ export function DemoWorkspace() {
         </form>
 
         {notice && (
-          <div data-testid="demo-notice" role="status" className="border border-cyan/50 bg-bg p-4">
+          <div data-testid="demo-notice" role="status" className="rounded-xl border border-cyan/50 bg-bg p-4">
             <p className="text-[0.9375rem]">{NOTICE_TEXT}</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {DEMO_COMPANIES.map((c) => (
-                <button key={c.id} type="button" onClick={() => choose(c)} className="px-chip min-h-9 text-[0.875rem]">
+                <button key={c.id} type="button" onClick={() => choose(c)} className="px-chip font-display">
                   {c.name}
                 </button>
               ))}

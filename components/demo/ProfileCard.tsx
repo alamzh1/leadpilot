@@ -169,7 +169,7 @@ export function ProfileCard({ company, resolvedCount, compact = false, titleId, 
         <li
           key={role}
           className={cx(
-            "border px-2 py-0.5 font-mono",
+            "rounded-md border px-2 py-0.5 font-mono",
             compact ? "text-[0.6875rem]" : "text-[0.8125rem]",
             role === company.outreach.role ? "border-cyan/60 text-text" : "border-line-strong text-muted",
           )}
@@ -252,7 +252,7 @@ export function ProfileCard({ company, resolvedCount, compact = false, titleId, 
   );
 
   const statusTag = (
-    <span className="inline-flex items-center gap-2 border border-line-strong px-2 py-0.5 font-mono text-[0.75rem] whitespace-nowrap text-text">
+    <span className="inline-flex items-center gap-2 rounded-md border border-line-strong px-2 py-0.5 font-mono text-[0.75rem] whitespace-nowrap text-text">
       <PixelIcon name="check" size={16} className="text-lime" />
       {DEMO_STATUS}
     </span>
@@ -260,7 +260,7 @@ export function ProfileCard({ company, resolvedCount, compact = false, titleId, 
 
   if (compact) {
     return (
-      <article data-company={company.id} className={cx("border border-line-strong bg-surface", className)}>
+      <article data-company={company.id} className={cx("overflow-hidden rounded-xl border border-line-strong bg-surface", className)}>
         <div className="grid grid-cols-2 gap-px bg-line sm:grid-cols-6">
           <Cell {...cell("name")} className="col-span-2 sm:col-span-4">
             {name}
@@ -301,7 +301,7 @@ export function ProfileCard({ company, resolvedCount, compact = false, titleId, 
     <article
       aria-labelledby={titleId}
       data-company={company.id}
-      className={cx("border border-line-strong bg-surface", className)}
+      className={cx("overflow-hidden rounded-2xl border border-line-strong bg-surface", className)}
     >
       <div className="grid grid-cols-1 gap-px bg-line md:grid-cols-12">
         <Cell {...cell("name")} className="md:col-span-5">

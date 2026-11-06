@@ -98,6 +98,37 @@ test.describe("первый экран", () => {
   });
 });
 
+test.describe("чипы компаний hero", () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
+
+  test("клик по чипу меняет компанию в hero-рабочей области и печатает новое название", async ({ page }) => {
+    await page.goto("/");
+    const desk = page.getByTestId("hero-desk");
+    const chips = page.getByRole("group", { name: "Компания в рабочей области" });
+    const pathRow = desk.getByText("AI RESEARCH WORKSPACE", { exact: true }).locator("..");
+    await expect(chips.getByRole("button", { name: "Vector Logistics" })).toHaveAttribute("aria-pressed", "true");
+    await chips.getByRole("button", { name: "Atlas Commerce" }).click();
+    await expect(chips.getByRole("button", { name: "Atlas Commerce" })).toHaveAttribute("aria-pressed", "true");
+    await expect(chips.getByRole("button", { name: "Vector Logistics" })).toHaveAttribute("aria-pressed", "false");
+    await expect(desk).toHaveAttribute("data-company", "atlas-commerce");
+    await expect(pathRow).toHaveText("leadpilot / AI RESEARCH WORKSPACE / atlas-commerce");
+    // Анимация начинается с чистого поля и допечатывает новое название в окне рабочей области.
+    const win = page.getByTestId("hero-window");
+    await expect(win.getByText("Atlas Commerce", { exact: true }).first()).toBeVisible();
+    await expect(win.getByText("Vector Logistics")).toHaveCount(0);
+  });
+
+  test("при reduced-motion чип сразу показывает готовый профиль другой компании", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    const desk = page.getByTestId("hero-desk");
+    await page.getByRole("group", { name: "Компания в рабочей области" }).getByRole("button", { name: "Northstar Bank" }).click();
+    await expect(desk).toHaveAttribute("data-company", "northstar-bank");
+    await expect(desk.locator('[data-state="pending"]')).toHaveCount(0);
+    await expect(page.getByTestId("hero-window").getByText("Northstar Bank", { exact: true }).first()).toBeVisible();
+  });
+});
+
 test.describe("строка пути на узком экране", () => {
   test.use({ viewport: { width: 390, height: 760 } });
 

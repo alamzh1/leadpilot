@@ -9,10 +9,10 @@ import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { SECTIONS } from "@/lib/site";
 
-type Module = { name: string; text: string; fragment: ReactNode; className: string; inner?: string };
+type Module = { name: string; text: string; fragment: ReactNode; className: string; wide?: boolean };
 
 // Асимметрия: профиль — крупный модуль на две строки, должности и сигналы — узкие,
-// экспорт — широкая полоса с текстом и превью CSV рядом.
+// экспорт — широкая полоса во всю ширину.
 const MODULES: readonly Module[] = [
   {
     name: "Company Intelligence",
@@ -37,11 +37,14 @@ const MODULES: readonly Module[] = [
     text: "Копирование и экспорт информации.",
     fragment: <ExportFragment />,
     className: "md:col-span-2 lg:col-span-12",
-    inner: "lg:grid lg:grid-cols-12 lg:gap-8",
+    wide: true,
   },
 ];
 
-/** «Возможности» (ТЗ §5.6): четыре модуля разного размера, в каждом — фрагмент интерфейса. */
+/**
+ * «Возможности» (ТЗ §5.6): четыре модуля разного размера. Анатомия карточки — как у
+ * референса: название по центру сверху, фрагмент интерфейса в середине, подпись по центру снизу.
+ */
 export function Capabilities() {
   return (
     <section id={SECTIONS.features} aria-labelledby="features-title" className="border-b border-line">
@@ -49,32 +52,34 @@ export function Capabilities() {
         <h2 id="features-title" className="text-section">
           Возможности
         </h2>
-        {/* Модули разделены воздухом и одной верхней линией; рамка — только у фрагмента. */}
-        <div className="grid grid-cols-[minmax(0,1fr)] gap-x-10 gap-y-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-20">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-6 md:grid-cols-2 lg:grid-cols-12">
           {MODULES.map((m, i) => (
-            <Reveal as="article" key={m.name} delay={(i % 2) * 0.08} className={`min-w-0 border-t border-line pt-8 ${m.className}`}>
-              <div className={`flex h-full flex-col gap-8 ${m.inner ?? ""}`}>
-                <div className={`flex flex-col gap-2 ${m.inner ? "lg:col-span-4" : ""}`}>
-                  <div className="flex flex-col gap-2">
-                    <h3
-                      className={`font-display font-semibold tracking-[-0.025em] ${i === 0 ? "text-[clamp(1.75rem,1.4rem+1.2vw,2.5rem)] leading-[1.05]" : "text-2xl"}`}
-                    >
-                      {m.name}
-                    </h3>
-                    <p className="text-muted">{m.text}</p>
-                  </div>
-                  {m.inner && (
-                    <div className="mt-6 flex flex-col items-start gap-3">
-                      <p className="max-w-[36ch] text-[0.9375rem] text-muted">
-                        Профиль копируется текстом или скачивается CSV для русского Excel — поля совпадают с карточкой.
-                      </p>
-                      <Button href={`#${SECTIONS.demo}`} variant="ghost" size="sm">
-                        Попробовать экспорт в демо
-                      </Button>
-                    </div>
-                  )}
-                </div>
-                <div className={m.inner ? "lg:col-span-8" : ""}>{m.fragment}</div>
+            <Reveal
+              as="article"
+              key={m.name}
+              delay={(i % 2) * 0.08}
+              className={`flex min-w-0 flex-col items-center gap-8 rounded-2xl bg-surface px-4 py-8 text-center sm:px-8 lg:py-10 ${m.className}`}
+            >
+              <h3
+                className={`font-display font-semibold tracking-[-0.025em] ${i === 0 ? "text-[clamp(1.75rem,1.4rem+1.2vw,2.5rem)] leading-[1.05]" : "text-2xl"}`}
+              >
+                {m.name}
+              </h3>
+              <div className={`flex w-full flex-1 items-center text-left ${m.wide ? "max-w-[52rem]" : ""}`}>
+                <div className="w-full">{m.fragment}</div>
+              </div>
+              <div className="flex max-w-[44ch] flex-col items-center gap-4">
+                <p className="text-[0.9375rem] text-muted">{m.text}</p>
+                {m.wide && (
+                  <>
+                    <p className="text-[0.9375rem] text-muted">
+                      Профиль копируется текстом или скачивается CSV для русского Excel — поля совпадают с карточкой.
+                    </p>
+                    <Button href={`#${SECTIONS.demo}`} variant="ghost" size="sm">
+                      Попробовать экспорт в демо
+                    </Button>
+                  </>
+                )}
               </div>
             </Reveal>
           ))}

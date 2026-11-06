@@ -30,7 +30,7 @@ export function ProfileGhost() {
           этапа занимают около трёх секунд.
         </p>
       </div>
-      <div aria-hidden="true" className="flex-1 border border-dashed border-line-strong">
+      <div aria-hidden="true" className="flex-1 overflow-hidden rounded-2xl border border-dashed border-line-strong">
         <div className="grid h-full grid-cols-2 gap-px bg-line md:auto-rows-fr md:grid-cols-12">
           {GHOST_CELLS.map(({ field, span, rows }) => (
             <div key={field} className={`min-w-0 bg-bg px-3 py-3 sm:px-5 sm:py-4 ${span}`}>

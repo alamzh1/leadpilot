@@ -14,14 +14,14 @@ const company: DemoCompany =
   DEMO_COMPANIES.find((c) => c.id === "vector-logistics") ?? DEMO_COMPANIES[0];
 
 function DemoTag() {
-  return <span className="shrink-0 border border-line-strong px-1.5">демо</span>;
+  return <span className="shrink-0 rounded-sm border border-line-strong px-1.5">демо</span>;
 }
 
 type FrameProps = { path?: string; note?: string; children: ReactNode; className?: string };
 
 function Frame({ path, note, children, className = "" }: FrameProps) {
   return (
-    <div className={`border border-line bg-surface ${className}`}>
+    <div className={`overflow-hidden rounded-xl border border-line-strong bg-bg ${className}`}>
       {path && (
         <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-2.5 font-mono text-[0.6875rem] leading-4 text-muted">
           <span className="min-w-0 truncate">
@@ -61,7 +61,7 @@ export function ProfileFragment() {
       value: (
         <ul className="flex flex-wrap gap-1.5">
           {company.itNeeds.map((need) => (
-            <li key={need} className="border border-line-strong px-2 py-0.5 text-[0.8125rem] leading-5">
+            <li key={need} className="rounded-md border border-line-strong px-2 py-0.5 text-[0.8125rem] leading-5">
               {need}
             </li>
           ))}
@@ -120,7 +120,7 @@ export function RolesFragment() {
               <PixelIcon name="role" className={primary ? "text-lime" : "text-muted"} />
               <span className="min-w-0 flex-1 text-[0.9375rem]">{role}</span>
               {primary && (
-                <span className="shrink-0 border border-lime/70 px-1.5 font-mono text-[0.6875rem] leading-5 text-lime">
+                <span className="shrink-0 rounded-sm border border-lime/70 px-1.5 font-mono text-[0.6875rem] leading-5 text-lime">
                   кому писать
                 </span>
               )}

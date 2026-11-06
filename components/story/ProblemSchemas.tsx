@@ -30,7 +30,7 @@ export function ScatterSchema() {
     <div
       role="img"
       aria-label="Схема: фрагменты о компании разбросаны по новостям, вакансиям, сайту и публичным профилям"
-      className="t04-schema relative h-40 w-full"
+      className="t04-schema relative h-full min-h-40 w-full"
     >
       {SPECKS.map(([x, y, s], i) => (
         <span
@@ -44,7 +44,7 @@ export function ScatterSchema() {
         <span
           key={f.label}
           aria-hidden="true"
-          className="absolute whitespace-nowrap border border-cyan/60 bg-bg px-2 py-0.5 font-mono text-[0.6875rem] leading-5 text-cyan"
+          className="absolute whitespace-nowrap rounded-md border border-cyan/60 bg-bg px-2 py-0.5 font-mono text-[0.6875rem] leading-5 text-cyan"
           style={{ left: `${f.x}%`, top: `${f.y}%` }}
         >
           {f.label}
@@ -59,9 +59,9 @@ export function StaleRoleSchema() {
     <div
       role="img"
       aria-label="Схема: устаревшая должность в CRM перечёркнута и заменена актуальной с новой датой"
-      className="t04-schema flex h-40 w-full flex-col justify-center gap-3 px-3 font-mono text-[0.75rem] leading-5"
+      className="t04-schema flex h-full min-h-40 w-full flex-col justify-center gap-3 font-mono text-[0.75rem] leading-5"
     >
-      <div aria-hidden="true" className="flex items-center gap-3 border border-line bg-bg px-3 py-2 text-muted">
+      <div aria-hidden="true" className="flex items-center gap-3 rounded-lg border border-line bg-bg px-3 py-2 text-muted">
         <span className="w-16 shrink-0">2024-03</span>
         <span className="min-w-0 truncate line-through decoration-muted">Head of IT</span>
         <span className="ml-auto shrink-0 text-[0.6875rem]">устарело</span>
@@ -72,7 +72,7 @@ export function StaleRoleSchema() {
         <span className="size-1 bg-cyan" />
         <span className="size-1 bg-lime" />
       </div>
-      <div aria-hidden="true" className="flex items-center gap-3 border border-lime/70 bg-bg px-3 py-2 text-text">
+      <div aria-hidden="true" className="flex items-center gap-3 rounded-lg border border-lime/70 bg-bg px-3 py-2 text-text">
         <span className="w-16 shrink-0 text-muted">2026-10</span>
         <span className="min-w-0 truncate">CIO</span>
         <span className="ml-auto flex shrink-0 items-center gap-1.5 text-[0.6875rem] text-lime">
@@ -101,7 +101,7 @@ export function ConvergeSchema() {
     <div
       role="img"
       aria-label="Схема: много разрозненных точек данных сходятся в один вывод — повод для контакта"
-      className="t04-schema relative h-40 w-full"
+      className="t04-schema relative h-full min-h-40 w-full"
     >
       <svg
         aria-hidden="true"
@@ -140,7 +140,7 @@ export function ConvergeSchema() {
       </svg>
       <span
         aria-hidden="true"
-        className="absolute right-0 bottom-3 border border-lime/70 bg-bg px-2 py-0.5 font-mono text-[0.6875rem] leading-5 text-lime"
+        className="absolute right-0 bottom-3 rounded-md border border-lime/70 bg-bg px-2 py-0.5 font-mono text-[0.6875rem] leading-5 text-lime"
       >
         повод для контакта
       </span>

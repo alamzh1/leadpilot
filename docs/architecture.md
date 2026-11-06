@@ -21,7 +21,7 @@
 - `components/demo/` — всё про демо-карточку и рельс (`ProfileCard`, `ProfileGhost`, `StageRail`, `PixelAssembly`, `DemoWorkspace`).
 - `components/story/` — иллюстрации секций: `ProcessRail`, `ProblemSchemas`, `CapabilityFragments` (данные Vector Logistics, только чтение), `PlateImage` (ставит `data-img-failed` на родителя при ошибке загрузки; сеточные фолбэки включаются только по нему).
 - `components/sections/` — секции; `app/page.tsx` только собирает их по порядку: Nav, Hero, Demo, Problem, HowItWorks, Capabilities, Audience, FinalCta, Footer. Демо стоит сразу после hero ради критерия «30 секунд до демо».
-- Стили и токены — `app/globals.css` (`@theme`), классы `.px-btn`, `.px-chip`, `.px-field`, `.t04-*`.
+- Стили и токены — `app/globals.css` (`@theme`), классы `.px-btn` (скруглённые, размеры lg/md/sm), `.px-iconbtn` (стрелки), `.px-chip`, `.px-field`, `.inline-badge` (плашка-иконка в строке заголовка), `.t04-*`.
 - Изображения — `public/images/{hero-plate,research,closing}.webp` (+ уменьшенные `-1280`/`-800`); у каждой секции с изображением есть CSS-фолбэк.
 
 ## Соглашения

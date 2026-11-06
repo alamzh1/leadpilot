@@ -51,7 +51,7 @@ export function Nav() {
     <header className="sticky top-0 z-50 border-b border-line bg-bg">
       <nav
         aria-label="Основная навигация"
-        className="mx-auto flex h-nav max-w-page items-center justify-between gap-6 px-gutter"
+        className="mx-auto grid h-nav max-w-page grid-cols-[1fr_auto] items-center gap-6 px-gutter md:grid-cols-[1fr_auto_1fr]"
       >
         <Logo />
 
@@ -60,7 +60,7 @@ export function Nav() {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="inline-flex h-10 items-center px-3 text-[0.9375rem] text-muted no-underline transition-colors duration-150 hover:text-text"
+                className="inline-flex h-10 items-center rounded-lg px-3 text-[0.875rem] text-muted no-underline transition-colors duration-150 hover:text-text"
               >
                 {link.label}
               </a>
@@ -68,14 +68,14 @@ export function Nav() {
           ))}
         </ul>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-end gap-2">
           <Button href={`#${SECTIONS.demo}`} size="sm" className="hidden md:inline-flex">
             Попробовать демо
           </Button>
           <button
             ref={toggleRef}
             type="button"
-            className="inline-flex size-11 items-center justify-center text-text md:hidden"
+            className="inline-flex size-11 items-center justify-center rounded-lg text-text md:hidden"
             aria-expanded={open}
             aria-controls={panelId}
             aria-label={open ? "Закрыть меню" : "Открыть меню"}
@@ -106,7 +106,7 @@ export function Nav() {
           ))}
         </ul>
         <div className="mx-auto max-w-page px-gutter pt-2 pb-5">
-          <Button href={`#${SECTIONS.demo}`} className="w-full" onClick={() => close(true)}>
+          <Button href={`#${SECTIONS.demo}`} size="lg" className="w-full" onClick={() => close(true)}>
             Попробовать демо
           </Button>
         </div>

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-06T05:22:05+00:00",
+  "generatedAt": "2026-11-06T09:25:30+00:00",
   "title": "Design System: LeadPilot",
   "extensions": {
     "colorMeta": {
@@ -168,19 +168,23 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "Hero H1 only; container-sized in the hero, capped at 4.75rem."
+        "purpose": "Hero H1 only; container-sized from its column, capped at 4.5rem."
       },
       "headline": {
         "displayName": "Headline",
         "purpose": "Section H2s."
       },
+      "statement": {
+        "displayName": "Statement",
+        "purpose": "Large names on carousel segment cards and process steps."
+      },
       "title": {
         "displayName": "Title",
-        "purpose": "Cyrillic H3s inside sections."
+        "purpose": "Cyrillic H3s beneath problem tiles."
       },
       "title-latin": {
         "displayName": "Title Latin",
-        "purpose": "Space Grotesk on Latin product, module, stage and company names only."
+        "purpose": "Space Grotesk on Latin module, stage and company names only; centred in capability cards."
       },
       "lead": {
         "displayName": "Lead",
@@ -192,7 +196,7 @@
       },
       "data": {
         "displayName": "Data",
-        "purpose": "Mono for paths, sources, dates, statuses, stage counters."
+        "purpose": "Mono for paths, sources, dates, statuses, step numbers, field tags."
       },
       "label": {
         "displayName": "Label",
@@ -203,19 +207,29 @@
       {
         "name": "desk-lift",
         "value": "0 24px 60px -20px rgb(0 0 0 / 0.7)",
-        "purpose": "Hero research desk over its background plate only."
+        "purpose": "Hero workspace window over its image plate."
+      },
+      {
+        "name": "chip-lift",
+        "value": "0 8px 24px -12px rgb(0 0 0 / 0.8)",
+        "purpose": "Company chips overlapping the bottom edge of the hero plate."
       }
     ],
     "motion": [
       {
-        "name": "step-state",
-        "value": "160ms steps(2, end)",
-        "purpose": "Colour/border changes on buttons, chips, fields."
+        "name": "ease-state",
+        "value": "180ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Fill, border and colour changes on buttons, chips, arrow buttons, fields."
       },
       {
-        "name": "step-press",
-        "value": "120ms steps(2, end)",
-        "purpose": "Button face drops 2px on :active."
+        "name": "press",
+        "value": "120ms ease-out-expo, translateY(1px)",
+        "purpose": "Button press."
+      },
+      {
+        "name": "card-activate",
+        "value": "220ms ease-out-expo",
+        "purpose": "Process card lifts to Panel Raised when its step is chosen."
       },
       {
         "name": "caret",
@@ -245,7 +259,7 @@
       {
         "name": "ease-out-expo",
         "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "Declared theme easing for smooth (non-stepped) motion."
+        "purpose": "Easing for object-layer transitions (controls, cards); data-state animation stays in steps()."
       },
       {
         "name": "reveal",
@@ -276,13 +290,6 @@
         "value": "1280px"
       }
     ],
-    "shapes": [
-      {
-        "name": "px-notch",
-        "value": "polygon(0 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px, 100% 100%, 0 100%)",
-        "purpose": "Two-step 4px corner notch on every button face."
-      }
-    ],
     "containers": [
       {
         "name": "page",
@@ -294,57 +301,123 @@
       }
     ],
     "focus": {
-      "value": "2px solid #7dc8d8, offset 3px (buttons 4px, fields 0)"
-    }
+      "value": "2px solid #7dc8d8, offset 3px (fields 0)"
+    },
+    "shapes": [
+      {
+        "name": "radius-sm",
+        "value": "6px",
+        "purpose": "Tiny inline tags (\"демо\")."
+      },
+      {
+        "name": "radius-md",
+        "value": "10px",
+        "purpose": "Mono field tags and small labels in schemas and cards."
+      },
+      {
+        "name": "radius-lg",
+        "value": "14px",
+        "purpose": "Every control: buttons, arrow buttons, chips, fields, icon tiles, search rows, nav links."
+      },
+      {
+        "name": "radius-xl",
+        "value": "16px",
+        "purpose": "Compact data cards, fact tiles, notices, hero mini-card hover."
+      },
+      {
+        "name": "radius-2xl",
+        "value": "20px",
+        "purpose": "Tiles and cards: problem tiles, process and capability cards, profile card, workspace window."
+      },
+      {
+        "name": "radius-3xl",
+        "value": "28px",
+        "purpose": "Plates and large containers: hero plate, image plates, demo workspace, carousel cards."
+      },
+      {
+        "name": "inline-badge",
+        "value": "1.2em × 0.82em, radius 0.24em",
+        "purpose": "Icon plaque set inline in a large headline line."
+      },
+      {
+        "name": "pixel-square",
+        "value": "radius 0",
+        "purpose": "4px fragments and state squares, 16px stage/rail markers, skeleton blocks, pixel icons, block caret."
+      }
+    ]
   },
   "components": [
     {
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Lime notched button; the one primary action per view.",
-      "html": "<button class=\"ds-btn ds-btn--primary\"><span class=\"ds-btn__face\">Исследовать компанию</span></button>",
-      "css": ".ds-btn{display:inline-flex;background:none;border:0;padding:0;cursor:pointer;text-decoration:none} .ds-btn:focus-visible{outline:2px solid var(--color-cyan,#7dc8d8);outline-offset:4px} .ds-btn__face{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-weight:600;font-size:15px;line-height:1;letter-spacing:-0.005em;white-space:nowrap;clip-path: polygon(0 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px, 100% 100%, 0 100%); transition:background-color 160ms steps(2,end),transform 120ms steps(2,end)} .ds-btn:active .ds-btn__face{transform:translateY(2px)} .ds-btn--primary .ds-btn__face{background:var(--color-lime,#c6f56b);color:var(--color-lime-ink,#0b0f14)} .ds-btn--primary:hover .ds-btn__face{background:color-mix(in srgb,#c6f56b 86%,#f4f7f8)}"
+      "description": "Rounded lime button; the one primary action per view. Large size in hero bar, closing statement, footer.",
+      "html": "<div style=\"display:flex;gap:12px;align-items:center\"><button class=\"ds-btn ds-btn--primary ds-btn--lg\">Исследовать компанию <svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M4 1h1v1h1v1h1v2H6v1H5v1H4V5H1V3h3z\"/></svg></button><button class=\"ds-btn ds-btn--primary ds-btn--sm\">Попробовать демо</button></div>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:14px 28px;border:1px solid transparent;border-radius:14px;font:600 15px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:-0.005em;white-space:nowrap;cursor:pointer;text-decoration:none;transition:background-color 180ms cubic-bezier(.16,1,.3,1),border-color 180ms cubic-bezier(.16,1,.3,1),transform 120ms cubic-bezier(.16,1,.3,1)} .ds-btn:focus-visible{outline:2px solid #7dc8d8;outline-offset:3px} .ds-btn:active{transform:translateY(1px)} .ds-btn--lg{min-height:60px;padding:20px 48px;font-size:16px} .ds-btn--sm{min-height:40px;padding:12px 20px;font-size:14px} .ds-btn--primary{background:#c6f56b;color:#0b0f14} .ds-btn--primary:hover{background:color-mix(in srgb,#c6f56b 86%,#f4f7f8)}"
     },
     {
       "name": "Ghost Button",
       "kind": "button",
       "refersTo": "button-ghost",
-      "description": "Secondary action; 1px frame drawn as an underlayer so it follows the notch.",
-      "html": "<button class=\"ds-btn ds-btn--ghost\"><span class=\"ds-btn__face\">Как это работает</span></button>",
-      "css": ".ds-btn{display:inline-flex;background:none;border:0;padding:0;cursor:pointer;text-decoration:none} .ds-btn:focus-visible{outline:2px solid var(--color-cyan,#7dc8d8);outline-offset:4px} .ds-btn__face{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-weight:600;font-size:15px;line-height:1;letter-spacing:-0.005em;white-space:nowrap;clip-path: polygon(0 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px, 100% 100%, 0 100%); transition:background-color 160ms steps(2,end),transform 120ms steps(2,end)} .ds-btn:active .ds-btn__face{transform:translateY(2px)} .ds-btn--ghost .ds-btn__face{background:var(--color-line-strong,#34414e);color:var(--color-text,#f4f7f8);isolation:isolate} .ds-btn--ghost .ds-btn__face::before{content:'';position:absolute;inset:1px;z-index:-1;background:var(--color-bg,#0b0f14);clip-path: polygon(0 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px, 100% 100%, 0 100%); transition:background-color 160ms steps(2,end)} .ds-btn--ghost:hover .ds-btn__face{background:var(--color-muted,#97a4ae)} .ds-btn--ghost:hover .ds-btn__face::before{background:var(--color-surface,#141a21)}"
+      "description": "Secondary action: transparent with a 1px Hairline Strong frame, same 14px radius.",
+      "html": "<button class=\"ds-btn ds-btn--ghost ds-btn--sm\">Попробовать экспорт в демо</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:14px 28px;border:1px solid transparent;border-radius:14px;font:600 15px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:-0.005em;white-space:nowrap;cursor:pointer;text-decoration:none;transition:background-color 180ms cubic-bezier(.16,1,.3,1),border-color 180ms cubic-bezier(.16,1,.3,1),transform 120ms cubic-bezier(.16,1,.3,1)} .ds-btn:focus-visible{outline:2px solid #7dc8d8;outline-offset:3px} .ds-btn:active{transform:translateY(1px)} .ds-btn--lg{min-height:60px;padding:20px 48px;font-size:16px} .ds-btn--sm{min-height:40px;padding:12px 20px;font-size:14px} .ds-btn--ghost{background:transparent;border-color:#34414e;color:#f4f7f8} .ds-btn--ghost:hover{background:#141a21;border-color:#97a4ae}"
     },
     {
-      "name": "Company Chip",
+      "name": "Arrow Button",
+      "kind": "button",
+      "refersTo": "arrow-button",
+      "description": "Square 48px rounded paging control for carousels and step switchers.",
+      "html": "<div style=\"display:flex;gap:8px\"><button class=\"ds-arrow\" aria-label=\"Назад\" disabled><span style=\"display:inline-flex;transform:scaleX(-1)\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M4 1h1v1h1v1h1v2H6v1H5v1H4V5H1V3h3z\"/></svg></span></button><button class=\"ds-arrow\" aria-label=\"Вперёд\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M4 1h1v1h1v1h1v2H6v1H5v1H4V5H1V3h3z\"/></svg></button></div>",
+      "css": ".ds-arrow{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border:0;border-radius:14px;background:color-mix(in srgb,#1b232c 80%,transparent);color:#f4f7f8;cursor:pointer;transition:background-color 180ms cubic-bezier(.16,1,.3,1),opacity 180ms} .ds-arrow:hover{background:#34414e} .ds-arrow:disabled{opacity:.4;cursor:not-allowed;background:color-mix(in srgb,#1b232c 80%,transparent)} .ds-arrow:focus-visible{outline:2px solid #7dc8d8;outline-offset:3px}"
+    },
+    {
+      "name": "Chip",
       "kind": "chip",
       "refersTo": "chip",
-      "description": "Square toggle chip; selected state is a cyan border.",
-      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"false\"><span>Northstar Bank</span><span class=\"ds-chip__meta\">финансовые услуги</span></button><button class=\"ds-chip\" aria-pressed=\"true\"><span>Vector Logistics</span><span class=\"ds-chip__meta\">логистика</span></button></div>",
-      "css": ".ds-chips{display:flex;flex-direction:column;gap:8px;width:280px} .ds-chip{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:40px;padding:8px 14px;border:1px solid var(--color-line-strong,#34414e);background:var(--color-surface,#141a21);color:var(--color-text,#f4f7f8);font:500 15px/1.2 Inter,ui-sans-serif,sans-serif;text-align:left;cursor:pointer;transition:border-color 160ms steps(2,end),background-color 160ms steps(2,end)} .ds-chip:hover{border-color:var(--color-muted,#97a4ae)} .ds-chip:focus-visible{outline:2px solid var(--color-cyan,#7dc8d8);outline-offset:3px} .ds-chip[aria-pressed=true]{border-color:var(--color-cyan,#7dc8d8);background:var(--color-surface-2,#1b232c)} .ds-chip__meta{font:400 12px/1.45 'IBM Plex Mono',ui-monospace,monospace;color:var(--color-muted,#97a4ae)}"
+      "description": "Rounded toggle chip; selected inverts to a Paper White fill with Graphite text.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"false\">Northstar Bank</button><button class=\"ds-chip\" aria-pressed=\"true\">Vector Logistics</button><button class=\"ds-chip\" aria-pressed=\"false\">Atlas Commerce</button></div>",
+      "css": ".ds-chips{display:flex;flex-wrap:wrap;gap:8px} .ds-chip{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:10px 15px;border:1px solid transparent;border-radius:14px;background:color-mix(in srgb,#1b232c 72%,transparent);color:#f4f7f8;font:600 13px/1.2 'Space Grotesk',Inter,sans-serif;cursor:pointer;transition:background-color 180ms cubic-bezier(.16,1,.3,1),border-color 180ms cubic-bezier(.16,1,.3,1),color 180ms cubic-bezier(.16,1,.3,1)} .ds-chip:hover{background:#1b232c;border-color:#34414e} .ds-chip[aria-pressed=true]{background:#f4f7f8;border-color:#f4f7f8;color:#0b0f14} .ds-chip:focus-visible{outline:2px solid #7dc8d8;outline-offset:3px}"
     },
     {
       "name": "Company Field",
       "kind": "input",
       "refersTo": "field",
-      "description": "Flat square input; cyan border on focus, lime caret.",
+      "description": "Rounded graphite input; cyan border on focus, lime caret, errors by text.",
       "html": "<label class=\"ds-label\">Или введите название<input class=\"ds-field\" placeholder=\"Например, Northstar Bank\"></label>",
-      "css": ".ds-label{display:flex;flex-direction:column;gap:8px;width:300px;font:500 15px/1.4 Inter,ui-sans-serif,sans-serif;color:var(--color-text,#f4f7f8)} .ds-field{min-height:48px;padding:0 16px;border:1px solid var(--color-line-strong,#34414e);border-radius:0;background:var(--color-surface,#141a21);color:var(--color-text,#f4f7f8);font:400 16px Inter,ui-sans-serif,sans-serif;caret-color:var(--color-lime,#c6f56b);transition:border-color 160ms steps(2,end)} .ds-field::placeholder{color:var(--color-muted,#97a4ae)} .ds-field:hover{border-color:var(--color-muted,#97a4ae)} .ds-field:focus-visible{outline:2px solid var(--color-cyan,#7dc8d8);outline-offset:0;border-color:var(--color-cyan,#7dc8d8)}"
+      "css": ".ds-label{display:flex;flex-direction:column;gap:8px;width:300px;font:500 15px/1.4 Inter,ui-sans-serif,sans-serif;color:#f4f7f8} .ds-field{min-height:52px;padding:0 18px;border:1px solid #34414e;border-radius:14px;background:#0b0f14;color:#f4f7f8;font:400 16px Inter,ui-sans-serif,sans-serif;caret-color:#c6f56b;transition:border-color 180ms cubic-bezier(.16,1,.3,1)} .ds-field::placeholder{color:#97a4ae} .ds-field:hover{border-color:#97a4ae} .ds-field:focus-visible{outline:2px solid #7dc8d8;outline-offset:0;border-color:#7dc8d8}"
     },
     {
       "name": "Navigation",
       "kind": "nav",
       "refersTo": "nav",
-      "description": "Sticky 64px graphite bar: pixel mark, muted links, small lime CTA.",
+      "description": "Sticky 64px graphite bar: pixel mark, centred muted links, small rounded lime CTA.",
       "html": "<nav class=\"ds-nav\"><a class=\"ds-nav__logo\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><rect x=\"0\" y=\"0\" width=\"1\" height=\"1\" fill=\"var(--color-cyan,#7dc8d8)\"/><rect x=\"2\" y=\"1\" width=\"1\" height=\"1\" fill=\"var(--color-cyan,#7dc8d8)\"/><rect x=\"0\" y=\"2\" width=\"1\" height=\"1\" fill=\"var(--color-cyan,#7dc8d8)\"/><path d=\"M4 2h2v2h2v4H0V4h2v2h2z\" fill=\"currentColor\"/></svg><span>LeadPilot</span></a><ul class=\"ds-nav__links\"><li><a href=\"#\">Возможности</a></li><li><a href=\"#\">Как работает</a></li><li><a href=\"#\">Демо</a></li><li><a href=\"#\">Для кого</a></li></ul><a class=\"ds-nav__cta\" href=\"#\"><span>Попробовать демо</span></a></nav>",
-      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:24px;height:64px;padding:0 24px;background:var(--color-bg,#0b0f14);border-bottom:1px solid var(--color-line,#222b35)} .ds-nav__logo{display:inline-flex;align-items:center;gap:10px;color:var(--color-lime,#c6f56b);text-decoration:none} .ds-nav__logo span{color:var(--color-text,#f4f7f8);font:600 17px 'Space Grotesk',Inter,sans-serif;letter-spacing:-0.02em} .ds-nav__links{display:flex;gap:4px;list-style:none;margin:0;padding:0} .ds-nav__links a{display:inline-flex;height:40px;align-items:center;padding:0 12px;color:var(--color-muted,#97a4ae);font:400 15px Inter,sans-serif;text-decoration:none;transition:color 150ms} .ds-nav__links a:hover{color:var(--color-text,#f4f7f8)} .ds-nav__links a:focus-visible,.ds-nav__cta:focus-visible{outline:2px solid var(--color-cyan,#7dc8d8);outline-offset:3px} .ds-nav__cta{text-decoration:none} .ds-nav__cta span{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;background:var(--color-lime,#c6f56b);color:var(--color-lime-ink,#0b0f14);font:600 14px/1 Inter,sans-serif;clip-path: polygon(0 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px, 100% 100%, 0 100%);} .ds-nav__cta:hover span{background:color-mix(in srgb,#c6f56b 86%,#f4f7f8)}"
+      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:24px;height:64px;padding:0 24px;background:var(--color-bg,#0b0f14);border-bottom:1px solid var(--color-line,#222b35)} .ds-nav__logo{display:inline-flex;align-items:center;gap:10px;color:var(--color-lime,#c6f56b);text-decoration:none} .ds-nav__logo span{color:var(--color-text,#f4f7f8);font:600 17px 'Space Grotesk',Inter,sans-serif;letter-spacing:-0.02em} .ds-nav__links{display:flex;gap:4px;list-style:none;margin:0;padding:0} .ds-nav__links a{display:inline-flex;height:40px;align-items:center;padding:0 12px;border-radius:14px;color:var(--color-muted,#97a4ae);font:400 14px Inter,sans-serif;text-decoration:none;transition:color 150ms} .ds-nav__links a:hover{color:var(--color-text,#f4f7f8)} .ds-nav__links a:focus-visible,.ds-nav__cta:focus-visible{outline:2px solid var(--color-cyan,#7dc8d8);outline-offset:3px} .ds-nav__cta{text-decoration:none} .ds-nav__cta span{display:inline-flex;align-items:center;min-height:40px;padding:0 20px;border-radius:14px;background:#c6f56b;color:#0b0f14;font:600 14px/1 Inter,sans-serif} .ds-nav__cta:hover span{background:color-mix(in srgb,#c6f56b 86%,#f4f7f8)}"
+    },
+    {
+      "name": "Tile with Caption",
+      "kind": "card",
+      "refersTo": "tile",
+      "description": "Rounded Panel tile carrying a schema on an 8px dot grid; title and muted text beneath, outside the frame.",
+      "html": "<div class=\"ds-tilewrap\"><div class=\"ds-tile\"><span class=\"ds-tag\">vacancy</span></div><h3>Разрозненные источники</h3><p>Информация находится в новостях, вакансиях, корпоративных сайтах и публичных профилях.</p></div>",
+      "css": ".ds-tilewrap{width:320px;font-family:Inter,sans-serif} .ds-tile{position:relative;aspect-ratio:5/4;border-radius:20px;background:#141a21 radial-gradient(#34414e 1px,transparent 1px);background-size:8px 8px;padding:24px;overflow:hidden} .ds-tag{display:inline-block;border:1px solid color-mix(in srgb,#7dc8d8 60%,transparent);border-radius:10px;background:#0b0f14;padding:2px 8px;font:400 11px/20px 'IBM Plex Mono',monospace;color:#7dc8d8} .ds-tilewrap h3{margin:24px 4px 8px;font-size:22px;font-weight:650;letter-spacing:-0.02em;line-height:1.25;color:#f4f7f8} .ds-tilewrap p{margin:0 4px;font-size:15px;line-height:1.6;color:#97a4ae;max-width:40ch}"
+    },
+    {
+      "name": "Inline Badge Statement",
+      "kind": "custom",
+      "refersTo": "inline-badge",
+      "description": "Large centred headline with rounded icon plaques set inline; lime fill only for the verified check.",
+      "html": "<h2 class=\"ds-stmt\">Меньше времени на <span class=\"ds-badge\"><svg viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\"><path d=\"M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1zM5 6h2v1H5zM6 7h2v1H6z\"/></svg></span>поиск. Больше контекста <span class=\"ds-badge ds-badge--ok\"><svg viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\"><path d=\"M6 2h2v1H7v1H6v1H5v1H4v1H3v1H2V7H1V6H0V4h1v1h1v1h1V5h1V4h1V3h1z\"/></svg></span>для разговора</h2>",
+      "css": ".ds-stmt{max-width:18ch;margin:0 auto;text-align:center;font:650 52px/1.08 Inter,sans-serif;letter-spacing:-0.035em;color:#f4f7f8} .ds-badge{display:inline-flex;align-items:center;justify-content:center;width:1.2em;height:.82em;margin-right:.1em;border-radius:.24em;vertical-align:-.05em;background:#1b232c;color:#f4f7f8} .ds-badge svg{width:.5em;height:.5em} .ds-badge--ok{background:#c6f56b;color:#0b0f14}"
     },
     {
       "name": "Profile Cell",
       "kind": "custom",
       "refersTo": "profile-cell",
-      "description": "Dossier field on a 1px hairline grid: verified (lime square), pending (cyan outline + 4px skeleton), missing (dashed).",
+      "description": "Square dossier cells on a 1px hairline grid inside a rounded clipped card: verified (lime square), pending (cyan outline + 4px skeleton), missing (dashed).",
       "html": "<div class=\"ds-dossier\"><div class=\"ds-cell\"><div class=\"ds-cell__key\"><i class=\"ds-sq ds-sq--ok\"></i>Отрасль</div><div class=\"ds-cell__val\">Логистика</div></div><div class=\"ds-cell ds-cell--pending\"><div class=\"ds-cell__key\"><i class=\"ds-sq ds-sq--pending\"></i>Сигналы</div><span class=\"ds-skel\" style=\"width:80%\"></span><span class=\"ds-skel\" style=\"width:50%\"></span></div><div class=\"ds-cell ds-cell--missing\"><div class=\"ds-cell__key\"><i class=\"ds-sq\"></i>Источники (демо)</div><div class=\"ds-cell__val\" style=\"color:#97a4ae\">—</div></div></div>",
-      "css": ".ds-dossier{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;width:560px;background:var(--color-line,#222b35);border:1px solid var(--color-line-strong,#34414e)} .ds-cell{position:relative;padding:16px 20px;background:var(--color-surface,#141a21);outline:1px solid transparent;outline-offset:-1px;animation:ds-verify 900ms steps(3,end) both} .ds-cell--pending{outline-color:color-mix(in srgb,#7dc8d8 55%,transparent);animation:none} .ds-cell--missing{outline:1px dashed var(--color-line-strong,#34414e);animation:none} .ds-cell__key{display:flex;align-items:center;gap:8px;font:400 11px 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:0.04em;text-transform:uppercase;color:var(--color-muted,#97a4ae)} .ds-cell__val{margin-top:10px;font:400 15px/1.45 Inter,sans-serif;color:var(--color-text,#f4f7f8)} .ds-sq{width:4px;height:4px;background:var(--color-line-strong,#34414e);flex-shrink:0} .ds-sq--ok{background:var(--color-lime,#c6f56b)} .ds-sq--pending{background:var(--color-cyan,#7dc8d8)} .ds-skel{display:block;height:8px;margin-top:8px;background-image:linear-gradient(90deg,color-mix(in srgb,#7dc8d8 35%,transparent) 0 4px,transparent 4px 8px);background-size:8px 8px} @keyframes ds-verify{0%{outline-color:#c6f56b}66%{outline-color:color-mix(in srgb,#c6f56b 45%,transparent)}100%{outline-color:transparent}}"
+      "css": ".ds-dossier{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;width:560px;background:var(--color-line,#222b35);border:1px solid var(--color-line-strong,#34414e);border-radius:20px;overflow:hidden} .ds-cell{position:relative;padding:16px 20px;background:var(--color-surface,#141a21);outline:1px solid transparent;outline-offset:-1px;animation:ds-verify 900ms steps(3,end) both} .ds-cell--pending{outline-color:color-mix(in srgb,#7dc8d8 55%,transparent);animation:none} .ds-cell--missing{outline:1px dashed var(--color-line-strong,#34414e);animation:none} .ds-cell__key{display:flex;align-items:center;gap:8px;font:400 11px 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:0.04em;text-transform:uppercase;color:var(--color-muted,#97a4ae)} .ds-cell__val{margin-top:10px;font:400 15px/1.45 Inter,sans-serif;color:var(--color-text,#f4f7f8)} .ds-sq{width:4px;height:4px;background:var(--color-line-strong,#34414e);flex-shrink:0} .ds-sq--ok{background:var(--color-lime,#c6f56b)} .ds-sq--pending{background:var(--color-cyan,#7dc8d8)} .ds-skel{display:block;height:8px;margin-top:8px;background-image:linear-gradient(90deg,color-mix(in srgb,#7dc8d8 35%,transparent) 0 4px,transparent 4px 8px);background-size:8px 8px} @keyframes ds-verify{0%{outline-color:#c6f56b}66%{outline-color:color-mix(in srgb,#c6f56b 45%,transparent)}100%{outline-color:transparent}}"
     },
     {
       "name": "Stage Rail",
@@ -356,30 +429,30 @@
     {
       "name": "Workspace Window",
       "kind": "card",
-      "description": "Desk chrome: mono path bar with status dot over a graphite body; search row with blinking block caret.",
+      "description": "Desk chrome in a 20px-rounded clipped window: mono path bar with status square over a graphite body; 14px-rounded search row with blinking block caret.",
       "html": "<div class=\"ds-win\"><div class=\"ds-win__bar\"><span>leadpilot / <b>AI RESEARCH WORKSPACE</b> / vector-logistics</span><span class=\"ds-win__st\"><i></i>профиль готов</span></div><div class=\"ds-win__body\"><div class=\"ds-search\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\"><path d=\"M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1zM5 6h2v1H5zM6 7h2v1H6z\"/></svg><span>Vector Logistics<i class=\"ds-caret\"></i></span><small>публичные источники</small></div></div></div>",
-      "css": ".ds-win{width:560px;border:1px solid var(--color-line-strong,#34414e);background:color-mix(in srgb,#0b0f14 95%,transparent);box-shadow:0 24px 60px -20px rgb(0 0 0/.7)} .ds-win__bar{display:flex;justify-content:space-between;gap:16px;padding:10px 16px;border-bottom:1px solid var(--color-line,#222b35);font:400 12px 'IBM Plex Mono',ui-monospace,monospace;color:var(--color-muted,#97a4ae)} .ds-win__bar b{font-weight:400;color:var(--color-text,#f4f7f8)} .ds-win__st{display:flex;align-items:center;gap:8px;font-size:11px} .ds-win__st i{width:6px;height:6px;background:var(--color-lime,#c6f56b)} .ds-win__body{padding:20px} .ds-search{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--color-line-strong,#34414e);background:var(--color-surface,#141a21);color:var(--color-muted,#97a4ae)} .ds-search span{color:var(--color-text,#f4f7f8);font:400 15px Inter,sans-serif} .ds-search small{margin-left:auto;font:400 11px 'IBM Plex Mono',monospace} .ds-caret{display:inline-block;width:.6em;height:1.1em;margin-left:2px;vertical-align:-.18em;background:var(--color-lime,#c6f56b);animation:ds-caret 1.06s steps(1,end) infinite} @keyframes ds-caret{0%,50%{opacity:1}50.01%,100%{opacity:0}} @media (prefers-reduced-motion:reduce){.ds-caret{animation:none}}"
+      "css": ".ds-win{width:560px;border-radius:20px;overflow:hidden;border:1px solid var(--color-line-strong,#34414e);background:color-mix(in srgb,#0b0f14 95%,transparent);box-shadow:0 24px 60px -20px rgb(0 0 0/.7)} .ds-win__bar{display:flex;justify-content:space-between;gap:16px;padding:10px 16px;border-bottom:1px solid var(--color-line,#222b35);font:400 12px 'IBM Plex Mono',ui-monospace,monospace;color:var(--color-muted,#97a4ae)} .ds-win__bar b{font-weight:400;color:var(--color-text,#f4f7f8)} .ds-win__st{display:flex;align-items:center;gap:8px;font-size:11px} .ds-win__st i{width:6px;height:6px;background:var(--color-lime,#c6f56b)} .ds-win__body{padding:20px} .ds-search{border-radius:14px;display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--color-line-strong,#34414e);background:var(--color-surface,#141a21);color:var(--color-muted,#97a4ae)} .ds-search span{color:var(--color-text,#f4f7f8);font:400 15px Inter,sans-serif} .ds-search small{margin-left:auto;font:400 11px 'IBM Plex Mono',monospace} .ds-caret{display:inline-block;width:.6em;height:1.1em;margin-left:2px;vertical-align:-.18em;background:var(--color-lime,#c6f56b);animation:ds-caret 1.06s steps(1,end) infinite} @keyframes ds-caret{0%,50%{opacity:1}50.01%,100%{opacity:0}} @media (prefers-reduced-motion:reduce){.ds-caret{animation:none}}"
     }
   ],
   "narrative": {
     "northStar": "The Research Desk",
-    "overview": "**Creative North Star: \"The Research Desk\"**\n\nLeadPilot is a working desk, not a brochure. Every surface reads as an instrument panel at night: graphite ground, flat panels cut by 1px hairlines, data set in mono, and colour reserved for the state of information. The page's one visual idea is the passage from noise to dossier: cold cyan fragments that are not yet checked resolve, in stepped frames, into lime fields that are.\n\nA small pixel grammar sits on a strict 4px grid on top of the editorial-tech base: 4px data squares, a two-step notch cut from the top-right corner of every button, authored 8×8 pixel icons, a blinking block caret, and motion that moves in `steps()` rather than easing. The grammar is graphical only; type stays Inter / Space Grotesk / IBM Plex Mono. Atmosphere (glass, glow, luminous lime) lives only inside the three raster plates; the built UI never borrows it.\n\nDensity is medium: generous section air (5–10rem) around tightly packed data panels. The confirmed rejections come from the product brief: purple gradients, glowing orbs, meaningless particles, heavy shadows, rows of identical cards.",
+    "overview": "LeadPilot is a working desk, not a brochure. Every surface reads as an instrument panel at night: graphite ground, flat panels and hairlines, data set in mono, and colour reserved for the state of information. The page's one visual idea is the passage from noise to dossier: cold cyan fragments that are not yet checked resolve, in stepped frames, into lime fields that are.\n\nTwo layers share the desk. The **object layer** — buttons, chips, fields, cards, tiles and image plates — is soft and calm: rounded corners on one scale (14px controls, 16–20px cards, 28px plates), solid fills, smooth eased hovers. The **data layer** sits on a strict 4px grid inside those objects and stays hard-edged: 4px data squares, square stage and rail markers, authored 8×8 pixel icons, a blinking block caret, and state animation that moves in `steps()` rather than easing. Type stays Inter / Space Grotesk / IBM Plex Mono. Atmosphere (glass, glow, luminous lime) lives only inside the raster plates; the built UI never borrows it.\n\nComposition is large and quiet: big statements (often centred), generous section air (5–10rem), rounded tiles with their caption beneath or centred inside, square arrow buttons that page through steps and segments. The confirmed rejections come from the product brief: purple gradients, glowing orbs, meaningless particles, heavy shadows, rows of identical cards.",
     "keyCharacteristics": [
-      "Flat graphite panels separated by 1px hairlines; zero corner radius everywhere.",
+      "Rounded objects, square data: controls 14px, cards 16–20px, plates 28px; every pixel element stays square.",
       "Colour is state: cyan = unverified, lime = verified and the one primary action.",
-      "Pixel grammar on a 4px grid: stepped notch, 4px fragments, 8×8 icons, block caret.",
-      "Motion runs in discrete steps; reduced motion shows the final frame instantly.",
+      "Pixel grammar on a 4px grid: 4px fragments, state squares, 8×8 icons, block caret.",
+      "Data-state motion runs in discrete steps; control hovers ease; reduced motion shows the final frame instantly.",
       "Mono only for data: field keys, sources, dates, statuses, paths."
     ],
     "rules": [
       {
         "name": "The Colour-Is-State Rule",
-        "body": "Cyan and lime never decorate. Cyan means \"not yet verified\" (or focus/selection); lime means \"verified\" or \"the one primary action here.\" No third accent exists — the theme resets `--color-*` so none can be added by accident.",
+        "body": "Cyan and lime never decorate. Cyan means \"not yet verified\" (or focus); lime means \"verified\" or \"the one primary action here.\" Selection is a neutral inversion (Paper White chip), not a colour. No third accent exists — the theme resets `--color-*` so none can be added by accident.",
         "section": "colors"
       },
       {
         "name": "The One Lime Button Rule",
-        "body": "At most one lime primary button per viewport zone; every other action is ghost.",
+        "body": "At most one lime primary button per viewport zone; every other action is ghost, chip or arrow.",
         "section": "colors"
       },
       {
@@ -394,26 +467,31 @@
       },
       {
         "name": "The Hairline-Not-Shadow Rule",
-        "body": "Separate surfaces with a 1px Hairline or a tonal step. A new shadow needs the same reason the desk has: a UI panel floating over a raster plate.",
+        "body": "Separate surfaces with a 1px Hairline or a tonal step. A new shadow needs the same reason the desk and its chips have: a UI object floating over a raster plate.",
         "section": "elevation"
+      },
+      {
+        "name": "The Round-Object, Square-Pixel Rule",
+        "body": "If it is something you press or a surface that holds content, it takes a radius from the scale; if it is a unit of the pixel grammar, it stays square. Never mix inside one element.",
+        "section": "shapes"
       }
     ],
     "dos": [
-      "**Do** use cyan only for unverified, pending, focused or selected states, and lime only for verified data and one primary action per view.",
-      "**Do** keep every corner square and give buttons the stepped top-right pixel notch (`--px-notch`).",
-      "**Do** separate surfaces with 1px Hairline (#222b35) lines and tonal steps, building data panels as `gap-px` grids.",
-      "**Do** align pixel elements to the 4px grid: 4px fragments and state squares, 8px skeleton pitch, icons at 16/24/32px.",
-      "**Do** animate state in `steps()` and show the final frame instantly under `prefers-reduced-motion`.",
+      "**Do** use cyan only for unverified, pending and focused states, and lime only for verified data and one primary action per view.",
+      "**Do** round every control at 14px, cards and tiles at 16–20px and plates at 28px — values from the scale only.",
+      "**Do** keep pixel elements square and on the 4px grid: 4px fragments and state squares, 8px skeleton pitch, 16px markers, icons at 16/24/32px.",
+      "**Do** separate surfaces with 1px Hairline lines and tonal steps, building data panels as `gap-px` grids inside clipped rounded cards.",
+      "**Do** animate data state in `steps()`, ease control hovers, and show the final frame instantly under `prefers-reduced-motion`.",
       "**Do** set Russian headings in Inter 650 at −0.035em and reserve Space Grotesk for Latin names.",
       "**Do** keep raster atmosphere inside plates with a palette-only CSS grid fallback when the image fails."
     ],
     "donts": [
       "**Don't** add a third accent colour, gradients on UI surfaces, purple gradients, glowing orbs or meaningless particles.",
-      "**Don't** round corners or soften the notch.",
-      "**Don't** add shadows to panels, cards or buttons; the desk lift is the only one.",
+      "**Don't** round pixel elements, and don't bring back stepped or clipped corners on controls.",
+      "**Don't** add shadows to panels, cards or buttons; only objects floating over a plate (the desk, its chips) get one.",
       "**Don't** use Plex Mono for headings, buttons or marketing copy.",
       "**Don't** signal errors with a red; state the error in text.",
-      "**Don't** lay out rows of identical equal-width cards; vary spans.",
+      "**Don't** lay out rows of identical cards; feature modules vary spans, and every tile in a row carries its own schema or content.",
       "**Don't** put tracked uppercase kicker lines above headings; uppercase mono is for data field keys only."
     ]
   }

@@ -1,7 +1,8 @@
-import { Reveal } from "@/components/ui/Reveal";
+import { Button } from "@/components/ui/Button";
 import { SECTIONS } from "@/lib/site";
+import { SegmentCarousel } from "./SegmentCarousel";
 
-type Segment = {
+export type Segment = {
   name: string;
   text: string;
   /** Начало сценария — момент, когда LeadPilot нужен. */
@@ -38,45 +39,28 @@ const SEGMENTS: readonly Segment[] = [
   },
 ];
 
-/** «Для кого» (ТЗ §5.7): три сегмента строками с конкретным сценарием, не карточками. */
+/**
+ * «Для кого» (ТЗ §5.7), как блок кейса референса: слева заголовок, серый абзац и кнопка
+ * к демо; справа — ряд крупных карточек сегментов с прокруткой по snap и стрелками.
+ */
 export function Audience() {
   return (
     <section id={SECTIONS.audience} aria-labelledby="audience-title" className="border-b border-line">
-      <div className="mx-auto flex max-w-page flex-col gap-12 px-gutter py-section lg:gap-16">
-        <h2 id="audience-title" className="text-section">
-          Для кого
-        </h2>
-        <ul className="border-b border-line">
-          {SEGMENTS.map((s, i) => (
-            <Reveal
-              as="li"
-              key={s.name}
-              delay={i * 0.06}
-              className="grid gap-6 border-t border-line py-10 lg:grid-cols-12 lg:gap-8 lg:py-14"
-            >
-              <div className="flex flex-col gap-3 lg:col-span-4">
-                <h3 className="text-[clamp(1.75rem,1.4rem+1.2vw,2.5rem)] leading-[1.05] tracking-[-0.03em]">
-                  {s.name}
-                </h3>
-                <p className="max-w-[30ch] text-lead text-muted">{s.text}</p>
-              </div>
-              <div className="flex flex-col gap-5 lg:col-span-7 lg:col-start-6">
-                <p data-scenario className="max-w-[62ch] text-[1.0625rem] leading-[1.65]">
-                  <strong className="font-semibold text-text">{s.moment}</strong>{" "}
-                  <span className="text-text/85">{s.scenario}</span>
-                </p>
-                <p className="flex flex-wrap items-center gap-2 font-mono text-data text-muted">
-                  <span className="sr-only">Поля профиля для этого сценария:</span>
-                  {s.uses.map((u) => (
-                    <span key={u} className="border border-line-strong px-2 py-0.5">
-                      {u}
-                    </span>
-                  ))}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-        </ul>
+      <div className="mx-auto grid max-w-page grid-cols-[minmax(0,1fr)] gap-10 px-gutter py-section lg:grid-cols-[repeat(12,minmax(0,1fr))] lg:gap-0">
+        <div className="flex flex-col items-start gap-6 lg:col-span-4 lg:border-r lg:border-line lg:pr-10">
+          <h2 id="audience-title" className="text-section">
+            Для кого
+          </h2>
+          <p className="max-w-[34ch] text-lead text-muted">
+            Три сценария: кто открывает LeadPilot и какие поля профиля использует.
+          </p>
+          <Button href={`#${SECTIONS.demo}`} className="mt-2">
+            Попробовать демо
+          </Button>
+        </div>
+        <div className="min-w-0 lg:col-span-8 lg:pl-10">
+          <SegmentCarousel segments={SEGMENTS} />
+        </div>
       </div>
     </section>
   );

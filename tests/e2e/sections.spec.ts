@@ -131,20 +131,71 @@ test("финальный CTA: заголовок дословно, фон closin
   await expect(page.locator("#demo h2").first()).toBeInViewport();
 });
 
-test("все ссылки и кнопки секций ведут к существующим якорям", async ({ page }) => {
+test("все ссылки секций ведут к существующим якорям, кнопки управляют существующими блоками", async ({ page }) => {
   await page.goto("/");
   for (const sel of STORY_SECTIONS) {
     await expect(page.locator(sel)).toHaveCount(1);
     const controls = page.locator(`${sel} a, ${sel} button`);
-    const hrefs = await controls.evaluateAll((els) =>
-      els.map((el) => (el.tagName === "A" ? el.getAttribute("href") : "button")),
+    const targets = await controls.evaluateAll((els) =>
+      els.map((el) =>
+        el.tagName === "A"
+          ? { kind: "link", target: el.getAttribute("href") }
+          : { kind: "button", target: el.getAttribute("aria-controls") },
+      ),
     );
-    for (const href of hrefs) {
-      expect(href, `${sel}: кнопка без действия`).not.toBe("button");
-      expect(href).toMatch(/^#[a-z-]+$/);
-      await expect(page.locator(href!)).toHaveCount(1);
+    for (const { kind, target } of targets) {
+      if (kind === "link") {
+        expect(target).toMatch(/^#[a-z-]+$/);
+        await expect(page.locator(target!)).toHaveCount(1);
+      } else {
+        // Кнопка без ссылки — переключатель или стрелка: обязана указывать, чем управляет.
+        expect(target, `${sel}: кнопка без действия`).toBeTruthy();
+        await expect(page.locator(`[id="${target}"]`)).toHaveCount(1);
+      }
     }
   }
+});
+
+test("процесс: чип и стрелки переключают активный шаг и прокручивают к нему", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const section = page.locator("#how");
+  const steps = section.locator("ol > li");
+  const chips = section.getByRole("group", { name: "Шаги процесса" }).getByRole("button");
+  await expect(chips).toHaveText(["Discover", "Verify", "Qualify"]);
+  await expect(steps.nth(0)).toHaveAttribute("data-active", "true");
+  await chips.nth(2).click();
+  await expect(chips.nth(2)).toHaveAttribute("aria-pressed", "true");
+  await expect(steps.nth(2)).toHaveAttribute("data-active", "true");
+  await expect(steps.nth(0)).not.toHaveAttribute("data-active", "true");
+  await section.getByRole("button", { name: "Следующий шаг" }).click();
+  await expect(steps.nth(0)).toHaveAttribute("data-active", "true");
+  await section.getByRole("button", { name: "Предыдущий шаг" }).click();
+  await expect(steps.nth(2)).toHaveAttribute("data-active", "true");
+  await expect(steps.nth(2)).toBeInViewport();
+});
+
+test("для кого: карусель сегментов листается стрелками, страница не уезжает вбок", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/#audience");
+  const section = page.locator("#audience");
+  const scroller = section.getByRole("region", { name: "Сегменты" });
+  const prev = section.getByRole("button", { name: "Предыдущий сегмент" });
+  const next = section.getByRole("button", { name: "Следующий сегмент" });
+  await expect(prev).toBeDisabled();
+  expect(await scroller.evaluate((el) => getComputedStyle(el).scrollSnapType)).toMatch(/x/);
+  await next.click();
+  await expect.poll(() => scroller.evaluate((el) => el.scrollLeft)).toBeGreaterThan(100);
+  await expect(prev).toBeEnabled();
+  const cards = section.locator("ul > li");
+  await expect(cards.nth(1)).toBeInViewport({ ratio: 0.5 });
+  const second = await cards.nth(1).boundingBox();
+  expect(second!.x).toBeGreaterThanOrEqual(0);
+  expect(second!.x + second!.width).toBeLessThanOrEqual(390);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(0);
 });
 
 for (const width of [1440, 1024, 768, 390, 320]) {
@@ -157,6 +208,16 @@ for (const width of [1440, 1024, 768, 390, 320]) {
       const clipped = await page.locator(`${sel} .px-btn, ${sel} h2, ${sel} h3`).evaluateAll((els) =>
         els
           .filter((el) => {
+            // Карточки карусели уходят за край намеренно: они внутри горизонтального скроллера,
+            // поэтому проверяется сам скроллер — он не должен выходить за окно.
+            let target: Element = el;
+            for (let p = el.parentElement; p; p = p.parentElement) {
+              if (/(auto|scroll)/.test(getComputedStyle(p).overflowX)) target = p;
+            }
+            if (target !== el) {
+              const s = target.getBoundingClientRect();
+              return s.left < -0.5 || s.right > window.innerWidth + 0.5;
+            }
             const r = el.getBoundingClientRect();
             return r.left < -0.5 || r.right > window.innerWidth + 0.5 || el.scrollWidth > el.clientWidth + 1;
           })

@@ -20,12 +20,17 @@ test.describe("первый экран 1440×900", () => {
     expect(h1).toBeGreaterThanOrEqual(60);
   });
 
-  test("верх заголовка демо — в первом экране", async ({ page }) => {
+  test("путь к демо — в первом экране и не теряется, пока виден hero", async ({ page }) => {
     await page.goto("/");
-    const box = await page.locator("#demo-title").boundingBox();
-    expect(box).not.toBeNull();
-    // Видна хотя бы верхняя половина первой строки заголовка.
-    expect(box!.y + 28).toBeLessThanOrEqual(900);
+    const cta = page.getByRole("link", { name: "Исследовать компанию" });
+    await expect(cta).toBeInViewport({ ratio: 1 });
+    // Полоса hero прилипает к низу экрана: после прокрутки внутри hero кнопка всё ещё видна целиком.
+    await page.evaluate(() => window.scrollTo(0, 500));
+    await expect(cta).toBeInViewport({ ratio: 1 });
+    const box = await cta.boundingBox();
+    expect(box!.y + box!.height).toBeLessThanOrEqual(900);
+    // Чипы компаний hero — рабочие кнопки рядом с рабочей областью.
+    await expect(page.getByRole("group", { name: "Компания в рабочей области" }).getByRole("button")).toHaveCount(3);
   });
 
   test("hero-изображение читается: без полупрозрачности", async ({ page }) => {
