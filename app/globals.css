@@ -1,0 +1,605 @@
+@import "tailwindcss";
+
+/*
+ * Единственный источник правды о цвете, шрифтах, отступах и шкале.
+ * Цвет — это состояние: lime = verified и одно основное действие в зоне видимости;
+ * cyan = непроверенные фрагменты и вторичные акценты. Других акцентов нет.
+ */
+@theme {
+  --color-*: initial;
+  --color-bg: #0b0f14;
+  --color-surface: #141a21;
+  --color-surface-2: #1b232c;
+  --color-text: #f4f7f8;
+  --color-muted: #97a4ae;
+  --color-lime: #c6f56b;
+  --color-lime-ink: #0b0f14;
+  --color-cyan: #7dc8d8;
+  --color-line: #222b35;
+  --color-line-strong: #34414e;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /*
+   * Заголовки и кнопки (кириллица) — целиком Inter с display-обработкой (--font-heading).
+   * Space Grotesk без кириллицы, поэтому назначается по элементу только латинским меткам:
+   * логотип, Discover/Verify/Qualify, названия модулей, названия демо-компаний (--font-display).
+   */
+  --font-heading: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  /* Сетка 4px: 1 единица spacing = 4px. */
+  --spacing: 0.25rem;
+  --spacing-px4: 4px;
+  --spacing-nav: 64px;
+  --spacing-section: clamp(5rem, 3.5rem + 6vw, 10rem);
+  --spacing-gutter: clamp(1rem, 0.5rem + 2.5vw, 3rem);
+
+  --container-page: 80rem;
+  --container-prose: 46ch;
+
+  /* Шкала заголовков: display — H1 hero, section — H2 секций (до ~3rem: H1 заметно крупнее). */
+  --text-display: clamp(2.5rem, 1.35rem + 4.6vw, 4.75rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.035em;
+  --text-section: clamp(2rem, 1.25rem + 1.75vw, 2.875rem);
+  --text-section--line-height: 1.06;
+  --text-section--letter-spacing: -0.035em;
+  --text-lead: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+  --text-lead--line-height: 1.55;
+  --text-data: 0.8125rem;
+  --text-data--line-height: 1.45;
+
+  --radius-*: initial;
+  --radius-none: 0;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-caret: caret 1.06s steps(1, end) infinite;
+
+  @keyframes caret {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.01%,
+    100% {
+      opacity: 0;
+    }
+  }
+}
+
+:root {
+  --nav-h: var(--spacing-nav);
+  color-scheme: dark;
+  /* Ступенчатый угол по сетке 4px: двухступенчатая выемка справа сверху, 8 вершин. */
+  --px-notch: polygon(
+    0 0,
+    calc(100% - 8px) 0,
+    calc(100% - 8px) 4px,
+    calc(100% - 4px) 4px,
+    calc(100% - 4px) 8px,
+    100% 8px,
+    100% 100%,
+    0 100%
+  );
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--color-line-strong) var(--color-bg);
+    scrollbar-width: thin;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    caret-color: var(--color-lime);
+    overflow-x: clip;
+  }
+
+  section[id],
+  [data-anchor] {
+    scroll-margin-top: var(--nav-h);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    text-wrap: balance;
+    font-weight: 650;
+    letter-spacing: -0.035em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-lime);
+    color: var(--color-lime-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: 3px;
+  }
+
+  a {
+    text-underline-offset: 0.22em;
+    text-decoration-thickness: 1px;
+  }
+
+  input,
+  textarea {
+    caret-color: var(--color-lime);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-muted);
+    opacity: 1;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border: 2px solid var(--color-bg);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted);
+  }
+
+  table,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /* Кнопка: внешний элемент держит фокус-кольцо, «лицо» обрезано ступенчатым углом. */
+  .px-btn {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .px-btn:focus-visible {
+    outline-offset: 4px;
+  }
+
+  .px-btn__face {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 1.25rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    clip-path: var(--px-notch);
+    transition:
+      background-color 160ms steps(2, end),
+      transform 120ms steps(2, end);
+  }
+
+  .px-btn:active .px-btn__face {
+    transform: translateY(2px);
+  }
+
+  .px-btn--primary .px-btn__face {
+    background-color: var(--color-lime);
+    color: var(--color-lime-ink);
+  }
+
+  .px-btn--primary:hover .px-btn__face {
+    background-color: color-mix(in srgb, var(--color-lime) 86%, var(--color-text));
+  }
+
+  /* Ghost: рамка 1px рисуется подложкой, внутренний слой обрезан тем же углом. */
+  .px-btn--ghost .px-btn__face {
+    background-color: var(--color-line-strong);
+    color: var(--color-text);
+    isolation: isolate;
+  }
+
+  .px-btn--ghost .px-btn__face::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    z-index: -1;
+    background-color: var(--color-bg);
+    clip-path: var(--px-notch);
+    transition: background-color 160ms steps(2, end);
+  }
+
+  .px-btn--ghost:hover .px-btn__face {
+    background-color: var(--color-muted);
+  }
+
+  .px-btn--ghost:hover .px-btn__face::before {
+    background-color: var(--color-surface);
+  }
+
+  .px-btn--sm .px-btn__face {
+    min-height: 36px;
+    padding: 0 0.875rem;
+    font-size: 0.875rem;
+  }
+
+  .px-btn[aria-disabled="true"],
+  .px-btn:disabled {
+    cursor: not-allowed;
+  }
+
+  .px-btn[aria-disabled="true"] .px-btn__face,
+  .px-btn:disabled .px-btn__face {
+    background-color: var(--color-surface-2);
+    color: var(--color-muted);
+    transform: none;
+  }
+
+  .px-btn:disabled .px-btn__face::before,
+  .px-btn[aria-disabled="true"] .px-btn__face::before {
+    background-color: var(--color-surface-2);
+  }
+
+  /* Чип выбора (например, демо-компании): 1px рамка, выбранный — голубой контур. */
+  .px-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 40px;
+    padding: 0 0.875rem;
+    border: 1px solid var(--color-line-strong);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-size: 0.9375rem;
+    line-height: 1.2;
+    text-align: left;
+    transition:
+      border-color 160ms steps(2, end),
+      background-color 160ms steps(2, end);
+  }
+
+  .px-chip:hover {
+    border-color: var(--color-muted);
+  }
+
+  .px-chip[aria-pressed="true"],
+  .px-chip[aria-checked="true"] {
+    border-color: var(--color-cyan);
+    background-color: var(--color-surface-2);
+  }
+
+  .px-chip:disabled {
+    color: var(--color-muted);
+    cursor: not-allowed;
+  }
+
+  /* Поле ввода: плоская поверхность, 1px граница, ошибка — текстом, не цветом. */
+  .px-field {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 1rem;
+    border: 1px solid var(--color-line-strong);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-size: 1rem;
+    border-radius: 0;
+    transition: border-color 160ms steps(2, end);
+  }
+
+  .px-field:hover {
+    border-color: var(--color-muted);
+  }
+
+  .px-field:focus-visible {
+    outline-offset: 0;
+    border-color: var(--color-cyan);
+  }
+
+  .px-field[aria-invalid="true"] {
+    border-color: var(--color-text);
+  }
+
+  /* Блочный курсор рабочей области. */
+  .px-caret {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.1em;
+    vertical-align: -0.18em;
+    background-color: var(--color-lime);
+    animation: var(--animate-caret);
+  }
+
+  .hairline {
+    border-color: var(--color-line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* T03 — первый экран, демо и сигнатура «пиксельная сборка» */
+@layer components {
+  /* 4px-фрагмент: голубой квадрат ступенчато сходится к своей точке и гаснет. */
+  .px-frag {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: var(--color-cyan);
+    opacity: 0;
+    animation: px-assemble var(--frag-ms, 560ms) steps(4, end) var(--frag-delay, 0ms) both;
+  }
+
+  @keyframes px-assemble {
+    0% {
+      opacity: 0;
+      transform: translate(var(--dx, 0), var(--dy, 0));
+    }
+    12% {
+      opacity: 1;
+    }
+    78% {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+  }
+
+  /* Ячейка профиля: голубой контур = ещё не проверено, вспышка лайма = verified. */
+  .pf-cell {
+    position: relative;
+    outline: 1px solid transparent;
+    outline-offset: -1px;
+  }
+
+  .pf-cell[data-state="pending"] {
+    outline-color: color-mix(in srgb, var(--color-cyan) 55%, transparent);
+  }
+
+  .pf-cell[data-state="verified"][data-flash="true"] {
+    animation: pf-verify 900ms steps(3, end) both;
+  }
+
+  .pf-cell[data-state="missing"] {
+    outline: 1px dashed var(--color-line-strong);
+  }
+
+  @keyframes pf-verify {
+    0% {
+      outline-color: var(--color-lime);
+    }
+    66% {
+      outline-color: color-mix(in srgb, var(--color-lime) 45%, transparent);
+    }
+    100% {
+      outline-color: transparent;
+    }
+  }
+
+  /* Заглушка значения до проверки: ряд 4px-блоков вместо текста. */
+  .pf-skeleton {
+    display: block;
+    height: 8px;
+    background-image: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-cyan) 35%, transparent) 0 4px,
+      transparent 4px 8px
+    );
+    background-size: 8px 8px;
+  }
+
+  /* Активный этап: блок мигает ступенями, пока идёт прогон. */
+  .stage-blink {
+    animation: stage-blink 0.7s steps(1, end) infinite;
+  }
+
+  @keyframes stage-blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.01%,
+    100% {
+      opacity: 0.25;
+    }
+  }
+
+  /*
+   * Подложка hero-рабочей области. Сетка 32px из палитры — только фолбэк: включается,
+   * когда изображение не загрузилось (`data-img-failed` ставит PlateImage).
+   */
+  .hero-plate {
+    background-color: var(--color-bg);
+    background-image: radial-gradient(60% 50% at 75% 80%, color-mix(in srgb, var(--color-cyan) 14%, transparent), transparent);
+  }
+
+  .hero-plate[data-img-failed] {
+    background-image:
+      linear-gradient(var(--color-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-line) 1px, transparent 1px),
+      radial-gradient(60% 50% at 75% 80%, color-mix(in srgb, var(--color-cyan) 14%, transparent), transparent);
+    background-size:
+      32px 32px,
+      32px 32px,
+      100% 100%;
+  }
+
+  /* Рабочая область hero уходит за правый край окна (от 1280px, где hero в две колонки). */
+  @media (min-width: 80rem) {
+    .hero-bleed {
+      margin-right: calc(
+        -1 * max(var(--spacing-gutter), (100vw - var(--container-page)) / 2 + var(--spacing-gutter))
+      );
+    }
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .px-frag {
+    display: none;
+  }
+
+  .stage-blink {
+    animation: none;
+  }
+}
+
+/* T04 — секции истории: схемы проблем, рельс процесса, подложки изображений. */
+@layer components {
+  /* Подложка схем: точечная сетка 4px на поверхности. */
+  .t04-schema {
+    background-color: var(--color-surface);
+    background-image: radial-gradient(var(--color-line) 1px, transparent 1px);
+    background-size: 8px 8px;
+    border: 1px solid var(--color-line);
+    overflow: hidden;
+  }
+
+  /* CSS-фолбэк под research.webp: сетка из палитры — только если изображение не загрузилось. */
+  .t04-plate {
+    background-color: var(--color-surface);
+  }
+
+  .t04-plate[data-img-failed] {
+    background-image:
+      linear-gradient(var(--color-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Финальный план: фолбэк-сетка, изображение уходит в фон сверху и снизу. */
+  .t04-closing {
+    background-color: var(--color-bg);
+    background-position: center;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 28%, #000 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 28%, #000 80%, transparent 100%);
+  }
+
+  .t04-closing[data-img-failed] {
+    background-image:
+      radial-gradient(ellipse 30% 40% at 50% 50%, color-mix(in srgb, var(--color-lime) 12%, transparent), transparent 70%),
+      linear-gradient(var(--color-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+    background-size: auto, 48px 48px, 48px 48px;
+  }
+
+  /* Рельс процесса. Мобильный: вертикальная линия слева; от 1024px — горизонтальная сверху. */
+  .t04-rail-line {
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background-color: var(--color-line-strong);
+    transform-origin: top;
+  }
+
+  .t04-rail-marker {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 16px;
+    height: 16px;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-cyan);
+  }
+
+  /* Discover — голубой контур; Verify — наполовину проверено; Qualify — лайм. */
+  .t04-rail-marker--1 {
+    background-image: linear-gradient(90deg, var(--color-lime) 50%, transparent 50%);
+    background-clip: content-box;
+    padding: 3px;
+  }
+
+  .t04-rail-marker--2 {
+    background-color: var(--color-lime);
+    border-color: var(--color-lime);
+  }
+
+  @media (min-width: 1024px) {
+    .t04-rail-line {
+      left: 0;
+      right: 0;
+      top: 7px;
+      bottom: auto;
+      width: auto;
+      height: 1px;
+      transform-origin: left;
+    }
+
+    .t04-rail-marker {
+      top: 0;
+    }
+  }
+
+  /* Появление ступенями: линия «прорисовывается», маркеры загораются по очереди. */
+  .t04-rail[data-armed] .t04-rail-line {
+    transform: scaleY(0);
+  }
+
+  .t04-rail[data-armed] .t04-rail-marker {
+    opacity: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .t04-rail[data-armed] .t04-rail-line {
+      transform: scaleX(0);
+    }
+  }
+
+  .t04-rail[data-armed][data-shown] .t04-rail-line {
+    transform: none;
+    transition: transform 1200ms steps(12, end);
+  }
+
+  .t04-rail[data-armed][data-shown] .t04-rail-marker {
+    opacity: 1;
+    transition: opacity 1ms steps(1, end);
+    transition-delay: calc(var(--i, 0) * 500ms);
+  }
+}
