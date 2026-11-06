@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-06T09:25:30+00:00",
+  "generatedAt": "2026-11-06T12:00:00+00:00",
   "title": "Design System: LeadPilot",
   "extensions": {
     "colorMeta": {
@@ -168,7 +168,7 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "Hero H1 only; container-sized from its column, capped at 4.5rem."
+        "purpose": "Hero H1 only; clamps by column width and viewport height (min(cqi, svh)), capped at 4.5rem."
       },
       "headline": {
         "displayName": "Headline",
@@ -176,7 +176,7 @@
       },
       "statement": {
         "displayName": "Statement",
-        "purpose": "Large names on carousel segment cards and process steps."
+        "purpose": "Segment names on «Для кого» cards; Space Grotesk on Latin pipeline step names."
       },
       "title": {
         "displayName": "Title",
@@ -207,29 +207,29 @@
       {
         "name": "desk-lift",
         "value": "0 24px 60px -20px rgb(0 0 0 / 0.7)",
-        "purpose": "Hero workspace window over its image plate."
+        "purpose": "Hero workspace window over its image plate (the window fades out at the bottom under a mask)."
       },
       {
         "name": "chip-lift",
         "value": "0 8px 24px -12px rgb(0 0 0 / 0.8)",
-        "purpose": "Company chips overlapping the bottom edge of the hero plate."
+        "purpose": "Company chips sitting on the hero plate's faded bottom edge."
       }
     ],
     "motion": [
       {
+        "name": "hero-window-fade",
+        "value": "mask linear-gradient(to bottom, #000 calc(100% - clamp(1.25rem, 22%, 4.5rem)), transparent)",
+        "purpose": "Soft bottom fade on the hero workspace window that fills the remaining viewport height."
+      },
+      {
         "name": "ease-state",
         "value": "180ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "Fill, border and colour changes on buttons, chips, arrow buttons, fields."
+        "purpose": "Fill, border and colour changes on buttons, chips, fields, links."
       },
       {
         "name": "press",
         "value": "120ms ease-out-expo, translateY(1px)",
         "purpose": "Button press."
-      },
-      {
-        "name": "card-activate",
-        "value": "220ms ease-out-expo",
-        "purpose": "Process card lifts to Panel Raised when its step is chosen."
       },
       {
         "name": "caret",
@@ -250,11 +250,6 @@
         "name": "pf-verify",
         "value": "900ms steps(3, end)",
         "purpose": "Lime outline flash when a field becomes verified."
-      },
-      {
-        "name": "rail-draw",
-        "value": "1200ms steps(12, end); markers +500ms each",
-        "purpose": "Process rail line draws in, markers light in sequence, once."
       },
       {
         "name": "ease-out-expo",
@@ -312,17 +307,17 @@
       {
         "name": "radius-md",
         "value": "10px",
-        "purpose": "Mono field tags and small labels in schemas and cards."
+        "purpose": "Mono field tags, small labels, 28px row icon tiles and pipeline connectors."
       },
       {
         "name": "radius-lg",
         "value": "14px",
-        "purpose": "Every control: buttons, arrow buttons, chips, fields, icon tiles, search rows, nav links."
+        "purpose": "Every control: buttons, chips, fields, icon tiles, search rows, nav links."
       },
       {
         "name": "radius-xl",
         "value": "16px",
-        "purpose": "Compact data cards, fact tiles, notices, hero mini-card hover."
+        "purpose": "Compact data cards, mini windows, fact tiles, notices, hero mini-link hover."
       },
       {
         "name": "radius-2xl",
@@ -332,7 +327,7 @@
       {
         "name": "radius-3xl",
         "value": "28px",
-        "purpose": "Plates and large containers: hero plate, image plates, demo workspace, carousel cards."
+        "purpose": "Plates and large containers: hero plate, image plates, demo workspace, segment cards."
       },
       {
         "name": "inline-badge",
@@ -342,7 +337,7 @@
       {
         "name": "pixel-square",
         "value": "radius 0",
-        "purpose": "4px fragments and state squares, 16px stage/rail markers, skeleton blocks, pixel icons, block caret."
+        "purpose": "4px fragments and state squares, 16px stage markers, discover finding outlines, skeleton blocks, pixel icons, block caret."
       }
     ]
   },
@@ -351,7 +346,7 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Rounded lime button; the one primary action per view. Large size in hero bar, closing statement, footer.",
+      "description": "Rounded lime button; the one primary action per view. Large size in the hero action bar and closing statement.",
       "html": "<div style=\"display:flex;gap:12px;align-items:center\"><button class=\"ds-btn ds-btn--primary ds-btn--lg\">Исследовать компанию <svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M4 1h1v1h1v1h1v2H6v1H5v1H4V5H1V3h3z\"/></svg></button><button class=\"ds-btn ds-btn--primary ds-btn--sm\">Попробовать демо</button></div>",
       "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:14px 28px;border:1px solid transparent;border-radius:14px;font:600 15px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:-0.005em;white-space:nowrap;cursor:pointer;text-decoration:none;transition:background-color 180ms cubic-bezier(.16,1,.3,1),border-color 180ms cubic-bezier(.16,1,.3,1),transform 120ms cubic-bezier(.16,1,.3,1)} .ds-btn:focus-visible{outline:2px solid #7dc8d8;outline-offset:3px} .ds-btn:active{transform:translateY(1px)} .ds-btn--lg{min-height:60px;padding:20px 48px;font-size:16px} .ds-btn--sm{min-height:40px;padding:12px 20px;font-size:14px} .ds-btn--primary{background:#c6f56b;color:#0b0f14} .ds-btn--primary:hover{background:color-mix(in srgb,#c6f56b 86%,#f4f7f8)}"
     },
@@ -362,14 +357,6 @@
       "description": "Secondary action: transparent with a 1px Hairline Strong frame, same 14px radius.",
       "html": "<button class=\"ds-btn ds-btn--ghost ds-btn--sm\">Попробовать экспорт в демо</button>",
       "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:14px 28px;border:1px solid transparent;border-radius:14px;font:600 15px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:-0.005em;white-space:nowrap;cursor:pointer;text-decoration:none;transition:background-color 180ms cubic-bezier(.16,1,.3,1),border-color 180ms cubic-bezier(.16,1,.3,1),transform 120ms cubic-bezier(.16,1,.3,1)} .ds-btn:focus-visible{outline:2px solid #7dc8d8;outline-offset:3px} .ds-btn:active{transform:translateY(1px)} .ds-btn--lg{min-height:60px;padding:20px 48px;font-size:16px} .ds-btn--sm{min-height:40px;padding:12px 20px;font-size:14px} .ds-btn--ghost{background:transparent;border-color:#34414e;color:#f4f7f8} .ds-btn--ghost:hover{background:#141a21;border-color:#97a4ae}"
-    },
-    {
-      "name": "Arrow Button",
-      "kind": "button",
-      "refersTo": "arrow-button",
-      "description": "Square 48px rounded paging control for carousels and step switchers.",
-      "html": "<div style=\"display:flex;gap:8px\"><button class=\"ds-arrow\" aria-label=\"Назад\" disabled><span style=\"display:inline-flex;transform:scaleX(-1)\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M4 1h1v1h1v1h1v2H6v1H5v1H4V5H1V3h3z\"/></svg></span></button><button class=\"ds-arrow\" aria-label=\"Вперёд\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M4 1h1v1h1v1h1v2H6v1H5v1H4V5H1V3h3z\"/></svg></button></div>",
-      "css": ".ds-arrow{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border:0;border-radius:14px;background:color-mix(in srgb,#1b232c 80%,transparent);color:#f4f7f8;cursor:pointer;transition:background-color 180ms cubic-bezier(.16,1,.3,1),opacity 180ms} .ds-arrow:hover{background:#34414e} .ds-arrow:disabled{opacity:.4;cursor:not-allowed;background:color-mix(in srgb,#1b232c 80%,transparent)} .ds-arrow:focus-visible{outline:2px solid #7dc8d8;outline-offset:3px}"
     },
     {
       "name": "Chip",
@@ -391,9 +378,9 @@
       "name": "Navigation",
       "kind": "nav",
       "refersTo": "nav",
-      "description": "Sticky 64px graphite bar: pixel mark, centred muted links, small rounded lime CTA.",
+      "description": "Sticky 64px graphite bar: pixel mark left; muted links grouped on the right beside the small rounded lime CTA.",
       "html": "<nav class=\"ds-nav\"><a class=\"ds-nav__logo\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><rect x=\"0\" y=\"0\" width=\"1\" height=\"1\" fill=\"var(--color-cyan,#7dc8d8)\"/><rect x=\"2\" y=\"1\" width=\"1\" height=\"1\" fill=\"var(--color-cyan,#7dc8d8)\"/><rect x=\"0\" y=\"2\" width=\"1\" height=\"1\" fill=\"var(--color-cyan,#7dc8d8)\"/><path d=\"M4 2h2v2h2v4H0V4h2v2h2z\" fill=\"currentColor\"/></svg><span>LeadPilot</span></a><ul class=\"ds-nav__links\"><li><a href=\"#\">Возможности</a></li><li><a href=\"#\">Как работает</a></li><li><a href=\"#\">Демо</a></li><li><a href=\"#\">Для кого</a></li></ul><a class=\"ds-nav__cta\" href=\"#\"><span>Попробовать демо</span></a></nav>",
-      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:24px;height:64px;padding:0 24px;background:var(--color-bg,#0b0f14);border-bottom:1px solid var(--color-line,#222b35)} .ds-nav__logo{display:inline-flex;align-items:center;gap:10px;color:var(--color-lime,#c6f56b);text-decoration:none} .ds-nav__logo span{color:var(--color-text,#f4f7f8);font:600 17px 'Space Grotesk',Inter,sans-serif;letter-spacing:-0.02em} .ds-nav__links{display:flex;gap:4px;list-style:none;margin:0;padding:0} .ds-nav__links a{display:inline-flex;height:40px;align-items:center;padding:0 12px;border-radius:14px;color:var(--color-muted,#97a4ae);font:400 14px Inter,sans-serif;text-decoration:none;transition:color 150ms} .ds-nav__links a:hover{color:var(--color-text,#f4f7f8)} .ds-nav__links a:focus-visible,.ds-nav__cta:focus-visible{outline:2px solid var(--color-cyan,#7dc8d8);outline-offset:3px} .ds-nav__cta{text-decoration:none} .ds-nav__cta span{display:inline-flex;align-items:center;min-height:40px;padding:0 20px;border-radius:14px;background:#c6f56b;color:#0b0f14;font:600 14px/1 Inter,sans-serif} .ds-nav__cta:hover span{background:color-mix(in srgb,#c6f56b 86%,#f4f7f8)}"
+      "css": ".ds-nav{display:flex;align-items:center;gap:16px;height:64px;padding:0 24px;background:var(--color-bg,#0b0f14);border-bottom:1px solid var(--color-line,#222b35)} .ds-nav__logo{display:inline-flex;align-items:center;gap:10px;color:var(--color-lime,#c6f56b);text-decoration:none} .ds-nav__logo span{color:var(--color-text,#f4f7f8);font:600 17px 'Space Grotesk',Inter,sans-serif;letter-spacing:-0.02em} .ds-nav__links{display:flex;gap:4px;margin-left:auto !important;list-style:none;margin:0;padding:0} .ds-nav__links a{display:inline-flex;height:40px;align-items:center;padding:0 12px;border-radius:14px;color:var(--color-muted,#97a4ae);font:400 14px Inter,sans-serif;text-decoration:none;transition:color 150ms} .ds-nav__links a:hover{color:var(--color-text,#f4f7f8)} .ds-nav__links a:focus-visible,.ds-nav__cta:focus-visible{outline:2px solid var(--color-cyan,#7dc8d8);outline-offset:3px} .ds-nav__cta{text-decoration:none} .ds-nav__cta span{display:inline-flex;align-items:center;min-height:40px;padding:0 20px;border-radius:14px;background:#c6f56b;color:#0b0f14;font:600 14px/1 Inter,sans-serif} .ds-nav__cta:hover span{background:color-mix(in srgb,#c6f56b 86%,#f4f7f8)}"
     },
     {
       "name": "Tile with Caption",
@@ -422,9 +409,17 @@
     {
       "name": "Stage Rail",
       "kind": "custom",
-      "description": "Square stage markers: done lime with pixel check, active cyan blinking in steps, pending outlined.",
+      "description": "Square stage markers in the research workspace: done lime with pixel check, active cyan blinking in steps, pending outlined.",
       "html": "<ol class=\"ds-rail\"><li class=\"ds-rail__s ds-rail__s--done\"><i><svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\"><path d=\"M6 2h2v1H7v1H6v1H5v1H4v1H3v1H2V7H1V6H0V4h1v1h1v1h1V5h1V4h1V3h1z\" fill=\"currentColor\"/></svg></i><span>Анализ компании<em>01 · готово</em></span></li><li class=\"ds-rail__s ds-rail__s--active\"><i></i><span>Поиск IT-инициатив<em>02 · идёт</em></span></li><li class=\"ds-rail__s\"><i></i><span>Формирование профиля<em>03 · ожидает</em></span></li></ol>",
       "css": ".ds-rail{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;width:560px;list-style:none;margin:0;padding:0} .ds-rail__s{position:relative;display:flex;flex-direction:column;gap:8px;padding-right:8px;font:400 15px/1.35 Inter,sans-serif;color:var(--color-muted,#97a4ae)} .ds-rail__s::after{content:'';position:absolute;top:7px;left:20px;right:0;height:1px;background:var(--color-line-strong,#34414e)} .ds-rail__s:last-child::after{display:none} .ds-rail__s--done::after{background:color-mix(in srgb,#c6f56b 70%,transparent)} .ds-rail__s i{position:relative;z-index:1;display:flex;width:16px;height:16px;border:1px solid var(--color-line-strong,#34414e);background:var(--color-bg,#0b0f14);box-sizing:border-box} .ds-rail__s--done i{border:0;background:var(--color-lime,#c6f56b);color:var(--color-lime-ink,#0b0f14)} .ds-rail__s--active i{border:0;background:var(--color-cyan,#7dc8d8);animation:ds-blink .7s steps(1,end) infinite} .ds-rail__s--done span,.ds-rail__s--active span{color:var(--color-text,#f4f7f8)} .ds-rail__s em{display:block;margin-top:2px;font:normal 400 12px 'IBM Plex Mono',ui-monospace,monospace;color:var(--color-muted,#97a4ae)} .ds-rail__s--done em{color:var(--color-lime,#c6f56b)} .ds-rail__s--active em{color:var(--color-cyan,#7dc8d8)} @keyframes ds-blink{0%,50%{opacity:1}50.01%,100%{opacity:.25}} @media (prefers-reduced-motion:reduce){.ds-rail__s--active i{animation:none}}"
+    },
+    {
+      "name": "Process Pipeline",
+      "kind": "custom",
+      "refersTo": "connector",
+      "description": "Connected step cards (Discover → Verify → Qualify), each with its own mini window on demo data and an «На выходе» line; a 28px arrow tile on a 1px line links them. No tabs or paging.",
+      "html": "<ol class=\"ds-pipe\"><li><article class=\"ds-step\"><span class=\"ds-step__n\">01</span><h3>Discover <small>Поиск</small></h3><div class=\"ds-mini\"><div class=\"ds-mini__bar\"><span>vector-logistics / discover</span><span class=\"ds-cy\"><i class=\"ds-o\"></i>не проверено</span></div><div class=\"ds-mini__body\"><div class=\"ds-find\"><b>▪ Вакансии (демо)</b>Мобильная разработка</div><div class=\"ds-find\" style=\"margin-left:20px\"><b>▪ Новостной портал (демо)</b>Заметка о новых складах</div></div></div><p class=\"ds-out\"><strong>На выходе:</strong> находки — пока без проверки.</p></article><span class=\"ds-conn\" aria-hidden=\"true\"><i><svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M4 1h1v1h1v1h1v2H6v1H5v1H4V5H1V3h3z\"/></svg></i></span></li><li><article class=\"ds-step\"><span class=\"ds-step__n\">02</span><h3>Verify <small>Проверка</small></h3><div class=\"ds-mini\"><div class=\"ds-mini__bar\"><span>vector-logistics / verify</span><span><i class=\"ds-l\"></i>3 из 4</span></div><div class=\"ds-mini__body\"><div class=\"ds-row\"><span class=\"ds-ok\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M6 2h2v1H7v1H6v1H5v1H4v1H3v1H2V7H1V6H0V4h1v1h1v1h1V5h1V4h1V3h1z\"/></svg></span>Заметка о новых складах<em>2026-07</em></div><div class=\"ds-row ds-row--old\"><span class=\"ds-dash\"></span><s>Штат 300–400</s><em><s>2024-05</s></em></div></div></div><p class=\"ds-out\"><strong>На выходе:</strong> подтверждённые факты с датой.</p></article></li></ol>",
+      "css": ".ds-pipe{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px;width:720px;list-style:none;margin:0;padding:0;font-family:Inter,sans-serif;color:#f4f7f8} .ds-pipe>li{position:relative;display:flex} .ds-step{display:flex;flex-direction:column;gap:16px;width:100%;padding:20px;border-radius:20px;background:#141a21} .ds-step__n{font:400 13px 'IBM Plex Mono',monospace;color:#97a4ae} .ds-step h3{margin:0;font:600 30px/1 'Space Grotesk',Inter,sans-serif;letter-spacing:-0.03em} .ds-step h3 small{font:600 15px Inter,sans-serif;letter-spacing:0;color:#97a4ae;margin-left:8px} .ds-mini{border:1px solid #34414e;border-radius:16px;background:#0b0f14;overflow:hidden} .ds-mini__bar{display:flex;justify-content:space-between;gap:12px;padding:8px 14px;border-bottom:1px solid #222b35;font:400 11px 'IBM Plex Mono',monospace;color:#97a4ae} .ds-mini__bar i{display:inline-block;width:6px;height:6px;margin-right:6px} .ds-cy{color:#7dc8d8} .ds-o{border:1px solid #7dc8d8;box-sizing:border-box} .ds-l{background:#c6f56b} .ds-mini__body{display:flex;flex-direction:column;gap:8px;padding:12px;font-size:13px} .ds-find{display:flex;flex-direction:column;gap:2px;padding:8px 12px;outline:1px solid color-mix(in srgb,#7dc8d8 55%,transparent);outline-offset:-1px} .ds-find b{font:400 11px 'IBM Plex Mono',monospace;color:#7dc8d8} .ds-row{display:grid;grid-template-columns:16px 1fr auto;gap:10px;align-items:start} .ds-row em{font:normal 400 11px 'IBM Plex Mono',monospace} .ds-ok{color:#c6f56b;display:flex} .ds-dash{width:16px;height:16px;border:1px dashed #34414e;box-sizing:border-box} .ds-row--old{color:#97a4ae} .ds-out{margin:0;padding-top:16px;border-top:1px solid #222b35;font-size:14px;color:#97a4ae} .ds-out strong{color:#f4f7f8} .ds-conn{position:absolute;top:50%;left:100%;width:40px;height:28px;transform:translateY(-50%);display:flex;align-items:center;justify-content:center} .ds-conn::before{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:#34414e} .ds-conn i{position:relative;display:flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid #34414e;border-radius:10px;background:#1b232c;color:#f4f7f8;box-sizing:border-box}"
     },
     {
       "name": "Workspace Window",
@@ -432,11 +427,26 @@
       "description": "Desk chrome in a 20px-rounded clipped window: mono path bar with status square over a graphite body; 14px-rounded search row with blinking block caret.",
       "html": "<div class=\"ds-win\"><div class=\"ds-win__bar\"><span>leadpilot / <b>AI RESEARCH WORKSPACE</b> / vector-logistics</span><span class=\"ds-win__st\"><i></i>профиль готов</span></div><div class=\"ds-win__body\"><div class=\"ds-search\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\"><path d=\"M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1zM5 6h2v1H5zM6 7h2v1H6z\"/></svg><span>Vector Logistics<i class=\"ds-caret\"></i></span><small>публичные источники</small></div></div></div>",
       "css": ".ds-win{width:560px;border-radius:20px;overflow:hidden;border:1px solid var(--color-line-strong,#34414e);background:color-mix(in srgb,#0b0f14 95%,transparent);box-shadow:0 24px 60px -20px rgb(0 0 0/.7)} .ds-win__bar{display:flex;justify-content:space-between;gap:16px;padding:10px 16px;border-bottom:1px solid var(--color-line,#222b35);font:400 12px 'IBM Plex Mono',ui-monospace,monospace;color:var(--color-muted,#97a4ae)} .ds-win__bar b{font-weight:400;color:var(--color-text,#f4f7f8)} .ds-win__st{display:flex;align-items:center;gap:8px;font-size:11px} .ds-win__st i{width:6px;height:6px;background:var(--color-lime,#c6f56b)} .ds-win__body{padding:20px} .ds-search{border-radius:14px;display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--color-line-strong,#34414e);background:var(--color-surface,#141a21);color:var(--color-muted,#97a4ae)} .ds-search span{color:var(--color-text,#f4f7f8);font:400 15px Inter,sans-serif} .ds-search small{margin-left:auto;font:400 11px 'IBM Plex Mono',monospace} .ds-caret{display:inline-block;width:.6em;height:1.1em;margin-left:2px;vertical-align:-.18em;background:var(--color-lime,#c6f56b);animation:ds-caret 1.06s steps(1,end) infinite} @keyframes ds-caret{0%,50%{opacity:1}50.01%,100%{opacity:0}} @media (prefers-reduced-motion:reduce){.ds-caret{animation:none}}"
+    },
+    {
+      "name": "Segment Card",
+      "kind": "card",
+      "refersTo": "segment-card",
+      "description": "28px-rounded Panel card shown three across with subgrid-aligned rows: name + task, Кто, Что смотрит в профиле with a distinct mini profile, Результат, scenario.",
+      "html": "<article class=\"ds-seg\"><div><h3>B2B-продажи</h3><p class=\"ds-seg__task\">Подготовка к первому контакту.</p></div><div class=\"ds-seg__row\"><span class=\"ds-seg__ic\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M6 2h2v1H7v1H6v1H5v1H4v1H3v1H2V7H1V6H0V4h1v1h1v1h1V5h1V4h1V3h1z\"/></svg></span><p><b>Кто:</b> SDR и менеджер по продажам</p></div><div class=\"ds-seg__row\"><span class=\"ds-seg__ic\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M6 2h2v1H7v1H6v1H5v1H4v1H3v1H2V7H1V6H0V4h1v1h1v1h1V5h1V4h1V3h1z\"/></svg></span><p><b>Что смотрит в профиле:</b></p></div><div class=\"ds-mp\"><div class=\"ds-mp__bar\"><span>northstar-bank / profile</span><span class=\"ds-mp__tag\">демо</span></div><dl><div><dt><i></i>Сигнал</dt><dd>Тендер на аудит безопасности</dd></div><div><dt><i></i>Повод для контакта</dt><dd>Новый проект по защите данных</dd></div></dl></div><div class=\"ds-seg__row\"><span class=\"ds-seg__ic\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M6 2h2v1H7v1H6v1H5v1H4v1H3v1H2V7H1V6H0V4h1v1h1v1h1V5h1V4h1V3h1z\"/></svg></span><p><b>Результат:</b> первое письмо с поводом и адресатом</p></div><p class=\"ds-seg__sc\"><b>Утро SDR.</b> Вместо десятка вкладок — один профиль.</p></article>",
+      "css": ".ds-seg{display:flex;flex-direction:column;gap:24px;width:380px;padding:28px;border-radius:28px;background:#141a21;color:#f4f7f8;font-family:Inter,sans-serif} .ds-seg h3{margin:0;font:650 34px/1.05 Inter,sans-serif;letter-spacing:-0.03em} .ds-seg__task{margin:10px 0 0;font-size:17px;color:#97a4ae} .ds-seg__row{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start} .ds-seg__row p{margin:2px 0 0;font-size:15px;color:#97a4ae} .ds-seg__row b{color:#f4f7f8;font-weight:600} .ds-seg__ic{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:10px;background:#1b232c} .ds-mp{margin-top:-12px;border:1px solid #34414e;border-radius:16px;background:#0b0f14;overflow:hidden} .ds-mp__bar{display:flex;justify-content:space-between;padding:8px 14px;border-bottom:1px solid #222b35;font:400 11px 'IBM Plex Mono',monospace;color:#97a4ae} .ds-mp__tag{border:1px solid #34414e;border-radius:6px;padding:0 6px} .ds-mp dl{display:grid;gap:1px;margin:0;background:#222b35} .ds-mp dl>div{padding:12px 14px;background:#141a21} .ds-mp dt{display:flex;align-items:center;gap:8px;font:400 10px 'IBM Plex Mono',monospace;letter-spacing:0.04em;text-transform:uppercase;color:#97a4ae} .ds-mp dt i{width:4px;height:4px;background:#c6f56b} .ds-mp dd{margin:6px 0 0;font-size:13px} .ds-seg__sc{margin:0;padding-top:20px;border-top:1px solid #222b35;font-size:15px;line-height:1.6}"
+    },
+    {
+      "name": "Column Footer",
+      "kind": "nav",
+      "description": "Formal footer: brand block with description, three titled link columns (Продукт, Для кого, Проект), hairline, copyright and legal line.",
+      "html": "<footer class=\"ds-foot\"><div class=\"ds-foot__grid\"><div class=\"ds-foot__brand\"><strong>LeadPilot</strong><span>AI Research Workspace</span><p>Концепт сервиса для исследования B2B-компаний по публичным данным.</p></div><nav><h2>Продукт</h2><a href=\"#\">Возможности</a><a href=\"#\">Как работает</a><a href=\"#\">Демо</a></nav><nav><h2>Для кого</h2><a href=\"#\">IT-аутсорсинг</a><a href=\"#\">B2B-продажи</a><a href=\"#\">Агентства</a></nav><nav><h2>Проект</h2><a href=\"#\">Исходный код на GitHub</a><a href=\"#\">Документация</a></nav></div><div class=\"ds-foot__legal\"><p>© 2026 LeadPilot · Product concept · Interactive demo</p><p>Все компании и данные в демо вымышленные.</p></div></footer>",
+      "css": ".ds-foot{width:900px;padding:56px 48px 40px;background:#0b0f14;color:#97a4ae;font-family:Inter,sans-serif} .ds-foot__grid{display:grid;grid-template-columns:5fr 2fr 2fr 2fr;gap:40px} .ds-foot__brand{display:flex;flex-direction:column;gap:2px;padding-right:40px} .ds-foot__brand strong{font:600 17px 'Space Grotesk',Inter,sans-serif;letter-spacing:-0.02em;color:#f4f7f8} .ds-foot__brand span{font:400 13px 'Space Grotesk',Inter,sans-serif} .ds-foot__brand p{margin:14px 0 0;max-width:44ch;font-size:14px;line-height:1.6} .ds-foot nav{display:flex;flex-direction:column;gap:10px} .ds-foot h2{margin:0 0 4px;font:600 13px/1.2 Inter,sans-serif;color:#f4f7f8} .ds-foot a{font-size:14px;color:#97a4ae;text-decoration:none;border-radius:6px;transition:color 150ms} .ds-foot a:hover{color:#f4f7f8;text-decoration:underline} .ds-foot a:focus-visible{outline:2px solid #7dc8d8;outline-offset:3px} .ds-foot__legal{display:flex;justify-content:space-between;gap:40px;margin-top:56px;padding-top:24px;border-top:1px solid #222b35;font-size:13px} .ds-foot__legal p{margin:0}"
     }
   ],
   "narrative": {
     "northStar": "The Research Desk",
-    "overview": "LeadPilot is a working desk, not a brochure. Every surface reads as an instrument panel at night: graphite ground, flat panels and hairlines, data set in mono, and colour reserved for the state of information. The page's one visual idea is the passage from noise to dossier: cold cyan fragments that are not yet checked resolve, in stepped frames, into lime fields that are.\n\nTwo layers share the desk. The **object layer** — buttons, chips, fields, cards, tiles and image plates — is soft and calm: rounded corners on one scale (14px controls, 16–20px cards, 28px plates), solid fills, smooth eased hovers. The **data layer** sits on a strict 4px grid inside those objects and stays hard-edged: 4px data squares, square stage and rail markers, authored 8×8 pixel icons, a blinking block caret, and state animation that moves in `steps()` rather than easing. Type stays Inter / Space Grotesk / IBM Plex Mono. Atmosphere (glass, glow, luminous lime) lives only inside the raster plates; the built UI never borrows it.\n\nComposition is large and quiet: big statements (often centred), generous section air (5–10rem), rounded tiles with their caption beneath or centred inside, square arrow buttons that page through steps and segments. The confirmed rejections come from the product brief: purple gradients, glowing orbs, meaningless particles, heavy shadows, rows of identical cards.",
+    "overview": "LeadPilot is a working desk, not a brochure. Every surface reads as an instrument panel at night: graphite ground, flat panels and hairlines, data set in mono, and colour reserved for the state of information. The page's one visual idea is the passage from noise to dossier: cold cyan fragments that are not yet checked resolve, in stepped frames, into lime fields that are.\n\nTwo layers share the desk. The **object layer** — buttons, chips, fields, cards, tiles and image plates — is soft and calm: rounded corners on one scale (14px controls, 16–20px cards, 28px plates), solid fills, smooth eased hovers. The **data layer** sits on a strict 4px grid inside those objects and stays hard-edged: 4px data squares, square stage and rail markers, authored 8×8 pixel icons, a blinking block caret, and state animation that moves in `steps()` rather than easing. Type stays Inter / Space Grotesk / IBM Plex Mono. Atmosphere (glass, glow, luminous lime) lives only inside the raster plates; the built UI never borrows it.\n\nComposition is large and quiet: big statements (often centred), generous section air (5–10rem), rounded tiles with their caption beneath or centred inside, and everything shown at once — steps as one connected pipeline, segments side by side — rather than paged behind tabs or carousels. The confirmed rejections come from the product brief: purple gradients, glowing orbs, meaningless particles, heavy shadows, rows of identical cards.",
     "keyCharacteristics": [
       "Rounded objects, square data: controls 14px, cards 16–20px, plates 28px; every pixel element stays square.",
       "Colour is state: cyan = unverified, lime = verified and the one primary action.",
@@ -452,7 +462,7 @@
       },
       {
         "name": "The One Lime Button Rule",
-        "body": "At most one lime primary button per viewport zone; every other action is ghost, chip or arrow.",
+        "body": "At most one lime primary button per viewport zone; every other action is ghost, chip or a plain link.",
         "section": "colors"
       },
       {
@@ -483,7 +493,8 @@
       "**Do** separate surfaces with 1px Hairline lines and tonal steps, building data panels as `gap-px` grids inside clipped rounded cards.",
       "**Do** animate data state in `steps()`, ease control hovers, and show the final frame instantly under `prefers-reduced-motion`.",
       "**Do** set Russian headings in Inter 650 at −0.035em and reserve Space Grotesk for Latin names.",
-      "**Do** keep raster atmosphere inside plates with a palette-only CSS grid fallback when the image fails."
+      "**Do** keep raster atmosphere inside plates with a palette-only CSS grid fallback when the image fails.",
+      "**Do** keep the hero to exactly one viewport (`100svh − nav`): the workspace plate absorbs the remaining height and the action bar is its last row."
     ],
     "donts": [
       "**Don't** add a third accent colour, gradients on UI surfaces, purple gradients, glowing orbs or meaningless particles.",
@@ -492,6 +503,7 @@
       "**Don't** use Plex Mono for headings, buttons or marketing copy.",
       "**Don't** signal errors with a red; state the error in text.",
       "**Don't** lay out rows of identical cards; feature modules vary spans, and every tile in a row carries its own schema or content.",
+      "**Don't** hide steps or segments behind tabs, carousels or arrow paging; show all of them at once and connect or align them instead.",
       "**Don't** put tracked uppercase kicker lines above headings; uppercase mono is for data field keys only."
     ]
   }

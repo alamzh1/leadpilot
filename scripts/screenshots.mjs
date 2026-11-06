@@ -22,11 +22,7 @@ for (const { file, width, height } of shots) {
     window.scrollTo(0, 0);
     await new Promise((r) => setTimeout(r, 400));
   });
-  // Полоса hero прилипает к низу экрана (sticky): снимаем при высоте окна во всю страницу,
-  // чтобы она стояла на своём месте под рабочей областью, а не поверх неё.
-  const full = await page.evaluate(() => document.documentElement.scrollHeight);
-  await page.setViewportSize({ width, height: full });
-  await page.waitForTimeout(300);
+  // Hero занимает ровно первый экран (100svh − nav): снимаем при обычной высоте окна, всю страницу.
   await page.screenshot({ path: file, fullPage: true });
   await page.close();
   console.log("saved", file);

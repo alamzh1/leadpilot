@@ -33,5 +33,8 @@ export const NAV_LINKS: readonly { href: `#${SectionId}`; label: string }[] = [
   { href: `#${SECTIONS.audience}`, label: "Для кого" },
 ];
 
+/** Публичный репозиторий проекта. */
+export const REPO_URL = "https://github.com/alamzh1/leadpilot";
+
 /** Полный адрес публикации с путём (в CI — https://alamzh1.github.io/leadpilot). */
 export const SITE_URL: string = SITE.url + BASE_PATH;

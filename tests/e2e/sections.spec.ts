@@ -104,7 +104,7 @@ test("для кого: три сегмента дословно, у каждог
   await page.goto("/");
   const section = page.locator("#audience");
   await expect(section.locator("h2")).toHaveText("Для кого");
-  const items = section.locator("ul > li");
+  const items = section.locator("li[id^='audience-']");
   await expect(items).toHaveCount(3);
   for (const [i, [name, text]] of SEGMENTS.entries()) {
     const item = items.nth(i);
@@ -156,46 +156,99 @@ test("все ссылки секций ведут к существующим я
   }
 });
 
-test("процесс: чип и стрелки переключают активный шаг и прокручивают к нему", async ({ page }) => {
+test("процесс: один конвейер без переключателей — у шага подпись, фрагмент на данных демо и «На выходе»", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const section = page.locator("#how");
+  await expect(section.locator("button")).toHaveCount(0);
+  const steps = section.locator("ol > li");
+  const labels = ["Поиск", "Проверка", "Квалификация"];
+  for (let i = 0; i < 3; i++) {
+    const step = steps.nth(i);
+    await expect(step.getByText(labels[i], { exact: true })).toBeVisible();
+    await expect(step).toContainText("vector-logistics /");
+    await expect(step).toContainText(/На выходе:/);
+  }
+  // Discover — непроверенное, Verify — подтверждено и одно устаревшее, Qualify — кому писать.
+  await expect(steps.nth(0)).toContainText("не проверено");
+  await expect(steps.nth(1)).toContainText("подтверждено");
+  await expect(steps.nth(1)).toContainText("устарело");
+  await expect(steps.nth(2)).toContainText("Head of Engineering");
+  // Соединители-стрелки между шагами (их два) стоят в промежутках между карточками.
+  const cards = await steps.locator("article").evaluateAll((els) => els.map((el) => el.getBoundingClientRect()));
+  const arrows = await steps.locator(":scope > [aria-hidden='true']").evaluateAll((els) => els.map((el) => el.getBoundingClientRect()));
+  expect(arrows).toHaveLength(2);
+  for (let i = 0; i < 2; i++) {
+    expect(arrows[i].left).toBeGreaterThanOrEqual(cards[i].right - 1);
+    expect(arrows[i].right).toBeLessThanOrEqual(cards[i + 1].left + 1);
+  }
+  await expect(section.getByRole("link", { name: "Посмотреть на примере" })).toHaveAttribute("href", "#demo");
+  // research.webp — небольшая плитка в шапке, а не на всю ширину.
+  const tile = await section.locator('img[src*="/images/research"]').boundingBox();
+  expect(tile!.width).toBeLessThan(400);
+});
+
+test("для кого: три сегмента видны сразу — в ряд на 1440, стопкой на 390, без карусели", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const section = page.locator("#audience");
+  await expect(section.locator("button")).toHaveCount(0);
+  const cards = section.locator("li[id^='audience-']");
+  await expect(cards).toHaveCount(3);
+  for (let i = 0; i < 3; i++) {
+    const card = cards.nth(i);
+    for (const label of ["Кто:", "Что смотрит в профиле:", "Результат:"]) await expect(card).toContainText(label);
+    await expect(card.locator("dl > div")).not.toHaveCount(0);
+  }
+  let boxes = await cards.evaluateAll((els) => els.map((el) => el.getBoundingClientRect()));
+  expect(Math.abs(boxes[0].top - boxes[2].top)).toBeLessThan(2);
+  expect(boxes[2].right).toBeLessThanOrEqual(1440);
+  // Мини-визуалы разные: разный набор полей профиля.
+  const keys = await cards.evaluateAll((els) => els.map((el) => Array.from(el.querySelectorAll("dt")).map((d) => d.textContent).join("|")));
+  expect(new Set(keys).size).toBe(3);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  boxes = await cards.evaluateAll((els) => els.map((el) => el.getBoundingClientRect()));
+  expect(boxes[1].top).toBeGreaterThan(boxes[0].bottom - 1);
+  expect(boxes[2].top).toBeGreaterThan(boxes[1].bottom - 1);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(0);
+});
+
+test("подвал: колонки ссылок ведут к существующим якорям, внешние — в новой вкладке с noopener", async ({ page }) => {
+  await page.goto("/");
+  const footer = page.locator("footer");
+  for (const name of ["Продукт", "Для кого", "Проект"]) {
+    await expect(footer.getByRole("heading", { name, exact: true })).toBeVisible();
+  }
+  const segments = { "IT-аутсорсинг": "#audience-outsourcing", "B2B-продажи": "#audience-sales", "Агентства": "#audience-agencies" };
+  for (const [label, href] of Object.entries(segments)) {
+    await expect(footer.getByRole("link", { name: label, exact: true })).toHaveAttribute("href", href);
+  }
+  const links = await footer.locator("a[href^='#']").evaluateAll((els) => els.map((el) => el.getAttribute("href")!));
+  expect(links.length).toBeGreaterThanOrEqual(7);
+  for (const href of links) await expect(page.locator(href)).toHaveCount(1);
+  const external = footer.locator("a[href^='http']");
+  await expect(external).toHaveCount(2);
+  await expect(external.nth(0)).toHaveAttribute("href", "https://github.com/alamzh1/leadpilot");
+  await expect(external.nth(1)).toHaveAttribute("href", "https://github.com/alamzh1/leadpilot#readme");
+  for (let i = 0; i < 2; i++) {
+    await expect(external.nth(i)).toHaveAttribute("target", "_blank");
+    await expect(external.nth(i)).toHaveAttribute("rel", /\bnoopener\b/);
+  }
+  await expect(footer).toContainText("© 2026 LeadPilot · Product concept · Interactive demo");
+  await expect(footer).toContainText("Сайт не использует cookies и не собирает персональные данные.");
+  // Никакой крупной лаймовой кнопки в подвале.
+  await expect(footer.locator(".px-btn")).toHaveCount(0);
+});
+
+test("подвал: ссылка на сегмент прокручивает к его карточке", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
-  const section = page.locator("#how");
-  const steps = section.locator("ol > li");
-  const chips = section.getByRole("group", { name: "Шаги процесса" }).getByRole("button");
-  await expect(chips).toHaveText(["Discover", "Verify", "Qualify"]);
-  await expect(steps.nth(0)).toHaveAttribute("data-active", "true");
-  await chips.nth(2).click();
-  await expect(chips.nth(2)).toHaveAttribute("aria-pressed", "true");
-  await expect(steps.nth(2)).toHaveAttribute("data-active", "true");
-  await expect(steps.nth(0)).not.toHaveAttribute("data-active", "true");
-  await section.getByRole("button", { name: "Следующий шаг" }).click();
-  await expect(steps.nth(0)).toHaveAttribute("data-active", "true");
-  await section.getByRole("button", { name: "Предыдущий шаг" }).click();
-  await expect(steps.nth(2)).toHaveAttribute("data-active", "true");
-  await expect(steps.nth(2)).toBeInViewport();
-});
-
-test("для кого: карусель сегментов листается стрелками, страница не уезжает вбок", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/#audience");
-  const section = page.locator("#audience");
-  const scroller = section.getByRole("region", { name: "Сегменты" });
-  const prev = section.getByRole("button", { name: "Предыдущий сегмент" });
-  const next = section.getByRole("button", { name: "Следующий сегмент" });
-  await expect(prev).toBeDisabled();
-  expect(await scroller.evaluate((el) => getComputedStyle(el).scrollSnapType)).toMatch(/x/);
-  await next.click();
-  await expect.poll(() => scroller.evaluate((el) => el.scrollLeft)).toBeGreaterThan(100);
-  await expect(prev).toBeEnabled();
-  const cards = section.locator("ul > li");
-  await expect(cards.nth(1)).toBeInViewport({ ratio: 0.5 });
-  const second = await cards.nth(1).boundingBox();
-  expect(second!.x).toBeGreaterThanOrEqual(0);
-  expect(second!.x + second!.width).toBeLessThanOrEqual(390);
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-  expect(overflow).toBeLessThanOrEqual(0);
+  await page.locator("footer").getByRole("link", { name: "B2B-продажи", exact: true }).click();
+  await expect(page).toHaveURL(/#audience-sales$/);
+  await expect(page.locator("#audience-sales h3")).toBeInViewport({ ratio: 1 });
 });
 
 for (const width of [1440, 1024, 768, 390, 320]) {

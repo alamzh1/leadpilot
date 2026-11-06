@@ -45,11 +45,12 @@ const CLEAR_FRAME = 1;
 
 /**
  * Живая рабочая область первого экрана на скруглённой подложке с изображением (CSS-фолбэк
- * без файла). Поверх нижнего края — чипы трёх демо-компаний: клик переключает компанию,
+ * без файла). Занимает оставшуюся высоту hero: окно показывает верх (путь, поиск, рельс,
+ * первые строки карточки) и мягко срезано снизу (`.hero-window`). Поверх нижнего края — чипы трёх демо-компаний: клик переключает компанию,
  * и анимация печатает новое название. Цикл на паузе вне экрана и во скрытой вкладке;
  * при reduced-motion и без JS показан финальный кадр.
  */
-export function HeroDesk() {
+export function HeroDesk({ className = "" }: { className?: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const reducedRef = useRef(false);
   const [companyId, setCompanyId] = useState<DemoCompanyId>(DEFAULT_ID);
@@ -113,10 +114,10 @@ export function HeroDesk() {
       data-testid="hero-desk"
       data-playing={playing ? "true" : "false"}
       data-company={company.id}
-      className="relative"
+      className={`relative flex flex-col ${className}`}
     >
       {/* Подложка-плитка: изображение в полную силу; без файла — CSS-сетка из палитры. */}
-      <div className="hero-plate relative isolate overflow-hidden rounded-3xl px-3 pt-6 pb-7 sm:px-8 sm:pt-10 sm:pb-9 lg:px-16 lg:pt-12 lg:pb-11">
+      <div className="hero-plate relative isolate flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl px-3 pt-[clamp(0.5rem,2.4svh,2.5rem)] pb-2.5 sm:rounded-3xl sm:px-8 sm:pb-[clamp(0.75rem,2.4svh,1.75rem)] lg:px-16">
         {/* Статический экспорт: next/image без оптимизации, адаптивность — ручной srcset. */}
         <PlateImage
           src={asset("/images/hero-plate-1280.webp")}
@@ -134,10 +135,10 @@ export function HeroDesk() {
         <div
           aria-hidden="true"
           data-testid="hero-window"
-          className="mx-auto max-w-[56rem] overflow-hidden rounded-2xl border border-line-strong bg-bg/95 shadow-[0_24px_60px_-20px_rgb(0_0_0/0.7)]"
+          className="hero-window mx-auto flex min-h-0 w-full max-w-[56rem] flex-1 flex-col overflow-hidden rounded-xl border border-line-strong bg-bg/95 shadow-[0_24px_60px_-20px_rgb(0_0_0/0.7)] sm:rounded-2xl"
         >
-          <div className="flex items-center justify-between gap-4 border-b border-line px-4 py-2.5">
-            <span className="min-w-0 font-mono text-[0.75rem] text-muted">
+          <div className="flex shrink-0 items-center justify-between gap-4 border-b border-line px-3 py-1.5 sm:px-4 sm:py-2.5">
+            <span className="min-w-0 truncate font-mono text-[0.6875rem] text-muted sm:text-[0.75rem] sm:whitespace-normal">
               leadpilot / <span className="text-text">AI RESEARCH WORKSPACE</span> / {company.id}
             </span>
             <span className="hidden shrink-0 items-center gap-2 font-mono text-[0.6875rem] text-muted sm:flex">
@@ -146,8 +147,8 @@ export function HeroDesk() {
             </span>
           </div>
 
-          <div className="flex flex-col gap-4 p-4 pb-8 sm:p-5 sm:pb-10">
-            <div className="flex items-center gap-3 rounded-lg border border-line-strong bg-surface px-3 py-2.5">
+          <div className="flex min-h-0 flex-col gap-2.5 p-2.5 sm:gap-4 sm:p-5">
+            <div className="flex shrink-0 items-center gap-3 rounded-lg border border-line-strong bg-surface px-3 py-2 sm:py-2.5">
               <PixelIcon name="search" size={16} className="shrink-0 text-muted" />
               <span className="min-w-0 truncate text-[0.9375rem]">
                 {company.name.slice(0, frame.typed)}
@@ -158,7 +159,7 @@ export function HeroDesk() {
               </span>
             </div>
 
-            <StageRail activeIndex={frame.stage} done={frame.done} compact />
+            <StageRail activeIndex={frame.stage} done={frame.done} compact className="shrink-0" />
 
             <ProfileCard company={company} resolvedCount={frame.resolved} compact />
           </div>
@@ -168,17 +169,20 @@ export function HeroDesk() {
         <div
           role="group"
           aria-label="Компания в рабочей области"
-          className="relative z-10 -mt-6 flex flex-wrap justify-center gap-2"
+          className="relative z-10 -mt-4 flex shrink-0 flex-nowrap justify-center gap-2 sm:-mt-6 sm:flex-wrap"
         >
           {DEMO_COMPANIES.map((c) => (
             <button
               key={c.id}
               type="button"
               aria-pressed={c.id === company.id}
+              aria-label={c.name}
               onClick={() => choose(c.id)}
-              className="px-chip px-chip--lg font-display shadow-[0_8px_24px_-12px_rgb(0_0_0/0.8)] max-sm:min-h-10 max-sm:px-3.5 max-sm:text-[0.8125rem]"
+              className="px-chip px-chip--lg font-display shadow-[0_8px_24px_-12px_rgb(0_0_0/0.8)] max-sm:min-h-9 max-sm:px-3.5 max-sm:py-2 max-sm:text-[0.8125rem]"
             >
-              {c.name}
+              {/* На телефоне — первое слово, чтобы три чипа встали в одну строку. */}
+              <span className="sm:hidden">{c.name.split(" ")[0]}</span>
+              <span className="max-sm:hidden">{c.name}</span>
             </button>
           ))}
         </div>

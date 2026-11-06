@@ -252,32 +252,6 @@
     transform: none;
   }
 
-  /* Квадратная кнопка-стрелка для каруселей и переключателей. */
-  .px-iconbtn {
-    display: inline-flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: var(--radius-lg);
-    background-color: color-mix(in srgb, var(--color-surface-2) 80%, transparent);
-    color: var(--color-text);
-    transition:
-      background-color 180ms var(--ease-out-expo),
-      opacity 180ms var(--ease-out-expo);
-  }
-
-  .px-iconbtn:hover {
-    background-color: var(--color-line-strong);
-  }
-
-  .px-iconbtn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    background-color: color-mix(in srgb, var(--color-surface-2) 80%, transparent);
-  }
-
   /*
    * Чип-фильтр: маленький, скруглённый. Невыбранный — полупрозрачная заливка surface-2,
    * выбранный (`aria-pressed`) — светлая заливка с тёмным текстом.
@@ -517,6 +491,16 @@
       100% 100%;
   }
 
+  /*
+   * Окно рабочей области hero занимает оставшуюся высоту первого экрана и показывает
+   * только верх; низ мягко срезан маской, поверх среза стоят чипы компаний.
+   */
+  .hero-window {
+    --fade: clamp(1.25rem, 22%, 4.5rem);
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--fade)), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - var(--fade)), transparent);
+  }
+
   /* Рабочая область hero уходит за правый край окна (от 1280px, где hero в две колонки). */
   @media (min-width: 80rem) {
     .hero-bleed {
@@ -571,97 +555,5 @@
       linear-gradient(var(--color-line) 1px, transparent 1px),
       linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
     background-size: auto, 48px 48px, 48px 48px;
-  }
-
-  /* Рельс процесса. Мобильный: вертикальная линия слева; от 1024px — горизонтальная сверху. */
-  .t04-rail-line {
-    position: absolute;
-    left: 7px;
-    top: 8px;
-    bottom: 8px;
-    width: 1px;
-    background-color: var(--color-line-strong);
-    transform-origin: top;
-  }
-
-  .t04-rail-marker {
-    position: absolute;
-    left: 0;
-    top: 4px;
-    width: 16px;
-    height: 16px;
-    background-color: var(--color-bg);
-    border: 1px solid var(--color-cyan);
-  }
-
-  /* Discover — голубой контур; Verify — наполовину проверено; Qualify — лайм. */
-  .t04-rail-marker--1 {
-    background-image: linear-gradient(90deg, var(--color-lime) 50%, transparent 50%);
-    background-clip: content-box;
-    padding: 3px;
-  }
-
-  .t04-rail-marker--2 {
-    background-color: var(--color-lime);
-    border-color: var(--color-lime);
-  }
-
-  @media (min-width: 1024px) {
-    .t04-rail-line {
-      left: 0;
-      right: 0;
-      top: 7px;
-      bottom: auto;
-      width: auto;
-      height: 1px;
-      transform-origin: left;
-    }
-
-    .t04-rail-marker {
-      top: 0;
-    }
-  }
-
-  /* Активный шаг (чип или стрелка): карточка поднимается на тон, маркер — крупнее. */
-  .process-card {
-    transition:
-      background-color 220ms var(--ease-out-expo),
-      border-color 220ms var(--ease-out-expo);
-  }
-
-  .t04-rail-step[data-active] .process-card {
-    background-color: var(--color-surface-2);
-    border-color: var(--color-line-strong);
-  }
-
-  .t04-rail-step[data-active] .t04-rail-marker {
-    outline: 1px solid var(--color-text);
-    outline-offset: 3px;
-  }
-
-  /* Появление ступенями: линия «прорисовывается», маркеры загораются по очереди. */
-  .t04-rail[data-armed] .t04-rail-line {
-    transform: scaleY(0);
-  }
-
-  .t04-rail[data-armed] .t04-rail-marker {
-    opacity: 0;
-  }
-
-  @media (min-width: 1024px) {
-    .t04-rail[data-armed] .t04-rail-line {
-      transform: scaleX(0);
-    }
-  }
-
-  .t04-rail[data-armed][data-shown] .t04-rail-line {
-    transform: none;
-    transition: transform 1200ms steps(12, end);
-  }
-
-  .t04-rail[data-armed][data-shown] .t04-rail-marker {
-    opacity: 1;
-    transition: opacity 1ms steps(1, end);
-    transition-delay: calc(var(--i, 0) * 500ms);
   }
 }

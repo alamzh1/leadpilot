@@ -9,19 +9,20 @@
 3. `useResearch` — машина `idle → running(stageIndex 0..3) → done`. Этап 700 мс, при reduced-motion 120 мс; таймеры чистятся при `reset` и размонтировании; `start` при `running` игнорируется.
 4. Отрисовка: `StageRail` (рельс этапов, `li[data-state]`), `PixelAssembly` (4px-фрагменты; при reduced-motion `null`), `ProfileCard` (`resolvedCount` 0..11 — сколько полей перешло из pending в verified; порядок полей задаёт `PROFILE_FIELDS`).
 5. Экспорт: `profileToText` / `profileToCsv` / `csvFileName` (`lib/demo/profile.ts`) → `copyText` / `downloadText` (`lib/clipboard.ts`; запасной путь через скрытую `textarea`, исключений наружу не бросает).
-6. `HeroDesk` (hero) — анимированная aria-hidden копия демо на тех же данных (`data-testid="hero-desk"`), только чтение.
+6. `HeroDesk` (hero) — анимированная aria-hidden копия демо на тех же данных (`data-testid="hero-desk"`), только чтение. Hero (`data-testid="hero"`) — ровно `100svh − nav`: рабочая область забирает остаток высоты и срезана маской `.hero-window`.
+7. «Для кого» — три карточки с id `audience-outsourcing` / `audience-sales` / `audience-agencies` (на них ссылается подвал).
 
 Полнота профиля: `profileCompleteness().total = 10`; значение «нет в открытых источниках (демо)» (`NOT_IN_PUBLIC_SOURCES`) не считается заполненным — у Atlas Commerce 9 из 10. Статус «Demo profile» не в счёте.
 
 ## Границы модулей
 
-- `lib/site.ts` — `SITE`, `NAV_LINKS`, `SECTIONS` (id якорей), `NAV_HEIGHT_PX`, `BASE_PATH`, `asset()`.
+- `lib/site.ts` — `SITE`, `REPO_URL`, `NAV_LINKS`, `SECTIONS` (id якорей), `NAV_HEIGHT_PX`, `BASE_PATH`, `asset()`.
 - `lib/demo/*` — данные и чистые функции, без React, кроме `useResearch.ts`. Unit-тесты — `tests/unit/`.
 - `components/ui/` — примитивы: `Button` (primary/ghost, с `href` — `<a>`), `Chip` (`aria-pressed`), `PixelIcon` (авторские SVG на сетке 8px), `Reveal` (появление при скролле).
 - `components/demo/` — всё про демо-карточку и рельс (`ProfileCard`, `ProfileGhost`, `StageRail`, `PixelAssembly`, `DemoWorkspace`).
-- `components/story/` — иллюстрации секций: `ProcessRail`, `ProblemSchemas`, `CapabilityFragments` (данные Vector Logistics, только чтение), `PlateImage` (ставит `data-img-failed` на родителя при ошибке загрузки; сеточные фолбэки включаются только по нему).
+- `components/story/` — иллюстрации секций: `ProcessPipeline` (конвейер Discover → Verify → Qualify на данных Vector Logistics), `ProblemSchemas`, `CapabilityFragments` (данные Vector Logistics, только чтение), `PlateImage` (ставит `data-img-failed` на родителя при ошибке загрузки; сеточные фолбэки включаются только по нему).
 - `components/sections/` — секции; `app/page.tsx` только собирает их по порядку: Nav, Hero, Demo, Problem, HowItWorks, Capabilities, Audience, FinalCta, Footer. Демо стоит сразу после hero ради критерия «30 секунд до демо».
-- Стили и токены — `app/globals.css` (`@theme`), классы `.px-btn` (скруглённые, размеры lg/md/sm), `.px-iconbtn` (стрелки), `.px-chip`, `.px-field`, `.inline-badge` (плашка-иконка в строке заголовка), `.t04-*`.
+- Стили и токены — `app/globals.css` (`@theme`), классы `.px-btn` (скруглённые, размеры lg/md/sm), `.px-chip`, `.px-field`, `.inline-badge` (плашка-иконка в строке заголовка), `.t04-*`.
 - Изображения — `public/images/{hero-plate,research,closing}.webp` (+ уменьшенные `-1280`/`-800`); у каждой секции с изображением есть CSS-фолбэк.
 
 ## Соглашения

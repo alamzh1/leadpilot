@@ -51,24 +51,24 @@ export function Nav() {
     <header className="sticky top-0 z-50 border-b border-line bg-bg">
       <nav
         aria-label="Основная навигация"
-        className="mx-auto grid h-nav max-w-page grid-cols-[1fr_auto] items-center gap-6 px-gutter md:grid-cols-[1fr_auto_1fr]"
+        className="mx-auto flex h-nav max-w-page items-center justify-between gap-6 px-gutter"
       >
         <Logo />
 
-        <ul className="hidden items-center gap-1 md:flex">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="inline-flex h-10 items-center rounded-lg px-3 text-[0.875rem] text-muted no-underline transition-colors duration-150 hover:text-text"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex items-center justify-end gap-2">
+        {/* Ссылки — группой справа, вплотную к кнопке (~28px от текста последней ссылки). */}
+        <div className="flex items-center gap-4 md:max-lg:gap-5">
+          <ul className="hidden items-center gap-1 md:flex">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="inline-flex h-10 items-center rounded-lg px-2 text-[0.875rem] whitespace-nowrap text-muted no-underline lg:px-3 transition-colors duration-150 hover:text-text"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
           <Button href={`#${SECTIONS.demo}`} size="sm" className="hidden md:inline-flex">
             Попробовать демо
           </Button>

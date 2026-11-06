@@ -11,7 +11,7 @@
 | dev-сервер | `npm run dev` |
 | eslint + tsc + vitest (31 тест) | `npm run check` |
 | статический экспорт в `out/` | `npm run build` |
-| Playwright по `out/` (59 тестов, нужен свежий build) | `npm run e2e` |
+| Playwright по `out/` (71 тест, нужен свежий build) | `npm run e2e` |
 | сборка с basePath + проверка ресурсов | `NEXT_PUBLIC_BASE_PATH=/leadpilot npm run build && node scripts/check-basepath.mjs` |
 | один unit-файл | `npx vitest run tests/unit/<file>` |
 | один e2e-файл | `npx playwright test tests/e2e/<file>` |

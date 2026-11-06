@@ -15,7 +15,7 @@ colors:
 typography:
   display:
     fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(2.125rem, 10.6cqi, 4.5rem)"
+    fontSize: "clamp(2.5rem, min(6.65cqi, 7.4svh), 4.5rem)"
     fontWeight: 650
     lineHeight: 1.04
     letterSpacing: "-0.035em"
@@ -102,13 +102,6 @@ components:
   button-disabled:
     backgroundColor: "{colors.panel-raised}"
     textColor: "{colors.slate-muted}"
-  arrow-button:
-    backgroundColor: "color-mix(in srgb, #1b232c 80%, transparent)"
-    textColor: "{colors.paper-white}"
-    rounded: "{rounded.lg}"
-    size: "48px"
-  arrow-button-hover:
-    backgroundColor: "{colors.hairline-strong}"
   chip:
     backgroundColor: "color-mix(in srgb, #1b232c 72%, transparent)"
     textColor: "{colors.paper-white}"
@@ -139,11 +132,21 @@ components:
     textColor: "{colors.verified-lime}"
     width: "1.2em"
     height: "0.82em"
+  connector:
+    backgroundColor: "{colors.panel-raised}"
+    textColor: "{colors.paper-white}"
+    rounded: "{rounded.md}"
+    size: "28px"
   tile:
     backgroundColor: "{colors.panel}"
     textColor: "{colors.paper-white}"
     rounded: "{rounded.2xl}"
     padding: "24px"
+  segment-card:
+    backgroundColor: "{colors.panel}"
+    textColor: "{colors.paper-white}"
+    rounded: "{rounded.3xl}"
+    padding: "28px"
   plate:
     backgroundColor: "{colors.panel}"
     rounded: "{rounded.3xl}"
@@ -168,7 +171,7 @@ LeadPilot is a working desk, not a brochure. Every surface reads as an instrumen
 
 Two layers share the desk. The **object layer** — buttons, chips, fields, cards, tiles and image plates — is soft and calm: rounded corners on one scale (14px controls, 16–20px cards, 28px plates), solid fills, smooth eased hovers. The **data layer** sits on a strict 4px grid inside those objects and stays hard-edged: 4px data squares, square stage and rail markers, authored 8×8 pixel icons, a blinking block caret, and state animation that moves in `steps()` rather than easing. Type stays Inter / Space Grotesk / IBM Plex Mono. Atmosphere (glass, glow, luminous lime) lives only inside the raster plates; the built UI never borrows it.
 
-Composition is large and quiet: big statements (often centred), generous section air (5–10rem), rounded tiles with their caption beneath or centred inside, square arrow buttons that page through steps and segments. The confirmed rejections come from the product brief: purple gradients, glowing orbs, meaningless particles, heavy shadows, rows of identical cards.
+Composition is large and quiet: big statements (often centred), generous section air (5–10rem), rounded tiles with their caption beneath or centred inside, and everything shown at once — steps as one connected pipeline, segments side by side — rather than paged behind tabs or carousels. The confirmed rejections come from the product brief: purple gradients, glowing orbs, meaningless particles, heavy shadows, rows of identical cards.
 
 **Key Characteristics:**
 - Rounded objects, square data: controls 14px, cards 16–20px, plates 28px; every pixel element stays square.
@@ -188,19 +191,19 @@ A near-black graphite field with two cool neutrals and exactly two signal colour
 - **Unverified Cyan** (unverified-cyan): data that is still being checked — 4px fragments, pending-cell outlines (55% mix), skeleton blocks (35% mix), the active stage, demo notices, focused fields, and the global focus ring.
 
 ### Neutral
-- **Graphite** (graphite): page ground, nav, field fill, workspace bodies, the hero bottom bar; text on selected chips.
-- **Panel** (panel): first-level surfaces — tiles, cards, profile cells, schema boards.
-- **Panel Raised** (panel-raised): chip and arrow-button fills (72–80% mix), icon tiles, inline badges, active process card, disabled button; the highest tonal step.
+- **Graphite** (graphite): page ground, nav, footer, field fill, workspace and mini-window bodies; text on selected chips.
+- **Panel** (panel): first-level surfaces — tiles, process and segment cards, profile cells, schema boards.
+- **Panel Raised** (panel-raised): chip fill (72% mix), icon tiles, pipeline connectors, inline badges, disabled button; the highest tonal step.
 - **Paper White** (paper-white): primary text and the fill of a selected chip.
 - **Slate Muted** (slate-muted): secondary text, captions, nav links, mono field keys, placeholders, hover border on ghost buttons and fields.
 - **Hairline** (hairline): section dividers, panel separators inside cards, dot-grid and fallback grids.
-- **Hairline Strong** (hairline-strong): control and card borders, ghost-button frame, pending stage markers, rail lines, arrow-button hover, scrollbar thumb.
+- **Hairline Strong** (hairline-strong): control and data-card borders, ghost-button frame, pending stage markers, rail and pipeline connector lines, scrollbar thumb.
 - **Lime Ink** (lime-ink): text on lime; same value as Graphite.
 
 ### Named Rules
 **The Colour-Is-State Rule.** Cyan and lime never decorate. Cyan means "not yet verified" (or focus); lime means "verified" or "the one primary action here." Selection is a neutral inversion (Paper White chip), not a colour. No third accent exists — the theme resets `--color-*` so none can be added by accident.
 
-**The One Lime Button Rule.** At most one lime primary button per viewport zone; every other action is ghost, chip or arrow.
+**The One Lime Button Rule.** At most one lime primary button per viewport zone; every other action is ghost, chip or a plain link.
 
 ## Typography
 
@@ -211,9 +214,9 @@ A near-black graphite field with two cool neutrals and exactly two signal colour
 **Character:** Inter carries every Russian headline at a dense 650 weight and tight −0.035em tracking, so Cyrillic stays first-class. Space Grotesk appears only on Latin product names — the logo, Discover / Verify / Qualify, module names, demo company names on chips — because it has no Cyrillic. Plex Mono is the voice of the data.
 
 ### Hierarchy
-- **Display** (650, 1.04): the hero H1 only, sized from its column with container units and capped at 4.5rem; each phrase on its own line while it fits.
+- **Display** (650, 1.04): the hero H1 only. It clamps by both column width and viewport height (`min(cqi, svh)`; phone floor 1.625rem, ≥1024px `clamp(2.5rem, min(6.65cqi, 7.4svh), 4.5rem)`) so the hero always fits one screen; each phrase on its own line.
 - **Headline** (650, clamp 2→2.875rem, 1.06): section H2s. The closing statement is a one-off at up to 4.25rem, centred, max 18ch.
-- **Statement** (650, clamp 1.75→2.25rem, −0.03em): the large name on carousel segment cards (Space Grotesk 600 on Latin process steps at the same size).
+- **Statement** (650, clamp 1.75→2.25rem, −0.03em): segment names on «Для кого» cards; Space Grotesk 600 on the Latin pipeline step names (Discover / Verify / Qualify) at the same size, with a muted Russian one-word label beside.
 - **Title** (650, 1.375rem, −0.02em): H3s under problem tiles.
 - **Title Latin** (Space Grotesk 600, 1.5rem, −0.025em; the lead module grows to clamp 1.75→2.5rem): Latin module names, centred in capability cards.
 - **Lead** (400, clamp 1.0625→1.25rem, 1.55): hero subtitle and section intros, max 46ch, Slate Muted.
@@ -228,19 +231,20 @@ A near-black graphite field with two cool neutrals and exactly two signal colour
 
 ## Layout
 
-A 1280px page container (80rem) with a fluid gutter (1→3rem) and a 4px spacing unit. Sections stack full-bleed, each separated by a single bottom hairline, with fluid vertical padding (5→10rem). The sticky nav is 64px — logo left, links centred, small lime CTA right; anchored sections offset by it.
+A 1280px page container (80rem) with a fluid gutter (1→3rem) and a 4px spacing unit. Sections stack full-bleed, each separated by a single bottom hairline, with fluid vertical padding (5→10rem). The sticky nav is 64px — logo left, links grouped on the right beside the small lime CTA; anchored sections offset by it.
 
 Recurring arrangements:
-- **Hero:** H1 + lead on the left, a right-hand column of four demo facts (value + icon tile; a 2/4-column grid of filled tiles on smaller screens); below, the workspace on a full-width rounded plate with company chips overlapping its bottom edge; then a bottom bar (caption · mini-card link · large lime CTA) that sticks to the viewport bottom from 1024px while the hero is in view.
-- **Header with controls:** section heading left, chips and arrow buttons right (stacked under 1024px), then media, then cards.
+- **Hero (one viewport):** the hero is exactly `100svh − nav` tall (min 33rem) and never scrolls internally. A column: H1 + lead with the four demo facts (one inline text line on phones, four filled tiles at 640px, a right-aligned column with icon tiles from 1024px); then the workspace plate takes all remaining height (`flex-1 min-h-0`), its window fading out at the bottom under a soft mask with the company chips on that edge; the last row is the action bar above a hairline (caption · "Как это работает" mini-link · large lime CTA; on phones a full-width CTA with the link beneath). Vertical gaps and paddings are `svh`-clamped so the whole stack fits from 667px tall phones to 900px desktops.
+- **Connected pipeline:** three step cards in one row from 1024px (stacked below), each linked to the next by a connector — a 1px Hairline Strong line through a 28px arrow tile — sitting in the gap (below the card when stacked). Every card shows its own mini window on demo data and ends with an «На выходе:» line above a hairline. No tabs, no paging.
+- **Segments at once:** three segment cards side by side from 1024px, rows aligned across cards with `grid-rows-subgrid` (name + task · Кто · Что смотрит в профиле + mini profile · Результат · scenario); stacked below 1024px. Each card carries a different mini profile.
+- **Header with media:** section heading and lead left, a small rounded image plate right (80px square on phones, 224–288px 4:3 above).
 - **Tiles with caption beneath:** rounded tile carries the schema; title and muted text sit below it, outside any frame.
-- **Carousel:** horizontal scroll-snap row of rounded cards (min(82vw, 26rem)), scrollbar hidden, arrow buttons below right; arrows disable at the ends.
 - **Centred statement:** a large centred headline with inline icon badges, one lime button under it, a wide rounded image plate below.
-- **Footer:** lime button left, section links in large Inter 650 in the middle, logo right, a hairline and the caption at the bottom.
+- **Footer:** a formal column footer — brand (mark, wordmark, "AI Research Workspace", a 44ch muted description) over a 5fr column, then three 2fr link columns (Продукт, Для кого, Проект with external GitHub links) headed by small Inter 600 titles with 0.875rem muted links; below a hairline, the copyright left and the legal note right. Two columns on phones with the brand spanning both.
 
 Capabilities keeps asymmetric spans (7 + 5 + 5 + 12) so the four modules are never equal. Data panels inside cards are `gap-px` grids on a hairline background, so cells read as one dossier cut by 1px lines.
 
-Breakpoints in use: 640px (sm), 768px (md: nav links appear), 1024px (lg: process rail turns horizontal, 12-col grids, sticky hero bar), 1280px (xl). Below 768px the nav collapses to a full-width panel with 48px hairline rows.
+Breakpoints in use: 640px (sm), 768px (md: nav links appear), 1024px (lg: pipeline and segment cards go three across, 12-col grids, hero facts move to a right column), 1280px (xl). Below 768px the nav collapses to a full-width panel with 48px hairline rows.
 
 ## Elevation & Depth
 
@@ -257,7 +261,7 @@ Flat by default. Depth comes from tonal steps (Graphite → Panel → Panel Rais
 
 Two shape languages, assigned by layer.
 
-**Objects are rounded on one scale:** 6px for tiny inline tags, 10px for mono field tags and small labels, 14px for every control (buttons, arrow buttons, chips, fields, icon tiles, search rows, nav links), 16px for compact cards and fact tiles, 20px for tiles and cards (problem tiles, process cards, capability cards, profile card), 28px for plates and large containers (hero plate, image plates, demo workspace, carousel cards). Inline badges inside headlines scale with the type (0.24em). Rounded containers clip their contents (`overflow: hidden`), so inner hairline grids stay square-celled.
+**Objects are rounded on one scale:** 6px for tiny inline tags, 10px for mono field tags, small labels, row icon tiles and pipeline connectors, 14px for every control (buttons, chips, fields, icon tiles, search rows, nav links), 16px for compact cards, fact tiles and mini windows, 20px for tiles and cards (problem tiles, process cards, capability cards, profile card), 28px for plates and large containers (hero plate, image plates, demo workspace, segment cards). On phones the hero plate steps down to 20px and its window to 16px. Inline badges inside headlines scale with the type (0.24em). Rounded containers clip their contents (`overflow: hidden`), so inner hairline grids stay square-celled.
 
 **Data is square:** 4px state squares and fragments, 16px stage and rail markers, 8px-pitch skeleton bars, dotted 8px schema grids, 8×8 pixel icons, the block caret, and dashed outlines for missing data never take a radius.
 
@@ -269,27 +273,29 @@ Two shape languages, assigned by layer.
 ### Buttons
 Solid, rounded, calm: colours ease over 180ms (ease-out-expo) and a press drops the button 1px.
 - **Primary:** Verified Lime fill, Lime Ink text, Inter 600 at 0.9375rem, 48px, 14px radius; may carry a trailing pixel arrow.
-- **Large:** 60px, 1rem, fluid side padding — hero bar, closing statement, footer.
+- **Large:** 60px, 1rem, fluid side padding — hero action bar (full-width, 52px on phones), closing statement, mobile nav panel.
 - **Small:** 40px, 0.875rem — nav CTA and secondary inline actions.
 - **Ghost:** transparent with a 1px Hairline Strong frame; hover fills Panel and the frame turns Slate Muted.
 - **Focus:** the 2px cyan outline at 3px offset. **Disabled:** Panel Raised fill, Slate Muted text, no press.
 
-### Arrow Buttons
-Square 48px (40px on phones) rounded 14px, translucent Panel Raised fill, a 16px pixel arrow (mirrored for "previous"); hover fills Hairline Strong; disabled drops to 40% opacity. Always carry an `aria-label` naming what they page.
-
 ### Chips
-- **Style:** small rounded toggles — translucent Panel Raised fill, transparent 1px border, 14px radius, 36px, 0.8125rem 600; large variant 44px, 0.9375rem. Company and step names set in Space Grotesk.
+- **Style:** small rounded toggles — translucent Panel Raised fill, transparent 1px border, 14px radius, 36px, 0.8125rem 600; large variant 44px, 0.9375rem. Company names set in Space Grotesk. In the hero they are the company switcher sitting on the plate's faded bottom edge (first word only on phones, so three fit one line).
 - **State:** hover fills Panel Raised with a Hairline Strong border; selected (`aria-pressed`) inverts to a Paper White fill with Graphite text (its sub-label mutes to a 70% mix).
 - **Tags:** mono field tags in cards are 10px-radius Panel Raised or 1px-bordered pills, not interactive.
 
 ### Cards / Tiles / Plates
 - **Tiles:** Panel fill, 20px radius, no border, 20–32px padding; the caption either sits beneath (problems) or is centred inside around a UI fragment (capabilities).
-- **Process cards:** Panel, 20px radius, transparent 1px border; the active step lifts to Panel Raised with a Hairline Strong border and its marker gains a Paper White outline.
-- **Data cards** (profile card, workspace window, capability fragments): 16–20px radius, 1px Hairline Strong border, clipped; window chrome is a top bar with a mono path and status square over a hairline.
+- **Process cards:** Panel, 20px radius, no border, 20–24px padding: mono step number ("01"), Space Grotesk step name with a muted Russian label, muted description, a mini window, and an «На выходе:» line (bold Paper White lead-in, muted text) above a hairline. All three are always visible; none is "active".
+- **Mini windows:** Graphite body, 16px radius, 1px Hairline Strong border, clipped, a mono `company / step` path bar with a state mark. The content shows the data state for that step: Discover — loose, offset findings in square 55% cyan outlines; Verify — a hairline list with lime pixel checks, mono dates and a struck-through, dashed-marker outdated row; Qualify — lime-keyed profile cells in a `gap-px` grid under a 60% lime outline.
+- **Segment cards:** Panel, 28px radius, 24–28px padding; Statement name and muted task, then three rows each led by a 28px Panel Raised icon tile (10px radius) — Кто, Что смотрит в профиле (with a mini profile window), Результат — and a hairline-topped scenario paragraph.
+- **Data cards** (profile card, workspace window, mini windows, capability fragments): 16–20px radius, 1px Hairline Strong border, clipped; window chrome is a top bar with a mono path and status square over a hairline. The hero window additionally fades out at the bottom with a mask (`clamp(1.25rem, 22%, 4.5rem)`) instead of ending on a border.
 - **Plates:** 28px radius image containers with a palette-only CSS grid fallback when the image fails.
 
 ### Icon Tiles and Inline Badges
-Icon tiles are 44–48px Panel Raised squares rounded 14px holding a 16–24px pixel icon (fact column, process cards, hero mini-card). Inline badges sit inside a large headline line as a small rounded Panel Raised plaque with a lime or white pixel glyph; a lime-filled badge is reserved for the verified check.
+Icon tiles are 44–48px Panel Raised squares rounded 14px holding a 16–24px pixel icon (hero fact column, hero mini-link); a compact 28px variant rounded 10px leads the rows on segment cards.
+
+### Pipeline Connector
+A 28px Panel Raised square, 10px radius, 1px Hairline Strong border, holding a 16px pixel arrow (rotated 90° when stacked), threaded on a 1px Hairline Strong line through the gap between step cards. Decorative (`aria-hidden`), never a button. Inline badges sit inside a large headline line as a small rounded Panel Raised plaque with a lime or white pixel glyph; a lime-filled badge is reserved for the verified check.
 
 ### Inputs / Fields
 - **Style:** Graphite fill, 1px Hairline Strong border, 14px radius, 52px, 18px padding, lime caret, Slate Muted placeholder.
@@ -297,13 +303,13 @@ Icon tiles are 44–48px Panel Raised squares rounded 14px holding a 16–24px p
 - **Error:** border turns Paper White and the message is written out — error by text, never red.
 
 ### Navigation
-Sticky 64px Graphite bar with a bottom hairline: pixel-mark logo + Space Grotesk wordmark, four centred Inter 0.875rem links in Slate Muted (hover Paper White, 14px-rounded hit areas), and a small lime CTA. Under 768px a toggle opens a full-width panel of 48px hairline-separated rows.
+Sticky 64px Graphite bar with a bottom hairline: pixel-mark logo + Space Grotesk wordmark left; on the right, four Inter 0.875rem links in Slate Muted (hover Paper White, 14px-rounded 40px hit areas) grouped directly beside the small lime CTA. Under 768px a toggle opens a full-width panel of 48px hairline-separated rows.
 
 ### Profile Cell (signature)
 The dossier field. A 4px state square plus a mono uppercase key, then the value. Pending: cyan outline at 55% and rows of 4px cyan skeleton blocks holding the value's height. Verified: lime square and a 900ms three-step lime outline flash. Missing: dashed Hairline Strong outline. 4px cyan fragments converge on the cell in `steps(4)` as it resolves — the pixel-assembly signature. Cells are square and sit in a `gap-px` hairline grid inside a rounded card.
 
 ### Stage Rail
-Four research stages as square 16px markers: pending is an outlined Graphite box, active is cyan and blinks in `steps(1)`, done is lime with a pixel check; connectors are 1px, lime at 70% behind done stages. The story process rail (Discover → Verify → Qualify) draws its line in `steps(12)` and lights markers 500ms apart; markers go cyan outline → half lime → full lime.
+Four research stages as square 16px markers: pending is an outlined Graphite box, active is cyan and blinks in `steps(1)`, done is lime with a pixel check; connectors are 1px, lime at 70% behind done stages.
 
 ### Pixel Icons
 Authored 8×8 grids rendered at integer multiples (16/24/32px) with currentColor; a secondary cell renders in cyan for unverified accents.
@@ -318,6 +324,7 @@ Authored 8×8 grids rendered at integer multiples (16/24/32px) with currentColor
 - **Do** animate data state in `steps()`, ease control hovers, and show the final frame instantly under `prefers-reduced-motion`.
 - **Do** set Russian headings in Inter 650 at −0.035em and reserve Space Grotesk for Latin names.
 - **Do** keep raster atmosphere inside plates with a palette-only CSS grid fallback when the image fails.
+- **Do** keep the hero to exactly one viewport (`100svh − nav`): the workspace plate absorbs the remaining height and the action bar is its last row.
 
 ### Don't:
 - **Don't** add a third accent colour, gradients on UI surfaces, purple gradients, glowing orbs or meaningless particles.
@@ -326,4 +333,5 @@ Authored 8×8 grids rendered at integer multiples (16/24/32px) with currentColor
 - **Don't** use Plex Mono for headings, buttons or marketing copy.
 - **Don't** signal errors with a red; state the error in text.
 - **Don't** lay out rows of identical cards; feature modules vary spans, and every tile in a row carries its own schema or content.
+- **Don't** hide steps or segments behind tabs, carousels or arrow paging; show all of them at once and connect or align them instead.
 - **Don't** put tracked uppercase kicker lines above headings; uppercase mono is for data field keys only.

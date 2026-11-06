@@ -20,16 +20,13 @@ test.describe("первый экран 1440×900", () => {
     expect(h1).toBeGreaterThanOrEqual(60);
   });
 
-  test("путь к демо — в первом экране и не теряется, пока виден hero", async ({ page }) => {
+  test("путь к демо — в первом экране, чипы компаний рядом с рабочей областью", async ({ page }) => {
     await page.goto("/");
     const cta = page.getByRole("link", { name: "Исследовать компанию" });
     await expect(cta).toBeInViewport({ ratio: 1 });
-    // Полоса hero прилипает к низу экрана: после прокрутки внутри hero кнопка всё ещё видна целиком.
-    await page.evaluate(() => window.scrollTo(0, 500));
-    await expect(cta).toBeInViewport({ ratio: 1 });
-    const box = await cta.boundingBox();
-    expect(box!.y + box!.height).toBeLessThanOrEqual(900);
-    // Чипы компаний hero — рабочие кнопки рядом с рабочей областью.
+    // Полоса больше не липкая — она последняя строка hero.
+    const bar = cta.locator("xpath=ancestor::div[contains(@class,'border-t')][1]");
+    expect(await bar.evaluate((el) => getComputedStyle(el).position)).toBe("static");
     await expect(page.getByRole("group", { name: "Компания в рабочей области" }).getByRole("button")).toHaveCount(3);
   });
 
@@ -38,6 +35,59 @@ test.describe("первый экран 1440×900", () => {
     const img = page.getByTestId("hero-desk").locator('img[src*="hero-plate"]');
     expect(await img.evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
   });
+});
+
+/** Размеры окна, на которых hero целиком помещается в первый экран. */
+const FIRST_SCREEN = [
+  [1440, 900], [1536, 864], [1366, 768], [1280, 720], [1024, 768], [768, 1024], [390, 844], [375, 667], [360, 740],
+] as const;
+
+for (const [width, height] of FIRST_SCREEN) {
+  test(`hero ${width}×${height}: целиком в первом экране, кнопка и чипы видны без прокрутки`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    const hero = page.getByTestId("hero");
+    const box = await hero.boundingBox();
+    expect(box!.y + box!.height).toBeLessThanOrEqual(height + 0.5);
+    const cta = page.getByRole("link", { name: "Исследовать компанию" });
+    await expect(cta).toBeInViewport({ ratio: 1 });
+    const ctaBox = await cta.boundingBox();
+    expect(ctaBox!.y + ctaBox!.height).toBeLessThanOrEqual(height);
+    await expect(page.locator("h1")).toBeInViewport({ ratio: 1 });
+    const chips = page.getByRole("group", { name: "Компания в рабочей области" });
+    await expect(chips).toBeInViewport({ ratio: 1 });
+    // Рабочая область показывает хотя бы поиск: окно не схлопнулось.
+    const win = await page.getByTestId("hero-window").boundingBox();
+    expect(win!.height).toBeGreaterThan(90);
+    // Ничего не налезает: H1, подзаголовок, факты, рабочая область и полоса идут сверху вниз.
+    const order = await page.evaluate(() => {
+      const q = (s: string) => document.querySelector(s)!.getBoundingClientRect();
+      return { h1: q("h1"), desk: q("[data-testid='hero-desk']"), facts: q("[aria-label='Демо в цифрах']") };
+    });
+    expect(order.desk.top).toBeGreaterThanOrEqual(order.h1.bottom);
+    expect(order.desk.top).toBeGreaterThanOrEqual(order.facts.bottom - 0.5);
+    expect(ctaBox!.y).toBeGreaterThanOrEqual(order.desk.bottom);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    expect(overflow).toBeLessThanOrEqual(0);
+  });
+}
+
+test("навигация: ссылки сгруппированы справа вплотную к кнопке «Попробовать демо»", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const nav = page.getByRole("navigation", { name: "Основная навигация" });
+  const last = await nav.getByRole("link", { name: "Для кого", exact: true }).evaluate((el) => {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    return range.getBoundingClientRect().right;
+  });
+  const button = await nav.getByRole("link", { name: "Попробовать демо" }).boundingBox();
+  const gap = button!.x - last;
+  expect(gap).toBeGreaterThanOrEqual(20);
+  expect(gap).toBeLessThanOrEqual(36);
+  const first = await nav.getByRole("link", { name: "Возможности", exact: true }).boundingBox();
+  expect(first!.x).toBeGreaterThan(1440 / 2);
 });
 
 test("заголовки с кириллицей — целиком Inter, латинские метки — Space Grotesk", async ({ page }) => {
