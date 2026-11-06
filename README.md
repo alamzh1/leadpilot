@@ -2,7 +2,7 @@
 
 Одностраничный русскоязычный лендинг концепт-продукта **LeadPilot** — AI research workspace для B2B-продаж: из названия компании получается структурированный профиль (описание, IT-потребности, релевантные должности, сигналы, источники, повод для первого контакта). На странице есть интерактивное демо на трёх вымышленных компаниях (Northstar Bank, Vector Logistics, Atlas Commerce): исследование в четыре этапа, копирование профиля и экспорт в CSV. Все компании и данные вымышленные, живого анализа нет.
 
-Проект сделан по ТЗ из `plan.md` как тестовое задание; сопроводительные материалы — в [`docs/submission.md`](docs/submission.md).
+Проект сделан по ТЗ как тестовое задание (само ТЗ в репозиторий не входит); сопроводительные материалы — в [`docs/submission.md`](docs/submission.md).
 
 ## Стек
 
@@ -31,7 +31,9 @@ node scripts/check-basepath.mjs   # отдаёт out/ под /leadpilot/ и пр
 
 ## Деплой
 
-GitHub Pages через `.github/workflows/deploy.yml`: на push в `main` — `npm ci`, `npm run check`, `npm run build` с `NEXT_PUBLIC_BASE_PATH=/leadpilot`, затем `actions/upload-pages-artifact` и `actions/deploy-pages`. Файл `public/.nojekyll` попадает в `out/` (в workflow добавлен и `touch out/.nojekyll`). Все пути к статике идут через `asset()` из `lib/site.ts`, поэтому сайт работает и в корне, и под `/leadpilot/`. В репозиторий workflow включается настройкой Pages → Source: GitHub Actions. Адрес публикации: `https://alamzh1.github.io/leadpilot/` (после первого push).
+GitHub Pages через `.github/workflows/deploy.yml`: на push в `main` — `npm ci`, `npm run check`, `npm run build` с `NEXT_PUBLIC_BASE_PATH=/leadpilot`, затем `actions/upload-pages-artifact` и `actions/deploy-pages`. Файл `public/.nojekyll` попадает в `out/` (в workflow добавлен и `touch out/.nojekyll`). Все пути к статике идут через `asset()` из `lib/site.ts`, поэтому сайт работает и в корне, и под `/leadpilot/`. В репозиторий workflow включается настройкой Pages → Source: GitHub Actions. Адрес публикации: <https://alamzh1.github.io/leadpilot/>; репозиторий: <https://github.com/alamzh1/leadpilot>.
+
+Проверено после публикации 2026-11-06: страница отвечает 200, демо проходит на 1440 и 390, ошибок в консоли нет.
 
 ## Результаты проверок
 
@@ -53,7 +55,8 @@ Lighthouse 12 (desktop — `--preset=desktop`, mobile — настройки п�
 ## Дизайн и процесс
 
 - Дизайн-контракт: [`.impeccable/surfaces/app-page-tsx.md`](.impeccable/surfaces/app-page-tsx.md); правила проекта — `AGENTS.md`, `PRODUCT.md`.
-- Разбиение на задачи, спецификация и интерфейсы: [`.autopilot/2026-11-06-leadpilot-landing--wip/`](.autopilot/2026-11-06-leadpilot-landing--wip/) (`spec.md`, `interfaces.md`, `tickets/`).
+- ТЗ и журнал Autopilot (разбиение на задачи, спецификация, интерфейсы) — в локальном репозитории, не публикуются.
+- Архитектурные решения: [`docs/adr/`](docs/adr/); словарь проекта — [`CONTEXT.md`](CONTEXT.md).
 - Промпты изображений Higgsfield: [`docs/higgsfield-prompts.md`](docs/higgsfield-prompts.md).
 
 ## Известные ограничения

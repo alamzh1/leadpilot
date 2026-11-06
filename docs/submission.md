@@ -1,9 +1,9 @@
 # LeadPilot — материалы к тестовому заданию
 
-**Публичная ссылка:** [URL после публикации]
-**Репозиторий:** [URL после публикации]
+**Публичная ссылка:** https://alamzh1.github.io/leadpilot/
+**Репозиторий:** https://github.com/alamzh1/leadpilot
 
-Лендинг концепт-продукта LeadPilot с интерактивным демо по ТЗ из `plan.md`. Все компании и данные в демо вымышленные и помечены как демонстрационные.
+Лендинг концепт-продукта LeadPilot с интерактивным демо по ТЗ (само ТЗ в репозиторий не входит). Все компании и данные в демо вымышленные и помечены как демонстрационные.
 
 Скриншоты: [desktop 1440](screenshots/desktop-1440.png), [mobile 390](screenshots/mobile-390.png). Запуск и результаты проверок — в [README](../README.md).
 
@@ -18,7 +18,7 @@
 
 Промпты и сообщения даны дословно.
 
-**1. Сообщение пользователя, с которого началась работа** (к нему приложено ТЗ `plan.md`; полный текст — в брифе `.autopilot/2026-11-06-leadpilot-landing--wip/2026-11-06-brief.md`, раздел «Сообщение пользователя»):
+**1. Сообщение пользователя, с которого началась работа** (к нему приложено ТЗ; полный текст брифа — в локальном журнале Autopilot, не публикуется):
 
 > @plan.md  согласно тз создай лендинг. 
 > Используй скилл impeccable для дизайна,
@@ -47,7 +47,7 @@
 
 ## Как задачи были разбиты
 
-Задачи лежат в [`.autopilot/2026-11-06-leadpilot-landing--wip/tickets/`](../.autopilot/2026-11-06-leadpilot-landing--wip/tickets/); спецификация и границы модулей — `spec.md` и `interfaces.md` рядом.
+ТЗ и журнал Autopilot (задачи, спецификация, интерфейсы) — в локальном репозитории, не публикуются.
 
 | Задача | Содержание |
 |---|---|
@@ -65,9 +65,9 @@
 Только реально выполнявшиеся шаги и команды.
 
 1. **Подготовка.** Перед кодом изучены установленные скиллы Autopilot и Impeccable и доступные инструменты (CLI `higgsfield`, `gh`, Chromium Playwright, Node).
-2. **Autopilot** — `python3 .autopilot/ap.py init`, `stage`, `set`, `tickets`, `check-plan`; по ходу — `ticket NN start`, `ticket NN done`, `ticket NN review`, `add` и `coverage` (сверка требований с задачами). Результат каждого таска проверялся по его критериям и `npm run check`.
+2. **Autopilot** — локальный скрипт Autopilot: `init`, `stage`, `set`, `tickets`, `check-plan`; по ходу — `ticket NN start`, `ticket NN done`, `ticket NN review`, `add` и `coverage` (сверка требований с задачами). Результат каждого таска проверялся по его критериям и `npm run check`.
 3. **Impeccable** — `impeccable context`, `impeccable surface-brief write` / `read` (дизайн-контракт `.impeccable/surfaces/app-page-tsx.md`), `impeccable concept-seed`, `impeccable detect --json` по `app/` и `components/`. Финальное ревью агентом `impeccable-finish-reviewer` дало вердикт «fix», из него сделан таск 06.
 4. **Higgsfield** — генерация трёх изображений командой `higgsfield` (параметры и job-id в `higgsfield-prompts.md`), конвертация в WebP.
 5. **Проверки** — `npm run check` (eslint, `tsc --noEmit`, vitest), `npm run build`, `npm run e2e` (Playwright по `out/`), Lighthouse 12, сборка с `NEXT_PUBLIC_BASE_PATH=/leadpilot` и `scripts/check-basepath.mjs`.
 6. **Одно замечание ревью сознательно не применено**: изображения оставлены по промптам ТЗ §6. Строка «AI RESEARCH WORKSPACE» перенесена в путь рабочей области hero по решению пользователя (G02).
-7. **Публикация** — репозиторий не создавался и push не выполнялся до согласия пользователя; ссылка выше заполняется после публикации.
+7. **Публикация** — репозиторий не создавался и push не выполнялся до согласия пользователя; публикация выполнена на GitHub Pages, адрес указан выше.
