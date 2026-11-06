@@ -23,7 +23,8 @@
 - `components/story/` — иллюстрации секций: `ProcessPipeline` (конвейер Discover → Verify → Qualify на данных Vector Logistics), `ProblemSchemas`, `CapabilityFragments` (данные Vector Logistics, только чтение), `PlateImage` (ставит `data-img-failed` на родителя при ошибке загрузки; сеточные фолбэки включаются только по нему).
 - `components/sections/` — секции; `app/page.tsx` только собирает их по порядку: Nav, Hero, Demo, Problem, HowItWorks, Capabilities, Audience, FinalCta, Footer. Демо стоит сразу после hero ради критерия «30 секунд до демо».
 - Стили и токены — `app/globals.css` (`@theme`), классы `.px-btn` (скруглённые, размеры lg/md/sm), `.px-chip`, `.px-field`, `.inline-badge` (плашка-иконка в строке заголовка), `.t04-*`.
-- Изображения — `public/images/{hero-plate,research,closing}.webp` (+ уменьшенные `-1280`/`-800`); у каждой секции с изображением есть CSS-фолбэк.
+- Изображения — `public/images/{hero-plate,research}.webp` (+ уменьшенные `-1280`/`-800`); у каждой секции с изображением есть CSS-фолбэк. `closing*.webp` на странице больше не используется: финальный блок — текстовый заголовок `.closing-statement` (кегль в `cqi`, строки во всю ширину).
+- Раскладка — во всю ширину окна (только гаттеры `--spacing-gutter`, без контейнера `max-w-page`). От 1024px каждая секция — один экран: класс `.screen` (min-height `100svh − nav`, центрирование), отступ `py-fold`; вариант `short:` (≥1024px и высота ≤ 800px) укорачивает фрагменты UI. Демо — ровно экран: карточка профиля при нехватке высоты прокручивается внутри (`scroll-panel`, `data-testid="demo-card-scroll"`).
 
 ## Соглашения
 
@@ -41,5 +42,5 @@
 ## Тестовые швы
 
 - Unit (`tests/unit/`): `profile`, `companies`, `useResearch`.
-- E2E (`tests/e2e/`) идёт по статическому серверу `tests/e2e/serve.mjs` на `out/` (учитывает basePath): якоря, демо по трём компаниям, ошибки ввода, копирование, CSV, ширины 1440/1024/768/390/320, консоль без ошибок, `design.spec.ts` (иерархия заголовков, гарнитуры, фолбэки).
+- E2E (`tests/e2e/`) идёт по статическому серверу `tests/e2e/serve.mjs` на `out/` (учитывает basePath): якоря, демо по трём компаниям, ошибки ввода, копирование, CSV, ширины 1440/1024/768/390/320, консоль без ошибок, `design.spec.ts` (иерархия заголовков, гарнитуры, фолбэки), `fold.spec.ts` (секции в один экран на 1440×900/1366×768/1280×720/1920×1080, ширина сетки на 1920).
 - Testid: `demo-live`, `demo-notice`, `demo-ghost`, `hero-desk`, `completeness`.

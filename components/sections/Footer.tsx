@@ -36,7 +36,7 @@ const COLUMNS: readonly { title: string; links: readonly FooterLink[] }[] = [
 export function Footer() {
   return (
     <footer className="bg-bg">
-      <div className="mx-auto max-w-page px-gutter pt-14 pb-10 lg:pt-16">
+      <div className="px-gutter pt-14 pb-10 lg:pt-16">
         <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-x-6 gap-y-10 lg:grid-cols-[minmax(0,5fr)_repeat(3,minmax(0,2fr))] lg:gap-x-10">
           <div className="col-span-2 flex flex-col gap-4 lg:col-span-1 lg:pr-10">
             <a

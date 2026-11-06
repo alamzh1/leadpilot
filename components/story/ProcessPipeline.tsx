@@ -41,7 +41,7 @@ function Window({ path, state, children }: { path: string; state: ReactNode; chi
         </span>
         {state}
       </div>
-      <div className="flex flex-1 flex-col justify-center p-3">{children}</div>
+      <div className="flex flex-1 flex-col justify-center p-3 lg:p-[clamp(0.5rem,1.2svh,0.75rem)]">{children}</div>
     </div>
   );
 }
@@ -49,7 +49,7 @@ function Window({ path, state, children }: { path: string; state: ReactNode; chi
 /** Discover: разрозненные находки из разных источников — голубой контур, без дат и проверки. */
 function DiscoverFragment() {
   // Сдвиги и ширины разные — находки ещё не сведены в одну таблицу.
-  const offsets = ["mr-6", "ml-5", "mr-2", "ml-9"];
+  const offsets = ["mr-6 short:mr-2", "ml-5 short:ml-2", "mr-2 short:mr-0", "ml-9 short:ml-3"];
   return (
     <Window
       path="discover"
@@ -60,11 +60,11 @@ function DiscoverFragment() {
         </span>
       }
     >
-      <ul className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-2 lg:gap-[clamp(0.25rem,0.8svh,0.5rem)] short:grid short:grid-cols-2">
         {FINDINGS.map((f, i) => (
           <li
             key={f.kind}
-            className={`flex flex-col gap-0.5 px-3 py-2 outline outline-1 -outline-offset-1 outline-cyan/55 ${offsets[i % offsets.length]}`}
+            className={`flex flex-col gap-0.5 px-3 py-2 lg:py-[clamp(0.25rem,0.8svh,0.5rem)] outline outline-1 -outline-offset-1 outline-cyan/55 ${offsets[i % offsets.length]}`}
           >
             <span className="flex items-center gap-2 font-mono text-[0.6875rem] text-cyan">
               <span aria-hidden="true" className="size-1 shrink-0 bg-cyan" />
@@ -95,7 +95,7 @@ function VerifyFragment() {
         {FINDINGS.map((f) => (
           <li
             key={f.kind}
-            className="grid grid-cols-[16px_minmax(0,1fr)_auto] items-start gap-x-2.5 py-2 first:pt-0.5 last:pb-0.5"
+            className="grid grid-cols-[16px_minmax(0,1fr)_auto] items-start gap-x-2.5 py-2 first:pt-0.5 last:pb-0.5 lg:py-[clamp(0.25rem,0.9svh,0.5rem)]"
           >
             {f.outdated ? (
               <span aria-hidden="true" className="mt-0.5 size-4 border border-dashed border-line-strong" />
@@ -108,7 +108,7 @@ function VerifyFragment() {
               >
                 {f.text}
               </span>
-              <span className="truncate font-mono text-[0.6875rem] text-muted">{f.kind}</span>
+              <span className="truncate font-mono text-[0.6875rem] text-muted short:hidden">{f.kind}</span>
             </span>
             <span className="flex flex-col items-end gap-0.5 font-mono text-[0.6875rem] leading-[1.45]">
               <span className={`tabular ${f.outdated ? "text-muted line-through" : "text-text"}`}>{f.date}</span>
@@ -146,7 +146,7 @@ function QualifyFragment() {
         <QualifyCell label="Повод для контакта">
           {company.outreach.reason}
         </QualifyCell>
-        <QualifyCell label="IT-потребность">
+        <QualifyCell label="IT-потребность" className="short:hidden">
           {need}
         </QualifyCell>
       </dl>
@@ -154,9 +154,9 @@ function QualifyFragment() {
   );
 }
 
-function QualifyCell({ label, children }: { label: string; children: ReactNode }) {
+function QualifyCell({ label, children, className = "" }: { label: string; children: ReactNode; className?: string }) {
   return (
-    <div className="bg-bg px-3 py-2.5">
+    <div className={`bg-bg px-3 py-2.5 lg:py-[clamp(0.375rem,1svh,0.625rem)] ${className}`}>
       <dt className="flex items-center gap-2 font-mono text-[0.625rem] tracking-[0.04em] text-lime uppercase">
         <span aria-hidden="true" className="size-1 bg-lime" />
         {label}
@@ -195,8 +195,8 @@ export function ProcessPipeline({ steps }: { steps: readonly PipelineStep[] }) {
         const Mini = FRAGMENTS[step.name];
         return (
           <li key={step.name} className="relative flex">
-            <article className="flex w-full flex-col gap-5 rounded-2xl bg-surface p-5 sm:p-6">
-              <header className="flex flex-col gap-2">
+            <article className="flex w-full flex-col gap-5 rounded-2xl bg-surface p-5 sm:p-6 lg:gap-[clamp(0.625rem,1.8svh,1.25rem)] lg:p-[clamp(1rem,2.4svh,1.5rem)]">
+              <header className="flex flex-col gap-2 lg:flex-row lg:items-baseline lg:gap-3">
                 <span className="font-mono text-data text-muted">{String(i + 1).padStart(2, "0")}</span>
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   <h3 className="font-display text-[clamp(1.75rem,1.4rem+1.2vw,2.25rem)] leading-none font-semibold tracking-[-0.03em]">
@@ -205,9 +205,9 @@ export function ProcessPipeline({ steps }: { steps: readonly PipelineStep[] }) {
                   <span className="text-[1rem] font-semibold text-muted">{step.label}</span>
                 </div>
               </header>
-              <p className="max-w-[40ch] text-[0.9375rem] leading-[1.55] text-muted lg:min-h-[4.65em]">{step.text}</p>
+              <p className="max-w-[48ch] text-[0.9375rem] leading-[1.5] text-muted lg:min-h-[3em]">{step.text}</p>
               <Mini />
-              <p className="border-t border-line pt-4 text-[0.875rem] leading-snug">
+              <p className="border-t border-line pt-4 text-[0.9375rem] leading-snug lg:pt-[clamp(0.5rem,1.4svh,1rem)]">
                 <span className="font-semibold text-text">На выходе:</span>{" "}
                 <span className="text-muted">{step.output}</span>
               </p>

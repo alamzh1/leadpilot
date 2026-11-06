@@ -76,7 +76,7 @@ function Cell({ field, state, resolved, compact, children, className, labelSuffi
       data-field={field}
       data-state={state}
       data-flash={animated && state !== "pending" && i >= resolved - 4 ? "true" : undefined}
-      className={cx("pf-cell min-w-0 bg-surface", compact ? "px-3 py-2.5" : "px-4 py-4 sm:px-5", className)}
+      className={cx("pf-cell min-w-0 bg-surface", compact ? "px-3 py-2.5" : "px-4 py-4 sm:px-5 lg:px-4 lg:py-[clamp(0.625rem,1.6svh,1rem)]", className)}
     >
       <div className="flex items-center gap-2">
         <span
@@ -98,7 +98,7 @@ function Cell({ field, state, resolved, compact, children, className, labelSuffi
         </span>
         {labelSuffix}
       </div>
-      <div className={cx("relative", compact ? "mt-1.5" : "mt-2.5")}>
+      <div className={cx("relative", compact ? "mt-1.5" : "mt-2.5 lg:mt-1.5")}>
         {state === "pending" ? (
           <>
             {/* Значение держит место (высота карточки не прыгает), но скрыто до проверки. */}
@@ -141,7 +141,7 @@ export function ProfileCard({ company, resolvedCount, compact = false, titleId, 
     compact,
   });
 
-  const text = compact ? "text-[0.8125rem] leading-snug" : "text-[0.9375rem] leading-relaxed";
+  const text = compact ? "text-[0.8125rem] leading-snug" : "text-[0.9375rem] leading-relaxed lg:leading-snug";
   const TitleTag = compact ? "p" : "h3";
 
   const name = (
@@ -150,7 +150,7 @@ export function ProfileCard({ company, resolvedCount, compact = false, titleId, 
       tabIndex={titleId ? -1 : undefined}
       className={cx(
         "font-display font-semibold tracking-[-0.02em] text-text outline-none",
-        compact ? "text-[1.125rem] leading-tight" : "text-[1.625rem] leading-tight",
+        compact ? "text-[1.125rem] leading-tight" : "text-[1.625rem] leading-tight lg:text-[1.5rem]",
       )}
     >
       {company.name}
@@ -192,7 +192,7 @@ export function ProfileCard({ company, resolvedCount, compact = false, titleId, 
   );
 
   const signals = (
-    <ul className={cx("flex flex-col", compact ? "gap-1.5" : "gap-2.5")}>
+    <ul className={cx("flex flex-col", compact ? "gap-1.5" : "gap-2.5 lg:gap-1.5")}>
       {(compact ? company.signals.slice(0, 1) : company.signals).map((signal) => (
         <li key={signal.label} className={text}>
           <span className="font-mono text-[0.75rem] text-cyan">{signal.label}</span>
@@ -209,7 +209,7 @@ export function ProfileCard({ company, resolvedCount, compact = false, titleId, 
           key={`${source.kind}-${source.title}`}
           className={cx(
             "grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-4 border-t border-line first:border-t-0",
-            compact ? "py-1" : "py-2 sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)_auto]",
+            compact ? "py-1" : "py-2 sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)_auto] lg:grid-cols-[minmax(0,11rem)_minmax(0,1fr)_auto] lg:py-1.5",
           )}
         >
           <span className="flex min-w-0 items-center gap-2 font-mono text-[0.75rem] text-muted">
@@ -230,7 +230,7 @@ export function ProfileCard({ company, resolvedCount, compact = false, titleId, 
   const reason = (
     <p
       className={
-        compact ? "line-clamp-3 text-[0.8125rem] leading-snug" : "text-[1.0625rem] leading-relaxed"
+        compact ? "line-clamp-3 text-[0.8125rem] leading-snug" : "text-[1.0625rem] leading-relaxed lg:text-[0.9375rem] lg:leading-snug"
       }
     >
       {company.outreach.reason}
@@ -243,7 +243,7 @@ export function ProfileCard({ company, resolvedCount, compact = false, titleId, 
       <span
         className={cx(
           "font-heading font-[650] tracking-[-0.02em]",
-          compact ? "text-[0.9375rem]" : "text-[1.375rem]",
+          compact ? "text-[0.9375rem]" : "text-[1.375rem] lg:text-[1.125rem]",
         )}
       >
         {company.outreach.role}
@@ -304,37 +304,37 @@ export function ProfileCard({ company, resolvedCount, compact = false, titleId, 
       className={cx("overflow-hidden rounded-2xl border border-line-strong bg-surface", className)}
     >
       <div className="grid grid-cols-1 gap-px bg-line md:grid-cols-12">
-        <Cell {...cell("name")} className="md:col-span-5">
+        <Cell {...cell("name")} className="md:col-span-5 lg:col-span-4">
           {name}
         </Cell>
-        <Cell {...cell("industry")} className="md:col-span-3">
+        <Cell {...cell("industry")} className="md:col-span-3 lg:col-span-4">
           <p className={text}>{company.industry}</p>
         </Cell>
-        <Cell {...cell("size")} className="md:col-span-4">
+        <Cell {...cell("size")} className="md:col-span-4 lg:col-span-4">
           {size}
         </Cell>
-        <Cell {...cell("description")} className="md:col-span-7">
+        <Cell {...cell("description")} className="md:col-span-7 lg:col-span-8">
           <p className={cx(text, "max-w-[62ch]")}>{company.description}</p>
         </Cell>
-        <Cell {...cell("roles")} className="md:col-span-5">
+        <Cell {...cell("roles")} className="md:col-span-5 lg:col-span-4">
           {roles}
         </Cell>
-        <Cell {...cell("itNeeds")} className="md:col-span-6">
+        <Cell {...cell("itNeeds")} className="md:col-span-6 lg:col-span-4">
           {itNeeds}
         </Cell>
-        <Cell {...cell("signals")} className="md:col-span-6">
+        <Cell {...cell("signals")} className="md:col-span-6 lg:col-span-8">
           {signals}
         </Cell>
-        <Cell {...cell("sources")} className="md:col-span-12">
+        <Cell {...cell("sources")} className="md:col-span-12 lg:col-span-6">
           {sources}
         </Cell>
-        <Cell {...cell("reason")} className="bg-surface-2 md:col-span-8">
+        <Cell {...cell("reason")} className="bg-surface-2 md:col-span-8 lg:col-span-6">
           {reason}
         </Cell>
-        <Cell {...cell("contactRole")} className="bg-surface-2 md:col-span-4">
+        <Cell {...cell("contactRole")} className="bg-surface-2 md:col-span-4 lg:col-span-4">
           {contactRole}
         </Cell>
-        <Cell {...cell("status")} className="md:col-span-12">
+        <Cell {...cell("status")} className="md:col-span-12 lg:col-span-8">
           <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
             {statusTag}
             <div className="flex flex-col gap-1 sm:items-end">

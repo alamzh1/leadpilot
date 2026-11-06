@@ -144,7 +144,7 @@ test.describe("пустое состояние демо", () => {
 async function plateBackgrounds(page: Page) {
   return page.evaluate(() =>
     Array.from(document.querySelectorAll("img")).flatMap((img) => {
-      if (!/hero-plate|research|closing/.test(img.getAttribute("src") ?? "")) return [];
+      if (!/hero-plate|research/.test(img.getAttribute("src") ?? "")) return [];
       return [{ src: img.getAttribute("src"), bg: getComputedStyle(img.parentElement!).backgroundImage }];
     }),
   );
@@ -160,7 +160,7 @@ test("сеточные фоны-фолбэки — только когда из�
     }
   });
   const loaded = await plateBackgrounds(page);
-  expect(loaded).toHaveLength(3);
+  expect(loaded).toHaveLength(2);
   for (const p of loaded) expect(p.bg, p.src!).not.toMatch(/linear-gradient/);
 
   const broken = await page.context().newPage();
@@ -172,15 +172,27 @@ test("сеточные фоны-фолбэки — только когда из�
   });
   await expect
     .poll(async () => (await plateBackgrounds(broken)).filter((p) => /linear-gradient/.test(p.bg)).length)
-    .toBe(3);
+    .toBe(2);
 });
 
-test("финальный CTA: кнопка не лежит на изображении", async ({ page }) => {
+test("финальный CTA: без изображения, заголовок во всю ширину, кнопка читаемая и в пределах блока", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   const section = page.locator("#final-cta");
+  await expect(section.locator("img")).toHaveCount(0);
+  await expect(section.locator(".inline-badge")).toHaveCount(0);
+  const h2 = section.locator("h2");
+  // Строки заполняют ширину от гаттера до гаттера: самая длинная строка ≥ 90% окна.
+  const widest = await h2.evaluate((el) => {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    return Math.max(...Array.from(range.getClientRects()).map((r) => r.width));
+  });
+  expect(widest).toBeGreaterThanOrEqual(1440 * 0.85);
+  const lines = await h2.evaluate((el) => Math.round(el.getBoundingClientRect().height / parseFloat(getComputedStyle(el).lineHeight)));
+  expect(lines).toBeGreaterThanOrEqual(3);
+  expect(lines).toBeLessThanOrEqual(4);
   const button = await section.getByRole("link", { name: "Запустить демо" }).boundingBox();
-  const img = await section.locator('img[src*="closing"]').boundingBox();
-  expect(button && img).toBeTruthy();
-  expect(button!.y + button!.height).toBeLessThanOrEqual(img!.y);
+  const box = await section.boundingBox();
+  expect(button!.y + button!.height).toBeLessThanOrEqual(box!.y + box!.height);
 });

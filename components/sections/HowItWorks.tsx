@@ -31,23 +31,22 @@ const STEPS: readonly PipelineStep[] = [
  */
 export function HowItWorks() {
   return (
-    <section id={SECTIONS.how} aria-labelledby="how-title" className="border-b border-line">
-      <div className="mx-auto flex max-w-page flex-col gap-10 px-gutter py-section lg:gap-14">
-        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-5 sm:gap-10">
-          <div className="flex flex-col gap-4">
-            <h2 id="how-title" className="max-w-[14ch] text-section">
-              Как работает LeadPilot
-            </h2>
-            <p className="max-w-[52ch] text-lead text-muted max-sm:text-[1rem]">
-              Три шага от названия компании до профиля. Каждый шаг берёт результат предыдущего:
-              сначала находки, затем проверенные факты, в конце — кому писать и зачем.
-            </p>
-          </div>
-          <div className="t04-plate relative row-span-1 aspect-square w-20 self-start overflow-hidden rounded-xl sm:aspect-[4/3] sm:w-56 sm:self-end sm:rounded-2xl lg:w-72">
+    <section id={SECTIONS.how} aria-labelledby="how-title" className="screen border-b border-line">
+      {/* От 1024px — одна сетка: заголовок и пояснение слева, плитка и итог справа, конвейер ниже. */}
+      <div className="flex w-full flex-col gap-10 px-gutter py-section lg:grid lg:grid-cols-12 lg:gap-x-[clamp(1.5rem,2.5vw,3rem)] lg:gap-y-[clamp(0.75rem,2.4svh,2rem)] lg:py-fold">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-5 sm:gap-10 lg:contents">
+          <h2 id="how-title" className="max-w-[14ch] text-section lg:col-span-6 lg:row-start-1 lg:max-w-none lg:self-end">
+            Как работает LeadPilot
+          </h2>
+          <p className="col-start-1 max-w-[52ch] text-lead text-muted max-sm:text-[1rem] lg:col-span-6 lg:row-start-2 lg:-mt-[clamp(0.25rem,1.2svh,1rem)] lg:max-w-[64ch] lg:text-[1rem] lg:leading-[1.5]">
+            Три шага от названия компании до профиля. Каждый шаг берёт результат предыдущего:
+            сначала находки, затем проверенные факты, в конце — кому писать и зачем.
+          </p>
+          <div className="t04-plate relative col-start-2 row-span-2 row-start-1 aspect-square w-20 self-start overflow-hidden rounded-xl sm:aspect-[4/3] sm:w-56 sm:self-end sm:rounded-2xl lg:col-span-2 lg:col-start-7 lg:row-span-2 lg:row-start-1 lg:aspect-auto lg:h-full lg:min-h-[4.5rem] lg:w-full lg:self-stretch">
             <PlateImage
               src={asset("/images/research-800.webp")}
               srcSet={`${asset("/images/research-800.webp")} 800w, ${asset("/images/research.webp")} 1200w`}
-              sizes="(min-width: 1024px) 288px, (min-width: 640px) 224px, 80px"
+              sizes="(min-width: 1024px) 300px, (min-width: 640px) 224px, 80px"
               alt="Разрозненные фрагменты данных слева сходятся в один блок и выстраиваются в упорядоченную сеть справа"
               width={1200}
               height={896}
@@ -58,10 +57,12 @@ export function HowItWorks() {
           </div>
         </div>
 
-        <ProcessPipeline steps={STEPS} />
+        <div className="lg:col-span-12 lg:row-start-3">
+          <ProcessPipeline steps={STEPS} />
+        </div>
 
-        <div className="flex flex-col items-start gap-5 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="max-w-[56ch] text-[1rem] leading-[1.55] text-muted">
+        <div className="flex flex-col items-start gap-5 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between lg:col-span-4 lg:col-start-9 lg:row-span-2 lg:row-start-1 lg:flex-col lg:items-start lg:justify-end lg:gap-3 lg:border-t-0 lg:pt-0">
+          <p className="max-w-[56ch] text-[1rem] leading-[1.55] text-muted lg:text-[0.9375rem] lg:leading-[1.45]">
             <span className="font-semibold text-text">Итог — один профиль компании</span> с источниками
             и датами, который можно скопировать или выгрузить в CSV.
           </p>

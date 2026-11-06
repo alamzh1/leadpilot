@@ -118,12 +118,12 @@ test("для кого: три сегмента дословно, у каждог
   await expect(section).not.toContainText(/%|в \d+ раз/);
 });
 
-test("финальный CTA: заголовок дословно, фон closing, «Запустить демо» ведёт к демо", async ({ page }) => {
+test("финальный CTA: заголовок дословно, без изображения, «Запустить демо» ведёт к демо", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   const section = page.locator("#final-cta");
   await expect(section.locator("h2")).toHaveText("Меньше времени на поиск. Больше контекста для разговора");
-  await expect(section.locator('img[src*="/images/closing"]')).toHaveCount(1);
+  await expect(section.locator("img")).toHaveCount(0);
   const cta = section.getByRole("link", { name: "Запустить демо" });
   await expect(cta).toHaveAttribute("href", "#demo");
   await cta.click();

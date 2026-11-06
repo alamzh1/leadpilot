@@ -159,11 +159,11 @@ export function DemoWorkspace() {
   const describedBy = [hintId, error ? errorId : null].filter(Boolean).join(" ");
 
   return (
-    <div className="grid gap-px overflow-hidden rounded-3xl border border-line-strong bg-line lg:grid-cols-12">
-      {/* Панель запроса */}
-      <div className="flex min-w-0 flex-col gap-8 bg-surface p-5 sm:p-7 lg:col-span-4">
-        <form noValidate onSubmit={onSubmit} className="flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
+    <div className="grid gap-px overflow-hidden rounded-3xl border border-line-strong bg-line lg:min-h-0 lg:flex-1 lg:grid-cols-12 lg:grid-rows-[minmax(0,1fr)]">
+      {/* Панель запроса: на низких окнах (сообщение «не в демо») прокручивается сама. */}
+      <div className="flex min-w-0 flex-col gap-8 bg-surface p-5 sm:p-7 lg:scroll-panel lg:col-span-4 lg:min-h-0 lg:gap-5 lg:p-[clamp(1rem,2.6svh,1.75rem)] 2xl:col-span-3">
+        <form noValidate onSubmit={onSubmit} className="flex flex-col gap-6 lg:gap-[clamp(0.75rem,2.2svh,1.5rem)]">
+          <div className="flex flex-col gap-3 lg:gap-2">
             <p aria-hidden="true" className="text-[0.9375rem] font-medium">
               Выберите компанию
             </p>
@@ -241,36 +241,40 @@ export function DemoWorkspace() {
           </div>
         )}
 
-        <div className="border-t border-line pt-6">
-          <StageRail
-            activeIndex={running ? state.stageIndex : -1}
-            done={done}
-            orientation="vertical"
-          />
-        </div>
-
         <p data-testid="demo-live" aria-live="polite" role="status" className="sr-only">
           {liveText}
         </p>
       </div>
 
-      {/* Результат */}
-      <div className="min-w-0 bg-bg p-4 sm:p-7 lg:col-span-8">
+      {/* Результат: рельс этапов, карточка (при нехватке высоты прокручивается внутри), действия. */}
+      <div className="flex min-w-0 flex-col gap-6 bg-bg p-4 sm:p-7 lg:col-span-8 lg:min-h-0 lg:gap-[clamp(0.75rem,2svh,1.25rem)] lg:p-[clamp(1rem,2.6svh,1.75rem)] 2xl:col-span-9">
+        <StageRail
+          activeIndex={running ? state.stageIndex : -1}
+          done={done}
+          orientation="responsive"
+          className="shrink-0 border-b border-line pb-5 lg:pb-[clamp(0.75rem,2svh,1.25rem)] short:hidden"
+        />
+        {/* Низкое окно десктопа: рельс одной строкой (четыре сегмента и текущий этап) — место карточке. */}
+        <div className="hidden shrink-0 border-b border-line pb-3 short:block">
+          <StageRail activeIndex={running ? state.stageIndex : -1} done={done} compact />
+        </div>
         {company ? (
-          <div className="flex flex-col gap-5">
-            <ProfileCard company={company} resolvedCount={resolved} titleId={titleId} />
+          <>
+            <div data-testid="demo-card-scroll" className="lg:scroll-panel lg:min-h-0 lg:flex-1 lg:rounded-2xl">
+              <ProfileCard company={company} resolvedCount={resolved} titleId={titleId} />
+            </div>
             {done && (
-              <div className="flex flex-col gap-3">
+              <div className="flex shrink-0 flex-col gap-2 lg:flex-row lg:flex-wrap lg:items-center lg:gap-x-5">
                 <div className="flex flex-wrap gap-3">
-                  <Button onClick={() => onCopy(company)} className="max-sm:w-full">
+                  <Button onClick={() => onCopy(company)} className="max-sm:w-full lg:min-h-10 lg:px-5 lg:py-2.5 lg:text-[0.875rem]">
                     {copyStatus === "copied" ? <Check size={16} strokeWidth={2} /> : <Copy size={16} strokeWidth={2} />}
                     Скопировать профиль
                   </Button>
-                  <Button variant="ghost" className="max-sm:w-full" onClick={() => downloadText(csvFileName(company), profileToCsv(company), "text/csv;charset=utf-8")}>
+                  <Button variant="ghost" className="max-sm:w-full lg:min-h-10 lg:px-5 lg:py-2.5 lg:text-[0.875rem]" onClick={() => downloadText(csvFileName(company), profileToCsv(company), "text/csv;charset=utf-8")}>
                     <Download size={16} strokeWidth={2} />
                     Скачать CSV
                   </Button>
-                  <Button variant="ghost" className="max-sm:w-full" onClick={onReset}>
+                  <Button variant="ghost" className="max-sm:w-full lg:min-h-10 lg:px-5 lg:py-2.5 lg:text-[0.875rem]" onClick={onReset}>
                     <RotateCcw size={16} strokeWidth={2} />
                     Исследовать другую компанию
                   </Button>
@@ -283,9 +287,11 @@ export function DemoWorkspace() {
                 </p>
               </div>
             )}
-          </div>
+          </>
         ) : (
-          <ProfileGhost />
+          <div className="lg:min-h-0 lg:flex-1">
+            <ProfileGhost />
+          </div>
         )}
       </div>
     </div>

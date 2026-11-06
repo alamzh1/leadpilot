@@ -29,19 +29,19 @@ const PROBLEMS: readonly { title: string; text: string; schema: ReactNode }[] = 
  */
 export function Problem() {
   return (
-    <section id={SECTIONS.problem} aria-labelledby="problem-title" className="border-b border-line">
-      <div className="mx-auto flex max-w-page flex-col gap-14 px-gutter py-section lg:gap-20">
-        <div className="flex flex-col items-center gap-6 text-center">
+    <section id={SECTIONS.problem} aria-labelledby="problem-title" className="screen border-b border-line">
+      <div className="flex w-full flex-col gap-14 px-gutter py-section lg:gap-[clamp(1.5rem,5svh,4rem)] lg:py-fold">
+        <div className="flex flex-col items-center gap-6 text-center lg:gap-[clamp(0.75rem,2.4svh,1.5rem)]">
           <PixelIcon name="spark" size={24} className="text-text" />
-          <h2 id="problem-title" className="max-w-[22ch] text-section">
+          <h2 id="problem-title" className="max-w-[22ch] text-section lg:max-w-none">
             Исследование компании не должно занимать полдня
           </h2>
         </div>
-        <ol className="grid gap-x-5 gap-y-12 md:grid-cols-3">
+        <ol className="grid gap-x-5 gap-y-12 md:grid-cols-3 lg:gap-x-[clamp(1.25rem,2vw,2.5rem)]">
           {PROBLEMS.map((p, i) => (
             <Reveal as="li" key={p.title} delay={i * 0.08} className="flex min-w-0 flex-col">
-              <div className="flex aspect-[5/4] rounded-2xl bg-surface p-5 sm:p-6">{p.schema}</div>
-              <div className="flex flex-col gap-2 px-1 pt-6 sm:px-5">
+              <div className="flex aspect-[5/4] rounded-2xl bg-surface p-5 sm:p-6 lg:aspect-auto lg:h-[clamp(13rem,46svh,32rem)]">{p.schema}</div>
+              <div className="flex flex-col gap-2 px-1 pt-6 sm:px-5 lg:pt-[clamp(1rem,2.6svh,1.5rem)]">
                 <h3 className="text-[1.375rem] leading-tight tracking-[-0.02em]">{p.title}</h3>
                 <p className="max-w-[40ch] text-[0.9375rem] text-muted">{p.text}</p>
               </div>

@@ -51,7 +51,7 @@ export function Nav() {
     <header className="sticky top-0 z-50 border-b border-line bg-bg">
       <nav
         aria-label="Основная навигация"
-        className="mx-auto flex h-nav max-w-page items-center justify-between gap-6 px-gutter"
+        className="flex h-nav items-center justify-between gap-6 px-gutter"
       >
         <Logo />
 
@@ -91,7 +91,7 @@ export function Nav() {
         hidden={!open}
         className="border-t border-line bg-bg md:hidden"
       >
-        <ul className="mx-auto flex max-w-page flex-col px-gutter py-2">
+        <ul className="flex flex-col px-gutter py-2">
           {NAV_LINKS.map((link) => (
             <li key={link.href} className="border-b border-line last:border-b-0">
               <a
@@ -105,7 +105,7 @@ export function Nav() {
             </li>
           ))}
         </ul>
-        <div className="mx-auto max-w-page px-gutter pt-2 pb-5">
+        <div className="px-gutter pt-2 pb-5">
           <Button href={`#${SECTIONS.demo}`} size="lg" className="w-full" onClick={() => close(true)}>
             Попробовать демо
           </Button>

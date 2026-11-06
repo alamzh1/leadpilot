@@ -26,7 +26,7 @@ export function Hero() {
       data-testid="hero"
       className="relative flex h-[calc(100svh-var(--nav-h)-1px)] min-h-[33rem] flex-col border-b border-line"
     >
-      <div className="mx-auto flex min-h-0 w-full max-w-page flex-1 flex-col gap-[clamp(0.5rem,1.8svh,1.75rem)] px-gutter pt-[clamp(0.75rem,2.6svh,3rem)] lg:pt-[clamp(1.25rem,4svh,3rem)]">
+      <div className="flex min-h-0 w-full flex-1 flex-col gap-[clamp(0.5rem,1.8svh,1.75rem)] px-gutter pt-[clamp(0.75rem,2.6svh,3rem)] lg:pt-[clamp(1.25rem,4svh,3rem)]">
         <div className="grid shrink-0 gap-x-12 gap-y-[clamp(0.625rem,1.8svh,1.5rem)] lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
           <div className="@container flex min-w-0 flex-col">
             {/* Кегль — от ширины колонки и от высоты окна; каждая фраза — своей строкой. */}

@@ -6,7 +6,8 @@ type Props = {
   activeIndex: number;
   /** Все этапы пройдены. */
   done: boolean;
-  orientation?: "horizontal" | "vertical";
+  /** `responsive` — столбцом до 1024px, строкой из четырёх колонок от 1024px. */
+  orientation?: "horizontal" | "vertical" | "responsive";
   /** Компактный размер — для рабочей области hero. */
   compact?: boolean;
   className?: string;
@@ -35,6 +36,20 @@ export function StageRail({
   className,
 }: Props) {
   const vertical = orientation === "vertical";
+  const responsive = orientation === "responsive";
+  const layout = {
+    list: responsive ? "flex flex-col lg:grid lg:grid-cols-4" : vertical ? "flex flex-col" : "grid grid-cols-4",
+    item: responsive
+      ? "relative grid grid-cols-[16px_minmax(0,1fr)] gap-x-3 pb-4 last:pb-0 lg:flex lg:min-w-0 lg:flex-col lg:gap-2 lg:pr-3 lg:pb-0"
+      : vertical
+        ? "relative grid grid-cols-[16px_minmax(0,1fr)] gap-x-3 pb-4 last:pb-0"
+        : "relative flex min-w-0 flex-col gap-2 pr-2",
+    line: responsive
+      ? "top-5 bottom-1 left-[7px] w-px lg:top-[7px] lg:right-0 lg:bottom-auto lg:left-5 lg:h-px lg:w-auto"
+      : vertical
+        ? "top-5 bottom-1 left-[7px] w-px"
+        : "top-[7px] right-0 left-5 h-px",
+  };
 
   if (compact) {
     // Компактный рельс для hero: четыре сегмента и подпись текущего этапа одной строкой.
@@ -77,7 +92,7 @@ export function StageRail({
     <ol
       aria-label="Этапы исследования"
       className={[
-        vertical ? "flex flex-col" : "grid grid-cols-4",
+        layout.list,
         compact ? "gap-0" : "",
         className ?? "",
       ]
@@ -92,11 +107,7 @@ export function StageRail({
             key={stage.id}
             data-state={state}
             aria-current={state === "active" ? "step" : undefined}
-            className={
-              vertical
-                ? "relative grid grid-cols-[16px_minmax(0,1fr)] gap-x-3 pb-4 last:pb-0"
-                : "relative flex min-w-0 flex-col gap-2 pr-2"
-            }
+            className={layout.item}
           >
             {/* Соединительная линия к следующему этапу: 1px, лайм — за пройденным. */}
             {!last && (
@@ -104,7 +115,7 @@ export function StageRail({
                 aria-hidden="true"
                 className={[
                   "absolute",
-                  vertical ? "top-5 bottom-1 left-[7px] w-px" : "top-[7px] right-0 left-5 h-px",
+                  layout.line,
                   state === "done" ? "bg-lime/70" : "bg-line-strong",
                 ].join(" ")}
               />

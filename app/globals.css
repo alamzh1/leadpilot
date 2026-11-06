@@ -5,6 +5,9 @@
  * Цвет — это состояние: lime = verified и одно основное действие в зоне видимости;
  * cyan = непроверенные фрагменты и вторичные акценты. Других акцентов нет.
  */
+/* Низкое окно десктопа (1280×720, 1366×768): фрагменты UI укорачиваются, чтобы блок помещался в экран. */
+@custom-variant short (@media (min-width: 64rem) and (max-height: 50rem));
+
 @theme {
   --color-*: initial;
   --color-bg: #0b0f14;
@@ -35,7 +38,9 @@
   --spacing-px4: 4px;
   --spacing-nav: 64px;
   --spacing-section: clamp(5rem, 3.5rem + 6vw, 10rem);
-  --spacing-gutter: clamp(1rem, 0.5rem + 2.5vw, 3rem);
+  --spacing-gutter: clamp(1rem, 3vw, 3rem);
+  /* Вертикальный отступ секции-экрана (≥1024px): от высоты окна, чтобы блок помещался в один экран. */
+  --spacing-fold: clamp(1rem, 3.2svh, 3.5rem);
 
   --container-page: 80rem;
   --container-prose: 46ch;
@@ -542,18 +547,43 @@
       linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
     background-size: 32px 32px;
   }
+}
 
-  /* Финальная плитка: фолбэк-сетка из палитры, если изображение не загрузилось. */
-  .t04-closing {
-    background-color: var(--color-surface);
-    background-position: center;
+/* Секция-экран: от 1024px каждая секция занимает не больше одного окна под навигацией. */
+@layer components {
+  @media (min-width: 64rem) {
+    .screen {
+      display: flex;
+      min-height: calc(100svh - var(--nav-h) - 1px);
+      flex-direction: column;
+      justify-content: center;
+    }
   }
 
-  .t04-closing[data-img-failed] {
-    background-image:
-      radial-gradient(ellipse 30% 40% at 50% 50%, color-mix(in srgb, var(--color-lime) 12%, transparent), transparent 70%),
-      linear-gradient(var(--color-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
-    background-size: auto, 48px 48px, 48px 48px;
+  /*
+   * Финальное высказывание: огромный гротеск от гаттера до гаттера, тон чуть светлее фона.
+   * Кегль — от ширины контейнера (cqi), чтобы строки заполняли ширину на любом окне.
+   */
+  .closing-statement {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 14cqi;
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+    color: var(--color-surface-2);
+    text-wrap: wrap;
   }
+
+  @media (min-width: 40rem) {
+    .closing-statement {
+      font-size: 12.1cqi;
+    }
+  }
+}
+
+/* Внутренняя прокрутка (карточка демо на низких окнах): тонкий скроллбар из палитры. */
+@utility scroll-panel {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
 }

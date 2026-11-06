@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-06T12:00:00+00:00",
+  "generatedAt": "2026-11-06T18:00:00+00:00",
   "title": "Design System: LeadPilot",
   "extensions": {
     "colorMeta": {
@@ -178,6 +178,10 @@
         "displayName": "Statement",
         "purpose": "Segment names on «Для кого» cards; Space Grotesk on Latin pipeline step names."
       },
+      "closing": {
+        "displayName": "Closing",
+        "purpose": "Closing H2 only: Inter 500, 12.1cqi (14cqi <640px), leading 0.9, −0.045em, Panel Raised on Graphite — deliberate low-contrast decorative statement, gutter to gutter."
+      },
       "title": {
         "displayName": "Title",
         "purpose": "Cyrillic H3s beneath problem tiles."
@@ -188,7 +192,7 @@
       },
       "lead": {
         "displayName": "Lead",
-        "purpose": "Hero subtitle and section intros, max 46ch, muted."
+        "purpose": "Hero subtitle and section intros, muted; 46–52ch narrow, up to 64–70ch from 1024px."
       },
       "body": {
         "displayName": "Body",
@@ -281,18 +285,26 @@
         "value": "1024px"
       },
       {
-        "name": "xl",
-        "value": "1280px"
+        "name": "2xl",
+        "value": "1536px"
+      },
+      {
+        "name": "short",
+        "value": "min-width 1024px and max-height 800px"
       }
     ],
     "containers": [
       {
-        "name": "page",
-        "value": "80rem"
+        "name": "gutter",
+        "value": "clamp(1rem, 3vw, 3rem)"
       },
       {
-        "name": "prose",
-        "value": "46ch"
+        "name": "measure",
+        "value": "70ch (prose cap; 44–64ch for most leads)"
+      },
+      {
+        "name": "screen",
+        "value": "≥1024px: min-height calc(100svh − nav − 1px), content centred, padding clamp(1rem, 3.2svh, 3.5rem)"
       }
     ],
     "focus": {
@@ -332,7 +344,7 @@
       {
         "name": "inline-badge",
         "value": "1.2em × 0.82em, radius 0.24em",
-        "purpose": "Icon plaque set inline in a large headline line."
+        "purpose": "Icon plaque set inline in the hero H1 line only."
       },
       {
         "name": "pixel-square",
@@ -346,7 +358,7 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Rounded lime button; the one primary action per view. Large size in the hero action bar and closing statement.",
+      "description": "Rounded lime button; the one primary action per view. Large size in the hero action bar and in the empty end of the closing statement's last line.",
       "html": "<div style=\"display:flex;gap:12px;align-items:center\"><button class=\"ds-btn ds-btn--primary ds-btn--lg\">Исследовать компанию <svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M4 1h1v1h1v1h1v2H6v1H5v1H4V5H1V3h3z\"/></svg></button><button class=\"ds-btn ds-btn--primary ds-btn--sm\">Попробовать демо</button></div>",
       "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:14px 28px;border:1px solid transparent;border-radius:14px;font:600 15px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:-0.005em;white-space:nowrap;cursor:pointer;text-decoration:none;transition:background-color 180ms cubic-bezier(.16,1,.3,1),border-color 180ms cubic-bezier(.16,1,.3,1),transform 120ms cubic-bezier(.16,1,.3,1)} .ds-btn:focus-visible{outline:2px solid #7dc8d8;outline-offset:3px} .ds-btn:active{transform:translateY(1px)} .ds-btn--lg{min-height:60px;padding:20px 48px;font-size:16px} .ds-btn--sm{min-height:40px;padding:12px 20px;font-size:14px} .ds-btn--primary{background:#c6f56b;color:#0b0f14} .ds-btn--primary:hover{background:color-mix(in srgb,#c6f56b 86%,#f4f7f8)}"
     },
@@ -391,12 +403,12 @@
       "css": ".ds-tilewrap{width:320px;font-family:Inter,sans-serif} .ds-tile{position:relative;aspect-ratio:5/4;border-radius:20px;background:#141a21 radial-gradient(#34414e 1px,transparent 1px);background-size:8px 8px;padding:24px;overflow:hidden} .ds-tag{display:inline-block;border:1px solid color-mix(in srgb,#7dc8d8 60%,transparent);border-radius:10px;background:#0b0f14;padding:2px 8px;font:400 11px/20px 'IBM Plex Mono',monospace;color:#7dc8d8} .ds-tilewrap h3{margin:24px 4px 8px;font-size:22px;font-weight:650;letter-spacing:-0.02em;line-height:1.25;color:#f4f7f8} .ds-tilewrap p{margin:0 4px;font-size:15px;line-height:1.6;color:#97a4ae;max-width:40ch}"
     },
     {
-      "name": "Inline Badge Statement",
+      "name": "Closing Statement",
       "kind": "custom",
-      "refersTo": "inline-badge",
-      "description": "Large centred headline with rounded icon plaques set inline; lime fill only for the verified check.",
-      "html": "<h2 class=\"ds-stmt\">Меньше времени на <span class=\"ds-badge\"><svg viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\"><path d=\"M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1zM5 6h2v1H5zM6 7h2v1H6z\"/></svg></span>поиск. Больше контекста <span class=\"ds-badge ds-badge--ok\"><svg viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\"><path d=\"M6 2h2v1H7v1H6v1H5v1H4v1H3v1H2V7H1V6H0V4h1v1h1v1h1V5h1V4h1V3h1z\"/></svg></span>для разговора</h2>",
-      "css": ".ds-stmt{max-width:18ch;margin:0 auto;text-align:center;font:650 52px/1.08 Inter,sans-serif;letter-spacing:-0.035em;color:#f4f7f8} .ds-badge{display:inline-flex;align-items:center;justify-content:center;width:1.2em;height:.82em;margin-right:.1em;border-radius:.24em;vertical-align:-.05em;background:#1b232c;color:#f4f7f8} .ds-badge svg{width:.5em;height:.5em} .ds-badge--ok{background:#c6f56b;color:#0b0f14}"
+      "refersTo": "closing-statement",
+      "description": "Full-width Inter 500 statement in Panel Raised on Graphite (deliberate low-contrast decorative choice), with the large lime button in the empty end of the last line. No image, no inline icons.",
+      "html": "<div class=\"ds-close\"><h2>Меньше времени на поиск. Больше контекста для разговора</h2><a class=\"ds-close__btn\" href=\"#\">Запустить демо <svg width=\"16\" height=\"16\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M4 1h1v1h1v1h1v2H6v1H5v1H4V5H1V3h3z\"/></svg></a></div>",
+      "css": ".ds-close{container-type:inline-size;display:grid;width:900px;padding:48px 32px;background:#0b0f14} .ds-close h2{grid-area:1/1;margin:0;font:500 12.1cqi/0.9 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:-0.045em;color:#1b232c} .ds-close__btn{grid-area:1/1;align-self:end;justify-self:end;display:inline-flex;align-items:center;gap:8px;min-height:60px;padding:20px 40px;border-radius:14px;background:#c6f56b;color:#0b0f14;font:600 16px/1.2 Inter,sans-serif;text-decoration:none}"
     },
     {
       "name": "Profile Cell",
@@ -446,13 +458,14 @@
   ],
   "narrative": {
     "northStar": "The Research Desk",
-    "overview": "LeadPilot is a working desk, not a brochure. Every surface reads as an instrument panel at night: graphite ground, flat panels and hairlines, data set in mono, and colour reserved for the state of information. The page's one visual idea is the passage from noise to dossier: cold cyan fragments that are not yet checked resolve, in stepped frames, into lime fields that are.\n\nTwo layers share the desk. The **object layer** — buttons, chips, fields, cards, tiles and image plates — is soft and calm: rounded corners on one scale (14px controls, 16–20px cards, 28px plates), solid fills, smooth eased hovers. The **data layer** sits on a strict 4px grid inside those objects and stays hard-edged: 4px data squares, square stage and rail markers, authored 8×8 pixel icons, a blinking block caret, and state animation that moves in `steps()` rather than easing. Type stays Inter / Space Grotesk / IBM Plex Mono. Atmosphere (glass, glow, luminous lime) lives only inside the raster plates; the built UI never borrows it.\n\nComposition is large and quiet: big statements (often centred), generous section air (5–10rem), rounded tiles with their caption beneath or centred inside, and everything shown at once — steps as one connected pipeline, segments side by side — rather than paged behind tabs or carousels. The confirmed rejections come from the product brief: purple gradients, glowing orbs, meaningless particles, heavy shadows, rows of identical cards.",
+    "overview": "LeadPilot is a working desk, not a brochure. Every surface reads as an instrument panel at night: graphite ground, flat panels and hairlines, data set in mono, and colour reserved for the state of information. The page's one visual idea is the passage from noise to dossier: cold cyan fragments that are not yet checked resolve, in stepped frames, into lime fields that are.\n\nTwo layers share the desk. The **object layer** — buttons, chips, fields, cards, tiles and image plates — is soft and calm: rounded corners on one scale (14px controls, 16–20px cards, 28px plates), solid fills, smooth eased hovers. The **data layer** sits on a strict 4px grid inside those objects and stays hard-edged: 4px data squares, square stage and rail markers, authored 8×8 pixel icons, a blinking block caret, and state animation that moves in `steps()` rather than easing. Type stays Inter / Space Grotesk / IBM Plex Mono. Atmosphere (glass, glow, luminous lime) lives only inside the raster plates; the built UI never borrows it.\n\nComposition is large and quiet: content runs full width between fluid gutters, and from 1024px every section is one screen under the nav, centred vertically with spacing taken from the viewport height. Big statements, rounded tiles with their caption beneath or centred inside, and everything shown at once — steps as one connected pipeline, segments side by side — rather than paged behind tabs or carousels. The confirmed rejections come from the product brief: purple gradients, glowing orbs, meaningless particles, heavy shadows, rows of identical cards. The page closes on its one quiet gesture: a gutter-to-gutter statement set barely lighter than the ground, with the lime action in the gap after its last word.",
     "keyCharacteristics": [
       "Rounded objects, square data: controls 14px, cards 16–20px, plates 28px; every pixel element stays square.",
       "Colour is state: cyan = unverified, lime = verified and the one primary action.",
       "Pixel grammar on a 4px grid: 4px fragments, state squares, 8×8 icons, block caret.",
       "Data-state motion runs in discrete steps; control hovers ease; reduced motion shows the final frame instantly.",
-      "Mono only for data: field keys, sources, dates, statuses, paths."
+      "Mono only for data: field keys, sources, dates, statuses, paths.",
+      "Full width, one screen per section from 1024px; prose capped by measure, not by a page container."
     ],
     "rules": [
       {
@@ -463,6 +476,11 @@
       {
         "name": "The One Lime Button Rule",
         "body": "At most one lime primary button per viewport zone; every other action is ghost, chip or a plain link.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tonal Statement Rule",
+        "body": "The closing statement is set in Panel Raised on Graphite (#1b232c on #0b0f14, about 1.2:1). This is a deliberate, user-requested low-contrast decorative choice; it is legal only at that size, for that one statement, with the lime button beside it. Never for body copy, captions or labels.",
         "section": "colors"
       },
       {
@@ -492,14 +510,17 @@
       "**Do** keep pixel elements square and on the 4px grid: 4px fragments and state squares, 8px skeleton pitch, 16px markers, icons at 16/24/32px.",
       "**Do** separate surfaces with 1px Hairline lines and tonal steps, building data panels as `gap-px` grids inside clipped rounded cards.",
       "**Do** animate data state in `steps()`, ease control hovers, and show the final frame instantly under `prefers-reduced-motion`.",
-      "**Do** set Russian headings in Inter 650 at −0.035em and reserve Space Grotesk for Latin names.",
+      "**Do** set Russian headings in Inter 650 at −0.035em (the closing statement alone is Inter 500 at −0.045em) and reserve Space Grotesk for Latin names.",
       "**Do** keep raster atmosphere inside plates with a palette-only CSS grid fallback when the image fails.",
-      "**Do** keep the hero to exactly one viewport (`100svh − nav`): the workspace plate absorbs the remaining height and the action bar is its last row."
+      "**Do** keep the hero to exactly one viewport (`100svh − nav`): the workspace plate absorbs the remaining height and the action bar is its last row.",
+      "**Do** run content full width between gutters and cap prose at about 70ch; from 1024px fit each section to one screen with `svh`-derived spacing, hide only secondary fragments on low windows, and let overflowing panels scroll inside themselves."
     ],
     "donts": [
       "**Don't** add a third accent colour, gradients on UI surfaces, purple gradients, glowing orbs or meaningless particles.",
       "**Don't** round pixel elements, and don't bring back stepped or clipped corners on controls.",
       "**Don't** add shadows to panels, cards or buttons; only objects floating over a plate (the desk, its chips) get one.",
+      "**Don't** reintroduce a fixed-width page container or width-based section padding at desktop sizes.",
+      "**Don't** reuse the tonal Panel Raised text outside the closing statement, or add icons, images or colour highlights to that statement.",
       "**Don't** use Plex Mono for headings, buttons or marketing copy.",
       "**Don't** signal errors with a red; state the error in text.",
       "**Don't** lay out rows of identical cards; feature modules vary spans, and every tile in a row carries its own schema or content.",
